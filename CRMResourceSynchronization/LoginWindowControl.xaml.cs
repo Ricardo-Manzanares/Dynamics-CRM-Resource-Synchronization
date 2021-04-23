@@ -63,7 +63,8 @@ namespace CRMResourceSynchronization
             CRMCertificateThumprint.Text = Settings.Default.CertificateThumprint;
             CRMClientSecretClientSecret.Text = Settings.Default.ClientSecret;
 
-            AutenticationTypePanel(Utils.GetObjectEnumFromDescription<AutenticationType>(Settings.Default.CRMTypeAuth));
+            if(!string.IsNullOrEmpty(Settings.Default.CRMTypeAuth))
+                AutenticationTypePanel(Utils.GetObjectEnumFromDescription<AutenticationType>(Settings.Default.CRMTypeAuth));
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

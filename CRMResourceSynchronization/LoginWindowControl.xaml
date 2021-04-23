@@ -136,7 +136,7 @@
                 <TextBox x:Name="CRMClientSecretClientSecret" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap" BorderBrush="Transparent"/>
             </Grid>
         </StackPanel>
-        <StackPanel x:Name="CRMAuthenticationParametersOffice365" Visibility="Visible" Grid.Row="3" Margin="10">
+        <StackPanel x:Name="CRMAuthenticationParametersOffice365" Visibility="Hidden" Grid.Row="3" Margin="10">
             <TextBlock Text="Authentication parameters of Office365"></TextBlock>
             <Grid Margin="10, 0, 10, 0">
                 <Grid.ColumnDefinitions>

@@ -97,6 +97,7 @@ namespace CRMResourceSynchronization.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IntegratedSecurityPrompt {
             get {
                 return ((bool)(this["IntegratedSecurityPrompt"]));
