@@ -1,0 +1,398 @@
+﻿<UserControl x:Class="CRMResourceSynchronization.CompareResourceWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:CustomControls="clr-namespace:CRMResourceSynchronization.Extensions"              
+             mc:Ignorable="d"
+             Name="CompareResource">
+
+    <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Environmental solutions" Margin="10, 10, 10, 0" ></TextBlock>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="CRMSolutions" Grid.Column="0" Margin="10" IsEnabled="False" SelectionChanged="CRMSolutions_SelectionChanged" />
+                        <Button Grid.Column="1" Click="CRMLoadSolutions_Click" Background="Transparent" ToolTip="Load environment solutions" x:Name="CRMLoadSolutions" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand" >
+                            <Image>
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <DrawingGroup ClipGeometry="M0,0 V56.32 H64 V0 H0 Z">
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup Opacity="1">
+                                                        <GeometryDrawing Brush="#FF35353D" Geometry="F1 M64,56.32z M0,0z M63.22,22.34A2.57,2.57,0,0,0,59.6,22.4L56.21,25.92A28.13,28.13,0,1,0,48.27,47.87A2.56,2.56,0,0,0,44.61,44.29A23,23,0,1,1,51.08,25.84L47.89,22.65A2.56,2.56,0,1,0,44.27,26.27L52,34A2.56,2.56,0,0,0,53.81,34.75L53.81,34.75A2.56,2.56,0,0,0,55.63,33.96L63.28,26A2.57,2.57,0,0,0,63.22,22.34z" />
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingGroup>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                        <Border />
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Solution resources" Margin="10, 10, 10, 0" ></TextBlock>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="CRMNameSearchResource" TextWrapping="Wrap" IsEnabled="False" Margin="10" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
+                        <ComboBox Grid.Column="1" x:Name="CRMTypeResource" IsEnabled="False" Margin="10">
+                            <ComboBoxItem Content="-- Type or resource --" Tag="0" />
+                            <ComboBoxItem Content="Web page (HTML) .htm, .html" Tag="1" />
+                            <ComboBoxItem Content="Stylesheet (CSS) .css" Tag="2" />
+                            <ComboBoxItem Content="Script (JScript) .js" Tag="3" />
+                            <ComboBoxItem Content="Data (XML) .xml" Tag="4" />
+                            <ComboBoxItem Content="Image (PNG) .png" Tag="5" />
+                            <ComboBoxItem Content="Image (JPG) .jpg" Tag="6" />
+                            <ComboBoxItem Content="Image (GIF) .gif" Tag="7" />
+                            <ComboBoxItem Content="Silverlight (XAP) .xap" Tag="8" />
+                            <ComboBoxItem Content="Stylesheet (XSL) .xsl, xslt" Tag="9" />
+                            <ComboBoxItem Content="Image (ICO) .ico" Tag="10" />
+                            <ComboBoxItem Content="Vector format (SVG) .svg" Tag="11" />
+                            <ComboBoxItem Content="Chain (RESX) .resx" Tag="12" />
+                        </ComboBox>
+                        <Button Grid.Column="2" Click="CRMSearchResource_Click" Background="Transparent" IsEnabled="False" x:Name="CRMSearchResource" ToolTip="Filter solution resources" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                            <Image>
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                                                <GeometryDrawing Geometry="F1 M24,24z M0,0z M22,3L22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3z">
+                                                    <GeometryDrawing.Pen>
+                                                        <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                                    </GeometryDrawing.Pen>
+                                                </GeometryDrawing>
+                                            </DrawingGroup>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Grid x:Name="GridResourceActions">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Download resource to proyect" x:Name="CRMDownloadResource" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                                <Image>
+                                    <Image.Source>
+                                        <DrawingImage>
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup Opacity="1">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M423,121C400.5,56.2 334,11.9 257,11.9 180,11.9 113.5,56.2 91,121 43.9,136.2 12,176.5 12,222.4 12,281.9 65.7,330.4 131.7,330.4 143,330.4 152.1,321.3 152.1,310 152.1,298.7 143,289.6 131.7,289.6 88.2,289.6 52.8,259.5 52.8,222.5 52.8,192.1 77,165.4 111.7,157.7 119.2,156 125.1,150.3 127,142.8 140.4,90.6 195,52.8 256.9,52.8 318.8,52.8 373.4,90.7 386.8,142.8 388.7,150.2 394.6,156 402.1,157.7 436.8,165.4 461,192.1 461,222.5 461,259.5 425.6,289.6 382.1,289.6 370.8,289.6 361.7,298.7 361.7,310 361.7,321.3 370.8,330.4 382.1,330.4 448.1,330.4 501.8,282 501.8,222.4 502,176.5 470.1,136.2 423,121z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M356.2,399.7C344.9,399.7,335.8,408.8,335.8,420.1L335.8,461.1 178.2,461.1 178.2,420.1C178.2,408.8 169.1,399.7 157.8,399.7 146.5,399.7 137.4,408.8 137.4,420.1L137.4,481.5C137.4,492.8,146.5,501.9,157.8,501.9L356.3,501.9C367.6,501.9,376.7,492.8,376.7,481.5L376.7,420.1C376.7,408.9,367.5,399.7,356.2,399.7z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257,213.9C245.7,213.9,236.6,223,236.6,234.3L236.6,346 215.8,326.5C207.6,318.8 194.6,319.2 186.9,327.4 179.2,335.6 179.6,348.6 187.8,356.3L243,408C252.2,417.2,262.2,416.7,270.9,408L326.1,356.3C334.3,348.6 334.8,335.7 327,327.4 319.3,319.2 306.4,318.8 298.1,326.5L277.4,346 277.4,234.4C277.4,223.1,268.3,213.9,257,213.9z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Grid.Column="2" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload resource to CRM" BorderBrush="Transparent" x:Name="CRMUploadResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                                <Image>
+                                    <Image.Source>
+                                        <DrawingImage>
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup Opacity="1">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M423,121C400.5,56.2 334,11.9 257,11.9 180,11.9 113.5,56.2 91,121 43.9,136.2 12,176.5 12,222.4 12,281.9 65.7,330.4 131.7,330.4 143,330.4 152.1,321.3 152.1,310 152.1,298.7 143,289.6 131.7,289.6 88.2,289.6 52.8,259.5 52.8,222.5 52.8,192.1 77,165.4 111.8,157.7 119.3,156 125.2,150.3 127.1,142.8 140.5,90.6 195.1,52.8 257,52.8 318.9,52.8 373.6,90.7 386.9,142.8 388.8,150.2 394.7,156 402.2,157.7 436.9,165.4 461.1,192.1 461.1,222.5 461.1,259.5 425.7,289.6 382.2,289.6 370.9,289.6 361.8,298.7 361.8,310 361.8,321.3 370.9,330.4 382.2,330.4 448.2,330.4 501.9,282 501.9,222.4 502,176.5 470.1,136.2 423,121z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M356.2,399.7C344.9,399.7,335.8,408.8,335.8,420.1L335.8,461.1 178.2,461.1 178.2,420.1C178.2,408.8 169.1,399.7 157.8,399.7 146.5,399.7 137.4,408.8 137.4,420.1L137.4,481.5C137.4,492.8,146.5,501.9,157.8,501.9L356.3,501.9C367.6,501.9,376.7,492.8,376.7,481.5L376.7,420.1C376.7,408.9,367.5,399.7,356.2,399.7z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257,413.5C268.3,413.5,277.4,404.4,277.4,393.1L277.4,281.5 298.2,301C306.4,308.7 319.3,308.3 327.1,300.1 334.8,291.9 334.4,279 326.2,271.2L271,219.4C267.1,215.7 262.1,213.9 257,213.9 252,213.9 247,215.7 243,219.4L187.8,271.1C179.6,278.8 179.1,291.7 186.9,300 194.6,308.3 207.5,308.7 215.8,300.9L236.6,281.4 236.6,393C236.6,404.4,245.7,413.5,257,413.5z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Grid.Column="3" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload and publish resource to CRM" BorderBrush="Transparent" x:Name="CRMPublishResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                                <Image>
+                                    <Image.Source>
+                                        <DrawingImage>
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup Opacity="1">
+                                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M460.9,245.9C459.9,266.4,442.7,282.3,422.2,282.3L402.9,282.3C378.9,225.5 322.5,185.5 257,185.5 192.1,185.5 136.2,224.8 111.8,280.8 79.2,274.2 54.1,246.1 53.1,211.7 52,174.3 79.5,142.1 116.4,137.3 131.6,135.3 144.4,125.1 149.7,110.7 162.1,76.2 195.2,53 231.9,53 267.1,53 298.8,74 312.6,106.4 319,121.4 333.6,131.2 349.9,131.4 361.4,131.5 372.5,135.8 381.2,143.3 389.8,150.8 395.5,161.1 397.2,172.3 399.8,189.5 413,203.1 430,206.4 448.5,210 461.8,226.8 460.9,245.9z M327.6,323.3C326,293.6 321.1,264.2 312.5,240.2 343.6,256.9 366.4,287.3 372.7,323.3L327.6,323.3z M312.5,447.2C321.1,423.2,326.1,393.8,327.6,364.1L372.7,364.1C366.3,400.1,343.6,430.5,312.5,447.2z M227.3,323.3C230.8,261.1 249.5,228.5 256.7,226.3 256.8,226.3 256.8,226.3 256.9,226.3 264.6,228.5 283.3,261.1 286.8,323.3L227.3,323.3z M257,461.1C249.2,458.5,230.7,425.9,227.3,364.1L286.8,364.1C283.3,425.9,264.8,458.5,257,461.1z M186.4,323.3L141.3,323.3C147.6,287.3 170.4,257 201.5,240.2 192.9,264.2 188,293.6 186.4,323.3z M141.3,364.1L186.4,364.1C187.9,393.8 192.9,423.2 201.5,447.2 170.4,430.5 147.7,400.1 141.3,364.1z M437.7,166.1C431.2,123.5 394.6,90.9000000000001 350.3,90.4000000000001 330.8,44.3000000000001 285.1,12.0000000000001 231.9,12.0000000000001 176.3,12.0000000000001 129,47.2000000000001 111,96.5000000000001 55.0999999999999,103.8 11.9999999999999,151.5 11.9999999999999,209.4 11.9999999999999,263.5 49.7999999999999,308.9 100.4,320.4 99.3,328 98.6999999999999,335.8 98.6999999999999,343.7 98.6999999999999,431 169.7,502 257,502 344.3,502 415.3,431 415.3,343.7 415.3,336.8 414.9,330 414,323.3L422.7,323.3C466.5,323.3 502,287.8 502,244 502,205.4 474.3,173.2 437.7,166.1z" />
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Button Grid.Column="4" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Compare resources" x:Name="CRMCompareResources" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                                <Image>
+                                    <Image.Source>
+                                        <DrawingImage>
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup Opacity="1">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M236.7,298.3L236.7,352.4C236.7,363.7 245.8,372.8 257.1,372.8 268.4,372.8 277.5,363.7 277.5,352.4L277.5,298.3C277.5,287 268.4,277.9 257.1,277.9 245.8,277.9 236.7,287 236.7,298.3z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M275.8,165.4C267.7,150.6,246.4,150.6,238.3,165.4L163.8,301.9 101.3,301.9C74,300.4 52.4,277.2 53,249.6 53.2,239.2 56.5,229.3 62.6,220.9 69.7,211 72.1,198.5 69.1,186.7 66.9,178.1 65.8,169.1 65.8,160.1 65.8,101 113.9,53 172.9,53 209.8,53 243.7,71.7 263.5,102.9 274.5,120.3 296.7,126.8 315.4,118.2 323.3,114.5 331.8,112.7 340.6,112.7 384.9,112.7 399.2,152.7 400.4,167.6 401.8,183.5 412.2,197.2 427.3,202.7 447.5,210 461,229.4 461,250.9 461,279.2 438,302.1 409.8,302.1L350.4,302.1 275.8,165.4z M123.9,461L257.1,216.9 390.3,461 123.9,461 123.9,461z M502,250.8C502,210.9 476.7,176.9 441.2,164 436.8,112.2 393.4,71.6 340.5,71.6 325.4,71.6 311,74.9 298.1,80.9 271.8,39.4 225.6,11.9 172.8,11.9 91,11.9 24.6,78.2 24.6,160.1 24.6,172.8 26.2,185.1 29.2,196.9 18.4,212 12,230.7 12,250.8 12,300.8 51.8,341.5 101.4,343L141.5,343 72,470.4C64.2,484.6,74.5,502,90.7,502L423.5,502C439.7,502,450,484.7,442.2,470.4L372.7,343 409.7,343C460.7,343.1,502,301.7,502,250.8z" />
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257.1,397.4C245.2,397.4 235.5,407.1 235.5,419 235.5,430.9 245.2,440.6 257.1,440.6 269,440.6 278.7,430.9 278.7,419 278.7,407 269,397.4 257.1,397.4z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="4">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Margin="10,0,10,10" Orientation="Vertical">
+                            <DataGrid x:Name="DataResources" Grid.Row ="1" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
+                                <DataGrid.Resources>
+                                    <Style TargetType="{x:Type DataGridRow}">
+                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
+                                        <EventSetter Event="CheckBox.Checked" Handler="ResourceChecked"/>
+                                        <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
+                                    </Style>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
+                                        <DataGridCheckBoxColumn.Header>
+                                            <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                                        </DataGridCheckBoxColumn.Header>
+                                    </DataGridCheckBoxColumn>
+                                    <DataGridTextColumn x:Name="Resource_name" Width="*" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
+                                    <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
+                                    <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
+                                    <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
+                                    <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Grid.Row="1" Margin="10, 0">
+                            <Grid x:Name="GridPagination">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="130" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnFirst" Click="btnFirst_Click">
+                                    <Image>
+                                        <Image.Source>
+                                            <DrawingImage>
+                                                <DrawingImage.Drawing>
+                                                    <DrawingGroup ClipGeometry="M0,0 V12 H13 V0 H0 Z">
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-582,-1000">
+                                                                <DrawingGroup Opacity="1" Transform="1,0,0,1,100,852">
+                                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,476,142">
+                                                                        <DrawingGroup Opacity="1">
+                                                                            <GeometryDrawing Brush="#FF1D1D1D" Geometry="F0 M13,12z M0,0z M7,6C7.55,6,8,6.45,8,7L8,17C8,17.55 7.55,18 7,18 6.45,18 6,17.55 6,17L6,7C6,6.45,6.45,6,7,6z M10.66,12.82L16.43,16.89C17.09,17.36,18.01,16.88,18.01,16.07L18.01,7.93C18.01,7.12,17.1,6.65,16.43,7.11L10.66,11.18C10.09,11.58,10.09,12.42,10.66,12.82z" />
+                                                                        </DrawingGroup>
+                                                                    </DrawingGroup>
+                                                                </DrawingGroup>
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingImage.Drawing>
+                                            </DrawingImage>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Button Grid.Column="1" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnPrev" Click="btnPrev_Click">
+                                    <Image>
+                                        <Image.Source>
+                                            <DrawingImage>
+                                                <DrawingImage.Drawing>
+                                                    <DrawingGroup ClipGeometry="M0,0 V12 H7 V0 H0 Z">
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-652,-2464">
+                                                                <DrawingGroup Opacity="1" Transform="1,0,0,1,100,2404">
+                                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,544,54">
+                                                                        <DrawingGroup Opacity="1">
+                                                                            <GeometryDrawing Brush="#FF1D1D1D" Geometry="F0 M7,12z M0,0z M14.71,15.88L10.83,12 14.71,8.12C15.1,7.73 15.1,7.1 14.71,6.71 14.32,6.32 13.69,6.32 13.3,6.71L8.71,11.3C8.32,11.69,8.32,12.32,8.71,12.71L13.3,17.3C13.69,17.69 14.32,17.69 14.71,17.3 15.09,16.91 15.1,16.27 14.71,15.88z" />
+                                                                        </DrawingGroup>
+                                                                    </DrawingGroup>
+                                                                </DrawingGroup>
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingImage.Drawing>
+                                            </DrawingImage>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Label Grid.Column="2" Margin="5" x:Name="lblpageInformation" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="30" Width="48" VerticalContentAlignment="Center" VerticalAlignment="Bottom"/>
+                                <Button Grid.Column="3" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnNext" Click="btnNext_Click">
+                                    <Image>
+                                        <Image.Source>
+                                            <DrawingImage>
+                                                <DrawingImage.Drawing>
+                                                    <DrawingGroup ClipGeometry="M0,0 V20 H11 V0 H0 Z">
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-345,-3434">
+                                                                <DrawingGroup Opacity="1" Transform="1,0,0,1,100,3378">
+                                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,238,54">
+                                                                        <DrawingGroup Opacity="1">
+                                                                            <GeometryDrawing Brush="#FF1D1D1D" Geometry="F0 M11,20z M0,0z M7.38,21.01C7.87,21.5,8.66,21.5,9.15,21.01L17.46,12.7C17.85,12.31,17.85,11.68,17.46,11.29L9.15,2.98C8.66,2.49 7.87,2.49 7.38,2.98 6.89,3.47 6.89,4.26 7.38,4.75L14.62,12 7.37,19.25C6.89,19.73,6.89,20.53,7.38,21.01z" />
+                                                                        </DrawingGroup>
+                                                                    </DrawingGroup>
+                                                                </DrawingGroup>
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingImage.Drawing>
+                                            </DrawingImage>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Button Grid.Column="4" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnLast" Click="btnLast_Click">
+                                    <Image>
+                                        <Image.Source>
+                                            <DrawingImage>
+                                                <DrawingImage.Drawing>
+                                                    <DrawingGroup ClipGeometry="M0,0 V12 H12 V0 H0 Z">
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-548,-1000">
+                                                                <DrawingGroup Opacity="1" Transform="1,0,0,1,100,852">
+                                                                    <DrawingGroup Opacity="1" Transform="1,0,0,1,442,142">
+                                                                        <DrawingGroup Opacity="1">
+                                                                            <GeometryDrawing Brush="#FF1D1D1D" Geometry="F0 M12,12z M0,0z M7.58,16.89L13.35,12.82C13.91,12.42,13.91,11.58,13.35,11.19L7.58,7.11C6.91,6.65,6,7.12,6,7.93L6,16.07C6,16.88,6.91,17.35,7.58,16.89z M16,7L16,17C16,17.55 16.45,18 17,18 17.55,18 18,17.55 18,17L18,7C18,6.45 17.55,6 17,6 16.45,6 16,6.45 16,7z" />
+                                                                        </DrawingGroup>
+                                                                    </DrawingGroup>
+                                                                </DrawingGroup>
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingImage.Drawing>
+                                            </DrawingImage>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <ComboBox Grid.Column="5" x:Name="cbNumberOfRecords" Margin="5" HorizontalAlignment="Left" Width="120" FontSize="10" Height="20" BorderBrush="Transparent" SelectedIndex="0" SelectionChanged="cbNumberOfRecords_SelectionChanged">
+                                    <ComboBoxItem Tag="5" Content="5" />
+                                    <ComboBoxItem Tag="10" Content="10" />
+                                    <ComboBoxItem Tag="50" Content="20" />
+                                    <ComboBoxItem Tag="50" Content="50" />
+                                </ComboBox>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+            <Grid  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="CRMUser" Text="--" Grid.Row="0" Padding="10,0" FontWeight="Light" />
+                        <TextBlock x:Name="CRMUrl" Text="--" Grid.Row="1" Padding="10,0" FontWeight="Light" />
+                    </Grid>
+                </StackPanel>
+                <Button Grid.Column="1" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                    <Image RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                                        <GeometryDrawing Geometry="F1 M24,24z M0,0z M12,6L12,4 M12,6A2,2,0,1,0,12,10 M12,6A2,2,0,1,1,12,10 M6,18A2,2,0,1,0,6,14 M6,18A2,2,0,1,1,6,14 M6,18L6,20 M6,14L6,4 M12,10L12,20 M18,18A2,2,0,1,0,18,14 M18,18A2,2,0,1,1,18,14 M18,18L18,20 M18,14L18,4">
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                                            </GeometryDrawing.Pen>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

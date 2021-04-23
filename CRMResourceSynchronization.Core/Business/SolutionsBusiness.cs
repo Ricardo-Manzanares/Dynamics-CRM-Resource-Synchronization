@@ -1,0 +1,93 @@
+﻿using Microsoft.Xrm.Sdk.Query;
+using CRMResourceSynchronization.Core.Dynamics;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CRMResourceSynchronization.Core.Business.Models;
+using Microsoft.Xrm.Sdk;
+using CRMResourceSynchronization.Core.Dynamics.Extensions;
+
+namespace CRMResourceSynchronization.Core.Business
+{
+    public class SolutionsBusiness
+    {
+        private CRMClient _CRMClient;
+
+        public SolutionsBusiness(CRMClient CRMClient)
+        {
+            this._CRMClient = CRMClient;
+        }
+        
+        /// <summary>
+        /// Recupera las soluciones administradas de CRM
+        /// </summary>
+        /// <returns></returns>
+        public List<SolutionModel> GetSolutionsManaged()
+        {
+            try
+            {
+                List<SolutionModel> solutiones = new List<SolutionModel>();
+
+                if (this._CRMClient == null)
+                    throw new Exception("La conexion a CRM no esta configurada, es necesaria antes de conectar a CRM");
+
+                var queryExpresion = new QueryExpression
+                {
+                    EntityName = EntityNames.Soluciones,
+                    ColumnSet = new ColumnSet("solutionid", "friendlyname"),
+                    Distinct = true,
+                    NoLock = true
+                };
+
+                queryExpresion.Criteria.AddCondition(new ConditionExpression("ismanaged", ConditionOperator.Equal, "0"));
+
+                var response = this._CRMClient._Client.RetrieveMultiple(queryExpresion);
+                foreach (dynamic item in response.Entities)
+                {
+                    SolutionModel parseSolution = EntityToModel(item);
+                    if(parseSolution != null)
+                    solutiones.Add(parseSolution);
+                }
+
+                return solutiones;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Mapea el model de usuario a entidad de CRM
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
+        private Entity MapperToEntity(SolutionModel usuario)
+        {
+            Entity entity = new Entity(EntityNames.Soluciones, Guid.Parse(usuario.solutionid));
+            entity["friendlyname"] = usuario.friendlyname;
+            return entity;
+        }
+
+        /// <summary>
+        /// Mapea el usuario de CRM a modelo
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
+        private SolutionModel EntityToModel(Entity usuario)
+        {
+            SolutionModel model = new SolutionModel();
+            Guid parseSolutionId = Guid.Empty;
+            if (usuario.Attributes["solutionid"] != null && Guid.TryParse(usuario.Attributes["solutionid"].ToString(), out parseSolutionId))
+            {
+                model.solutionid = parseSolutionId.ToString();
+                model.friendlyname = EntityCollectionExtension.ExistProperty(usuario, "friendlyname") ? usuario["friendlyname"].ToString() : "--";
+                return model;
+            }
+            else
+            {
+                return null;
+            }            
+        }
+    }
+}

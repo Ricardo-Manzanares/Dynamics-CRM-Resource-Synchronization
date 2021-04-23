@@ -3,3 +3,11 @@
 ################################################################################
 
 /packages
+/.vs
+/CRMResourceSynchronization/obj
+/CRMResourceSynchronization/bin/Debug
+/CRMResourceSynchronization/Properties/Settings.settings
+/CRMResourceSynchronization.Core/obj
+/CRMResourceSynchronization.Core/bin/Debug
+/CRMResourceSynchronization.Core/Key.snk
+/CRMResourceSynchronization/Key.snk
