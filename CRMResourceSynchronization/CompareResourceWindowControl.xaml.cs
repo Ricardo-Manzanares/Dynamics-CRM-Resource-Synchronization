@@ -1,6 +1,7 @@
 ﻿using CRMResourceSynchronization.Core.Business;
 using CRMResourceSynchronization.Core.Business.Models;
 using CRMResourceSynchronization.Core.Dynamics;
+using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -12,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using static CRMResourceSynchronization.Core.Dynamics.CRMClient;
 
 namespace CRMResourceSynchronization
 {
@@ -62,6 +64,7 @@ namespace CRMResourceSynchronization
             authenticationParameters._AuthLoginPrompt = Settings.Default.AuthLoginPrompt;
             authenticationParameters._CertificateThumprint = Settings.Default.CertificateThumprint;
             authenticationParameters._ClientSecret = Settings.Default.ClientSecret;
+            authenticationParameters._AuthenticationType = Utils.GetObjectEnumFromDescription<AutenticationType>(Settings.Default.CRMTypeAuth);
 
             CRMClient = new CRMClient(authenticationParameters);
             if(CRMClient.GetOrganizationService())
@@ -73,10 +76,6 @@ namespace CRMResourceSynchronization
 
         private void ConfiEnvironment_Click(object sender, RoutedEventArgs e)
         {
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-
             Window w = new Window();
             w.Title = "Setting up the CRM environment";
             w.Content = new LoginWindowControl();
@@ -84,6 +83,11 @@ namespace CRMResourceSynchronization
             w.Height = this.ActualHeight;
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             w.ShowDialog();
+        }
+
+        private void ConfigPaths_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void CRMLoadSolutions_Click(object sender, RoutedEventArgs e)
@@ -197,6 +201,8 @@ namespace CRMResourceSynchronization
                 CRMDownloadResource.Opacity = 1;
                 CRMDownloadResource.IsEnabled = true;
                 CRMDownloadResource.Visibility = Visibility.Visible;
+                CRMCompareResources.Opacity = 1;
+                CRMCompareResources.IsEnabled = true;
             }
             else
             {
@@ -577,6 +583,15 @@ namespace CRMResourceSynchronization
             {
                 MessageBox.Show("Cannot find an open solution in Visual Studio");
             }
+        }
+
+        private void CRMCompareResources_Click(object sender, RoutedEventArgs e)
+        {
+            Window w = new Window();
+            w.Title = "Setting up the paths resources";
+            w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).FirstOrDefault());
+            w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            w.ShowDialog();
         }
     }
 }

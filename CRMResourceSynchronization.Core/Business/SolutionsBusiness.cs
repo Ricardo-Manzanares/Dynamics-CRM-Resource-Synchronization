@@ -19,7 +19,7 @@ namespace CRMResourceSynchronization.Core.Business
         }
         
         /// <summary>
-        /// Recupera las soluciones administradas de CRM
+        /// Get solutions managed from CRM
         /// </summary>
         /// <returns></returns>
         public List<SolutionModel> GetSolutionsManaged()
@@ -29,7 +29,7 @@ namespace CRMResourceSynchronization.Core.Business
                 List<SolutionModel> solutiones = new List<SolutionModel>();
 
                 if (this._CRMClient == null)
-                    throw new Exception("La conexion a CRM no esta configurada, es necesaria antes de conectar a CRM");
+                    throw new Exception("The connection to CRM is not configured, it is necessary before connecting to CRM");
 
                 var queryExpresion = new QueryExpression
                 {
@@ -58,7 +58,7 @@ namespace CRMResourceSynchronization.Core.Business
         }
 
         /// <summary>
-        /// Mapea el model de usuario a entidad de CRM
+        /// Mapper model solution to entity CRM
         /// </summary>
         /// <param name="usuario"></param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace CRMResourceSynchronization.Core.Business
         }
 
         /// <summary>
-        /// Mapea el usuario de CRM a modelo
+        /// Mapper entity CRM to model solution
         /// </summary>
         /// <param name="usuario"></param>
         /// <returns></returns>

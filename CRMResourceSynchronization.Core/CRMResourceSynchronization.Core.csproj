@@ -126,6 +126,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Models\ResourceContentModel.cs" />
     <Compile Include="Business\Models\ResourceModel.cs" />
     <Compile Include="Business\Models\SolutionModel.cs" />
     <Compile Include="Business\Models\UsuarioModel.cs" />

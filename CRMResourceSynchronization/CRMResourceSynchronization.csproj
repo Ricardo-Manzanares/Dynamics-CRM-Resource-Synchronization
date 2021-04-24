@@ -53,6 +53,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DifferencesResourceWindowControlControl.xaml.cs">
+      <DependentUpon>DifferencesResourceWindowControlControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\CRMResourceSynchronizationDataGrid.cs" />
     <Compile Include="Extensions\Utils.cs" />
     <Compile Include="LoginWindowControl.xaml.cs">
@@ -110,6 +113,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DifferencesResourceWindowControlControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +131,7 @@
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <Content Include="Resources\CompareResourcePackage.ico" />
+    <Content Include="Resources\DifferencesResourceWindowControlCommand.png" />
     <Content Include="Resources\LoginWindowCommand.png" />
     <Content Include="Resources\CompareResourceWindowCommand.png" />
   </ItemGroup>

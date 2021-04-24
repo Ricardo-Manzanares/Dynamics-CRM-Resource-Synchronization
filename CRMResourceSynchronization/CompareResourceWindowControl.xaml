@@ -179,7 +179,7 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <Button Grid.Column="4" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Compare resources" x:Name="CRMCompareResources" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                            <Button Grid.Column="4" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Compare resources" x:Name="CRMCompareResources" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMCompareResources_Click">
                                 <Image>
                                     <Image.Source>
                                         <DrawingImage>
@@ -233,6 +233,7 @@
                                     <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
                                     <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
                                     <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
+                                    <DataGridTextColumn x:Name="Resource_status" Header="Status" IsReadOnly="True" Binding="{Binding resourcesStatus}" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>
@@ -356,6 +357,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Vertical">
                     <Grid>
@@ -368,6 +370,28 @@
                     </Grid>
                 </StackPanel>
                 <Button Grid.Column="1" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                    <Image>
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M256.001,276.673C227.984,276.673 205.191,299.466 205.191,327.483 205.191,341.378 210.966,354.813 221.049,364.374L221.049,410.249C221.049,429.522 236.729,445.202 256.002,445.202 275.275,445.202 290.955,429.522 290.955,410.249L290.955,364.374C301.033,354.819 306.812,341.381 306.812,327.483 306.81,299.466 284.016,276.673 256.001,276.673z M273.979,346.558C269.128,351.129,266.346,357.518,266.346,364.088L266.346,410.249C266.346,415.954 261.706,420.594 256.001,420.594 250.297,420.594 245.656,415.954 245.656,410.249L245.656,364.088C245.656,357.519 242.874,351.131 238.026,346.561 232.719,341.558 229.797,334.783 229.797,327.483 229.797,313.036 241.552,301.281 255.999,301.281 270.446,301.281 282.201,313.036 282.201,327.483 282.203,334.783 279.281,341.558 273.979,346.558z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M404.979,209.876L368.071,209.876 368.071,112.072C368.071,50.275 317.795,0 256.001,0 194.205,0 143.93,50.275 143.93,112.072L143.93,209.876 107.021,209.876C86.668,209.876,70.11,226.435,70.11,246.787L70.11,475.088C70.11,495.441,86.668,511.999,107.021,511.999L404.979,511.999C425.332,511.999,441.89,495.441,441.89,475.088L441.89,246.788C441.89,226.435,425.332,209.876,404.979,209.876z M168.536,112.072C168.536,63.845 207.772,24.608 256,24.608 304.227,24.608 343.463,63.845 343.463,112.072L343.463,209.876 168.536,209.876 168.536,112.072z M417.283,475.089L417.283,475.089C417.283,481.873,411.763,487.393,404.979,487.393L107.021,487.393C100.237,487.393,94.717,481.874,94.717,475.089L94.717,246.788C94.717,240.004,100.237,234.484,107.021,234.484L404.979,234.484C411.763,234.484,417.283,240.003,417.283,246.788L417.283,475.089z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
+                                    </DrawingGroup>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button Grid.Column="2" Click="ConfigPaths_Click" x:Name="ConfigPaths" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
                     <Image RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <TransformGroup>

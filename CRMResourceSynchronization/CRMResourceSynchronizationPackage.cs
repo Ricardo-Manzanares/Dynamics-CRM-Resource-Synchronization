@@ -51,11 +51,6 @@ namespace CRMResourceSynchronization
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await CompareResourceWindowCommand.InitializeAsync(this);
-
-            /*string t = Settings.Default.TenantId;
-            Settings.Default.Save();
-            Settings.Default.Reload();
-            t = Settings.Default.TenantId;*/
         }
         #endregion
     }

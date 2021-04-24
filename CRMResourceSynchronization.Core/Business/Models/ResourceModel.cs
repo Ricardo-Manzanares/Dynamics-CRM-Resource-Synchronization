@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRMResourceSynchronization.Core.Business.Models
 {
+    public enum ResourceContentStatus { Equals, Difference }
     public class ResourceModel
     {
         [Browsable(false)]
@@ -25,7 +26,17 @@ namespace CRMResourceSynchronization.Core.Business.Models
         public string modifiedon { get; set; }
 
         [Browsable(false)]
-        public string content { get; set; }
+        public string contentCRM { get; set; }
+
+        [Browsable(false)]
+        public List<ResourceContentModel> contentRowsCRM = new List<ResourceContentModel>();
+
+        [Browsable(false)]
+        public string contentLocal { get; set; }
+
+        [Browsable(false)]
+        public List<ResourceContentModel> contentRowsLocal = new List<ResourceContentModel>();
+        public ResourceContentStatus resourcesStatus { get; set; }
 
         [Description("Proyecto F. Creación")]
         public string localcreatedon { get; set; }
@@ -37,6 +48,6 @@ namespace CRMResourceSynchronization.Core.Business.Models
         public int webresourcetype { get; set; }
 
         [Browsable(false)]
-        public string pathlocal { get; set; }
+        public string pathlocal { get; set; }        
     }
 }
