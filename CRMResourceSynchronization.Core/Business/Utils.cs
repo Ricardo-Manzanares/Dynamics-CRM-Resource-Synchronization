@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace CRMResourceSynchronization.Extensions
+namespace CRMResourceSynchronization.Core.Business
 {
     public static class Utils
     {

@@ -154,5 +154,149 @@ namespace CRMResourceSynchronization.Properties {
                 this["CRMTypeAuth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathHTML {
+            get {
+                return ((string)(this["PathHTML"]));
+            }
+            set {
+                this["PathHTML"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathCSS {
+            get {
+                return ((string)(this["PathCSS"]));
+            }
+            set {
+                this["PathCSS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathJS {
+            get {
+                return ((string)(this["PathJS"]));
+            }
+            set {
+                this["PathJS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathXML {
+            get {
+                return ((string)(this["PathXML"]));
+            }
+            set {
+                this["PathXML"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathPNG {
+            get {
+                return ((string)(this["PathPNG"]));
+            }
+            set {
+                this["PathPNG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathJPG {
+            get {
+                return ((string)(this["PathJPG"]));
+            }
+            set {
+                this["PathJPG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathGIF {
+            get {
+                return ((string)(this["PathGIF"]));
+            }
+            set {
+                this["PathGIF"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathXAP {
+            get {
+                return ((string)(this["PathXAP"]));
+            }
+            set {
+                this["PathXAP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathXSL {
+            get {
+                return ((string)(this["PathXSL"]));
+            }
+            set {
+                this["PathXSL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathICO {
+            get {
+                return ((string)(this["PathICO"]));
+            }
+            set {
+                this["PathICO"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathSVG {
+            get {
+                return ((string)(this["PathSVG"]));
+            }
+            set {
+                this["PathSVG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathRESX {
+            get {
+                return ((string)(this["PathRESX"]));
+            }
+            set {
+                this["PathRESX"] = value;
+            }
+        }
     }
 }

@@ -3,15 +3,11 @@ using CRMResourceSynchronization.Core.Business.Models;
 using CRMResourceSynchronization.Core.Dynamics;
 using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using static CRMResourceSynchronization.Core.Dynamics.CRMClient;
 
@@ -87,7 +83,11 @@ namespace CRMResourceSynchronization
 
         private void ConfigPaths_Click(object sender, RoutedEventArgs e)
         {
-            
+            Window w = new Window();
+            w.Title = "Paths local of resources type";
+            w.Content = new PathsWindowControl();
+            w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            w.ShowDialog();
         }
 
         private void CRMLoadSolutions_Click(object sender, RoutedEventArgs e)
@@ -97,11 +97,11 @@ namespace CRMResourceSynchronization
                 if (connectCRM())
                 {
                     CRMSolutions.ItemsSource = null;
-                    solutions = new SolutionsBusiness(CRMClient);
+                    solutions = new SolutionsBusiness(CRMClient, reloadSettingsToModel());
                     listSolutions = solutions.GetSolutionsManaged();
                     if (listSolutions.Count > 0)
                     {
-                        listSolutions.Insert(0, new SolutionModel() { solutionid = "", friendlyname = "-- Seleccionar una solución --" });
+                        listSolutions.Insert(0, new SolutionModel() { solutionid = "", friendlyname = "-- Select a solution --" });
                         ActionsOfSolutions(Visibility.Visible);
                     }
                     else
@@ -112,7 +112,7 @@ namespace CRMResourceSynchronization
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("No se pueden recuperar las soluciones de CRM : '{0}'", ex.Message));
+                MessageBox.Show(string.Format("Unable to retrieve CRM solutions : '{0}'", ex.Message));
             }
         }
        
@@ -129,7 +129,7 @@ namespace CRMResourceSynchronization
                     {
                         if (connectCRM())
                         {
-                            resources = new ResourcesBusiness(CRMClient);
+                            resources = new ResourcesBusiness(CRMClient, reloadSettingsToModel());
                             listResources = resources.GetResourcesFromSolution(solutionParse);
                             listResources = listResources.OrderBy(k => k.name).ToList();
                             if (listResources.Count > 0)
@@ -153,8 +153,38 @@ namespace CRMResourceSynchronization
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("No se pueden recuperar los recursos de la solucion de CRM : {0} - {0}", ((SolutionModel)CRMSolutions.SelectedItem).solutionid, ex.Message));
+                MessageBox.Show(string.Format("Unable to retrieve CRM solution resources : {0} - {0}", ((SolutionModel)CRMSolutions.SelectedItem).solutionid, ex.Message));
             }
+        }
+
+        private SettingsModel reloadSettingsToModel()
+        {
+            SettingsModel sm = new SettingsModel();
+            sm.CRMUrl = Settings.Default.CRMUrl;
+            sm.CRMUserName = Settings.Default.CRMUserName;
+            sm.CRMPassword = Settings.Default.CRMPassword;
+            sm.ClientId = Settings.Default.ClientId;
+            sm.RedirectUri = Settings.Default.RedirectUri;
+            sm.TokenCacheStorePath = Settings.Default.TokenCacheStorePath;
+            sm.IntegratedSecurityPrompt = Settings.Default.IntegratedSecurityPrompt;
+            sm.AuthLoginPrompt = Settings.Default.AuthLoginPrompt;
+            sm.CertificateThumprint = Settings.Default.CertificateThumprint;
+            sm.ClientSecret = Settings.Default.ClientSecret;
+            sm.CRMTypeAuth = Settings.Default.CRMTypeAuth;
+            sm.PathHTML = Settings.Default.PathHTML;
+            sm.PathCSS = Settings.Default.PathCSS;
+            sm.PathJS = Settings.Default.PathJS;
+            sm.PathXML = Settings.Default.PathXML;
+            sm.PathPNG = Settings.Default.PathPNG;
+            sm.PathJPG = Settings.Default.PathJPG;
+            sm.PathGIF = Settings.Default.PathGIF;
+            sm.PathXAP = Settings.Default.PathXAP;
+            sm.PathXSL = Settings.Default.PathXSL;
+            sm.PathICO = Settings.Default.PathICO;
+            sm.PathSVG = Settings.Default.PathSVG;
+            sm.PathRESX = Settings.Default.PathRESX;
+
+            return sm;
         }
 
         private void ActionsOfResources(Visibility type)
@@ -408,7 +438,14 @@ namespace CRMResourceSynchronization
                     }
                     else
                     {
-                        newData = listResources.GetRange(0, numberOfRecPerPage);
+                        if (numberOfRecPerPage < listResources.Count)
+                        {
+                            newData = listResources.GetRange(0, numberOfRecPerPage);
+                        }
+                        else
+                        {
+                            newData = listResources.GetRange(0, listResources.Count);
+                        }                        
                     }
 
                     if(CRMTypeResourceSelected > 0)
@@ -541,57 +578,13 @@ namespace CRMResourceSynchronization
             Navigate((int)PagingMode.Refresh);
         }
 
-        private void PathToResources()
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            this.InitializeComponent();
-
-            IntPtr hierarchyPointer, selectionContainerPointer;
-            Object selectedObject = null;
-            IVsMultiItemSelect multiItemSelect;
-            uint projectItemId;
-
-            IVsMonitorSelection monitorSelection = (IVsMonitorSelection)Package.GetGlobalService(typeof(SVsShellMonitorSelection));
-
-            monitorSelection.GetCurrentSelection(out hierarchyPointer, out projectItemId, out multiItemSelect, out selectionContainerPointer);
-
-            if (hierarchyPointer != null && hierarchyPointer.ToInt32() > 0)
-            {
-                IVsHierarchy selectedHierarchy = Marshal.GetTypedObjectForIUnknown(hierarchyPointer, typeof(IVsHierarchy)) as IVsHierarchy;
-
-                if (selectedHierarchy == null)
-                {
-                    MessageBox.Show("Cannot find an open solution in Visual Studio");
-                }
-                else
-                {
-                    selectedHierarchy.GetProperty(projectItemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out selectedObject);
-                    if (selectedObject == null)
-                    {
-                        MessageBox.Show("You do not have any active projects in the solution");
-                    }
-                    else
-                    {
-                        EnvDTE.Project selectedProject = selectedObject as EnvDTE.Project;
-
-                        string projectName = selectedProject.FullName;
-                        string projectPathName = selectedProject.FullName.Split('\\').Last();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Cannot find an open solution in Visual Studio");
-            }
-        }
-
         private void CRMCompareResources_Click(object sender, RoutedEventArgs e)
         {
             Window w = new Window();
-            w.Title = "Setting up the paths resources";
+            w.Title = "Differences of resources";
             w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).FirstOrDefault());
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            w.ShowDialog();
+            w.ShowDialog();           
         }
     }
 }

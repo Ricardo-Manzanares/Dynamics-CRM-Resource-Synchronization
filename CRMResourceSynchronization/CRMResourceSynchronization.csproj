@@ -57,7 +57,9 @@
       <DependentUpon>DifferencesResourceWindowControlControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\CRMResourceSynchronizationDataGrid.cs" />
-    <Compile Include="Extensions\Utils.cs" />
+    <Compile Include="PathsWindowControl.xaml.cs">
+      <DependentUpon>PathsWindowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginWindowControl.xaml.cs">
       <DependentUpon>LoginWindowControl.xaml</DependentUpon>
     </Compile>
@@ -116,6 +118,10 @@
     <Page Include="DifferencesResourceWindowControlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PathsWindowControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="LoginWindowControl.xaml">
       <SubType>Designer</SubType>

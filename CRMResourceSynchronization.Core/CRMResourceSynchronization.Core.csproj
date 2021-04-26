@@ -128,10 +128,12 @@
   <ItemGroup>
     <Compile Include="Business\Models\ResourceContentModel.cs" />
     <Compile Include="Business\Models\ResourceModel.cs" />
+    <Compile Include="Business\Models\SettingsModel.cs" />
     <Compile Include="Business\Models\SolutionModel.cs" />
     <Compile Include="Business\Models\UsuarioModel.cs" />
     <Compile Include="Business\ResourcesBusiness.cs" />
     <Compile Include="Business\SolutionsBusiness.cs" />
+    <Compile Include="Business\Utils.cs" />
     <Compile Include="Dynamics\AuthenticationParameters.cs" />
     <Compile Include="Dynamics\CRMClient.cs" />
     <Compile Include="Dynamics\EntityNames.cs" />

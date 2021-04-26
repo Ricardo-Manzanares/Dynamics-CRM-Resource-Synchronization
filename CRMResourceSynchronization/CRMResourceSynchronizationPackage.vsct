@@ -49,20 +49,6 @@
           <ButtonText>CRM Resource Synchronization - Compare Resource</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCRMResourceSynchronizationPackageCmdSet" id="LoginWindowId" priority="0x0100" type="Button">
-        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
-        <Icon guid="guidImages2" id="bmpPic1" />
-        <Strings>
-          <ButtonText>CRM Resource Synchornization - Login</ButtonText>
-        </Strings>
-      </Button>      
-      <Button guid="guidCRMResourceSynchronizationPackageCmdSet" id="cmdidDifferencesResourceWindowControlCommand" priority="0x0100" type="Button">
-        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
-        <Icon guid="guidImages3" id="bmpPic1" />
-        <Strings>
-          <ButtonText>DifferencesResourceWindowControl</ButtonText>
-        </Strings>
-      </Button>
     </Buttons>
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>

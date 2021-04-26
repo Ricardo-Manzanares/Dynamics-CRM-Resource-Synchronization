@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CRMResourceSynchronization.Core.Business.Models
 {
-    public enum ResourceContentStatus { Equals, Difference }
+    public enum ResourceContentStatus {[EnumMember(Value = "Equal")][Description("Resources are the same")]Equal, [EnumMember(Value = "Difference")][Description("Resources are different")]Difference, [EnumMember(Value = "LocalResourceMissing")] [Description("Local resource missing")]LocalResourceMissing, [EnumMember(Value = "EmptyResource")] [Description("Empty resource")] EmptyResource }
     public class ResourceModel
     {
         [Browsable(false)]
@@ -36,7 +37,7 @@ namespace CRMResourceSynchronization.Core.Business.Models
 
         [Browsable(false)]
         public List<ResourceContentModel> contentRowsLocal = new List<ResourceContentModel>();
-        public ResourceContentStatus resourcesStatus { get; set; }
+        public string resourcesStatus { get; set; }
 
         [Description("Proyecto F. Creación")]
         public string localcreatedon { get; set; }

@@ -87,17 +87,23 @@ namespace CRMResourceSynchronization
             {
                 ResourceContentModel r = (ResourceContentModel)((Grid)sender).DataContext;
                 
-                if (ResourceCRM.Items.Count > 0 && ResourceCRM.Items[r.numRow - 1] != null)
+                if (ResourceCRM.Items.Count > 0 && (r.numRow - 1) <= (ResourceCRM.Items.Count - 1))
                 {
-                    ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.numRow - 1]);
-                    LVIRsourceCRM.Background = (Brush)(new BrushConverter().ConvertFrom(colorFocusRowSelected));
-                    LVIRsourceCRM.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
+                    if (ResourceCRM.Items[r.numRow - 1] != null)
+                    {
+                        ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.numRow - 1]);
+                        LVIRsourceCRM.Background = (Brush)(new BrushConverter().ConvertFrom(colorFocusRowSelected));
+                        LVIRsourceCRM.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
+                    }
                 }
-                if (ResourceLocal.Items.Count > 0 && ResourceLocal.Items[r.numRow - 1] != null)
+                if (ResourceLocal.Items.Count > 0 && (r.numRow - 1) <= (ResourceLocal.Items.Count - 1))
                 {
-                    ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.numRow - 1]);
-                    LVIRsourceLocal.Background = (Brush)(new BrushConverter().ConvertFrom(colorFocusRowSelected));
-                    LVIRsourceLocal.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
+                    if (ResourceLocal.Items[r.numRow - 1] != null)
+                    {
+                        ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.numRow - 1]);
+                        LVIRsourceLocal.Background = (Brush)(new BrushConverter().ConvertFrom(colorFocusRowSelected));
+                        LVIRsourceLocal.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
+                    }
                 }
             }
         }
@@ -109,17 +115,23 @@ namespace CRMResourceSynchronization
             {
                 ResourceContentModel r = (ResourceContentModel)((Grid)sender).DataContext;
 
-                if (ResourceCRM.Items.Count > 0 && ResourceCRM.Items[r.numRow - 1] != null)
+                if (ResourceCRM.Items.Count > 0 && ((r.numRow - 1)) <= (ResourceCRM.Items.Count - 1))
                 {
-                    ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.numRow - 1]);
-                    LVIRsourceCRM.Background = Brushes.White;
-                    LVIRsourceCRM.BorderBrush = Brushes.White;
+                    if (ResourceCRM.Items[r.numRow - 1] != null)
+                    {
+                        ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.numRow - 1]);
+                        LVIRsourceCRM.Background = Brushes.White;
+                        LVIRsourceCRM.BorderBrush = Brushes.White;
+                    }
                 }
-                if (ResourceLocal.Items.Count > 0 && ResourceLocal.Items[r.numRow - 1] != null)
+                if (ResourceLocal.Items.Count > 0 && (r.numRow - 1) <= (ResourceLocal.Items.Count - 1))
                 {
-                    ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.numRow - 1]);
-                    LVIRsourceLocal.Background = Brushes.White;
-                    LVIRsourceLocal.BorderBrush = Brushes.White;
+                    if (ResourceLocal.Items[r.numRow - 1] != null)
+                    {
+                        ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.numRow - 1]);
+                        LVIRsourceLocal.Background = Brushes.White;
+                        LVIRsourceLocal.BorderBrush = Brushes.White;
+                    }
                 }
             }
         }

@@ -211,31 +211,33 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0" Margin="10,0,10,10" Orientation="Vertical">
-                            <DataGrid x:Name="DataResources" Grid.Row ="1" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
-                                <DataGrid.Resources>
-                                    <Style TargetType="{x:Type DataGridRow}">
-                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                                    </Style>
-                                    <Style TargetType="{x:Type DataGridCell}">
-                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
-                                        <EventSetter Event="CheckBox.Checked" Handler="ResourceChecked"/>
-                                        <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
-                                    </Style>
-                                </DataGrid.Resources>
-                                <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
-                                        <DataGridCheckBoxColumn.Header>
-                                            <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
-                                        </DataGridCheckBoxColumn.Header>
-                                    </DataGridCheckBoxColumn>
-                                    <DataGridTextColumn x:Name="Resource_name" Width="*" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
-                                    <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
-                                    <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
-                                    <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
-                                    <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
-                                    <DataGridTextColumn x:Name="Resource_status" Header="Status" IsReadOnly="True" Binding="{Binding resourcesStatus}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <DataGrid x:Name="DataResources" Width="1100" Grid.Row="1" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridRow}">
+                                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                                        </Style>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
+                                            <EventSetter Event="CheckBox.Checked" Handler="ResourceChecked"/>
+                                            <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
+                                        </Style>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
+                                            <DataGridCheckBoxColumn.Header>
+                                                <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                                            </DataGridCheckBoxColumn.Header>
+                                        </DataGridCheckBoxColumn>
+                                        <DataGridTextColumn x:Name="Resource_name" Width="*" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
+                                        <DataGridTextColumn x:Name="Resource_status" Header="Status" IsReadOnly="True" Binding="{Binding resourcesStatus}" />
+                                        <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
+                                        <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
+                                        <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
+                                        <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />                                        
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>                           
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" Grid.Row="1" Margin="10, 0">
                             <Grid x:Name="GridPagination">

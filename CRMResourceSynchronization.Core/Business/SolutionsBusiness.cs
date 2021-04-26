@@ -12,10 +12,11 @@ namespace CRMResourceSynchronization.Core.Business
     public class SolutionsBusiness
     {
         private CRMClient _CRMClient;
-
-        public SolutionsBusiness(CRMClient CRMClient)
+        private SettingsModel _Settings;
+        public SolutionsBusiness(CRMClient CRMClient, SettingsModel Settings)
         {
             this._CRMClient = CRMClient;
+            this._Settings = Settings;
         }
         
         /// <summary>

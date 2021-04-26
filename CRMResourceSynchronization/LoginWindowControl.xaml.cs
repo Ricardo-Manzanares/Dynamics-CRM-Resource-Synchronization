@@ -1,4 +1,5 @@
-﻿using CRMResourceSynchronization.Core.Dynamics;
+﻿using CRMResourceSynchronization.Core.Business;
+using CRMResourceSynchronization.Core.Dynamics;
 using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
 using System.ComponentModel;
