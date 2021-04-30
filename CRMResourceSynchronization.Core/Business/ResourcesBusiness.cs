@@ -10,6 +10,9 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Dynamic;
+using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder;
+using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model;
 
 namespace CRMResourceSynchronization.Core.Business
 {
@@ -94,43 +97,23 @@ namespace CRMResourceSynchronization.Core.Business
             model.resourceid = Guid.Parse(recurso.Attributes["webresourceid"].ToString());
             model.createdon = EntityCollectionExtension.ExistProperty(recurso, "createdon") ? recurso.Attributes["createdon"].ToString() : "--";
             model.modifiedon = EntityCollectionExtension.ExistProperty(recurso, "modifiedon") ? recurso.Attributes["modifiedon"].ToString() : "--";
-            model.resourcesStatus = Enum.GetName(typeof(ResourceContentStatus), ResourceContentStatus.LocalResourceMissing);
             model.webresourcetype = EntityCollectionExtension.ExistProperty(recurso, "webresourcetype") ? ((OptionSetValue)recurso.Attributes["webresourcetype"]).Value : 0;
             model.contentCRM = EntityCollectionExtension.ExistProperty(recurso, "content") ? recurso.Attributes["content"].ToString() : "";
 
             if (!string.IsNullOrEmpty(model.contentCRM))
             {
-                model.contentRowsCRM = parseContent(model.contentCRM);
+                model.contentCRM = Encoding.UTF8.GetString(Convert.FromBase64String(model.contentCRM));
                 string pathResourceLocal = existResourceLocal(model);
                 if (pathResourceLocal != "")
                 {
-                    string contentResourceLocal = File.ReadAllText(pathResourceLocal);
-                    model.contentRowsLocal = parseContent(contentResourceLocal);
-                    model.contentLocal = Convert.ToBase64String(Encoding.UTF8.GetBytes(contentResourceLocal));
+                    model.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
                     FileInfo fi = new FileInfo(pathResourceLocal);
                     model.localcreatedon = fi.CreationTime.ToString();
                     model.localmodifiedon = fi.LastWriteTimeUtc.ToString();
-                    model.resourcesStatus = compareContentResource(model);
                 }
-            }
-            else
-            {
-                model.resourcesStatus = Utils.GetEnumDescriptionFromValue<ResourceContentStatus>(ResourceContentStatus.EmptyResource.ToString());
-            }            
+            }          
 
             return model;
-        }
-
-        private string compareContentResource(ResourceModel resource)
-        {
-            if (resource.contentCRM.Equals(resource.contentLocal))
-            {
-                return Utils.GetEnumDescriptionFromValue<ResourceContentStatus>(ResourceContentStatus.Equal.ToString());
-            }
-            else
-            {
-                return Utils.GetEnumDescriptionFromValue<ResourceContentStatus>(ResourceContentStatus.Difference.ToString());
-            }
         }
 
         private string existResourceLocal (ResourceModel resource)
@@ -163,55 +146,6 @@ namespace CRMResourceSynchronization.Core.Business
             }
             
             return path;
-        }
-
-        private List<ResourceContentModel> parseContent (string content)
-        {
-            try
-            {
-                List<ResourceContentModel> rowsResource = new List<ResourceContentModel>();
-
-                if (Regex.IsMatch(content, @"^[a-zA-Z0-9\+/]*={0,2}$"))
-                {
-                    MemoryStream ms = new MemoryStream(Convert.FromBase64String(content));
-                    using (var reader = new StreamReader(ms, Encoding.UTF8))
-                    {
-                        //reader.ReadToEnd().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        rowsResource = getRowsFromContent(reader.ReadToEnd().Split(Environment.NewLine.ToCharArray()).ToList());
-                    }
-                }
-                else
-                {
-                    rowsResource = getRowsFromContent(content.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList());
-                }
-
-                return rowsResource;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }            
-        }
-
-        private List<ResourceContentModel> getRowsFromContent(List<string> rows)
-        {
-            try
-            {
-                List<ResourceContentModel> rowsResource = new List<ResourceContentModel>();
-                for (int i = 0; i < rows.Count; i++)
-                {
-                    ResourceContentModel resourceContent = new ResourceContentModel();
-                    resourceContent.numRow = i + 1;
-                    resourceContent.textRow = rows[i];
-                    rowsResource.Add(resourceContent);
-                }
-                return rowsResource;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }            
         }
     }
 }

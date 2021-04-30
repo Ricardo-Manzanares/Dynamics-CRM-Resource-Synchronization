@@ -126,7 +126,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\Models\ResourceContentModel.cs" />
     <Compile Include="Business\Models\ResourceModel.cs" />
     <Compile Include="Business\Models\SettingsModel.cs" />
     <Compile Include="Business\Models\SolutionModel.cs" />
@@ -134,6 +133,26 @@
     <Compile Include="Business\ResourcesBusiness.cs" />
     <Compile Include="Business\SolutionsBusiness.cs" />
     <Compile Include="Business\Utils.cs" />
+    <Compile Include="DiffPlex\Chunkers\CharacterChunker.cs" />
+    <Compile Include="DiffPlex\Chunkers\CustomFunctionChunker.cs" />
+    <Compile Include="DiffPlex\Chunkers\DelimiterChunker.cs" />
+    <Compile Include="DiffPlex\Chunkers\LineChunker.cs" />
+    <Compile Include="DiffPlex\Chunkers\LineEndingsPreservingChunker.cs" />
+    <Compile Include="DiffPlex\Chunkers\WordChunker.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\IInlineDiffBuilder.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\InlineDiffBuilder.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\ISideBySideDiffBuilder.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\Model\DiffPaneModel.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\Model\DiffPiece.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\Model\SideBySideDiffModel.cs" />
+    <Compile Include="DiffPlex\DiffBuilder\SideBySideDiffBuilder.cs" />
+    <Compile Include="DiffPlex\Differ.cs" />
+    <Compile Include="DiffPlex\IChunker.cs" />
+    <Compile Include="DiffPlex\IDiffer.cs" />
+    <Compile Include="DiffPlex\Model\DiffBlock.cs" />
+    <Compile Include="DiffPlex\Model\DiffResult.cs" />
+    <Compile Include="DiffPlex\Model\EditLengthResult.cs" />
+    <Compile Include="DiffPlex\Model\ModificationData.cs" />
     <Compile Include="Dynamics\AuthenticationParameters.cs" />
     <Compile Include="Dynamics\CRMClient.cs" />
     <Compile Include="Dynamics\EntityNames.cs" />

@@ -5,6 +5,7 @@ using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -584,7 +585,15 @@ namespace CRMResourceSynchronization
             w.Title = "Differences of resources";
             w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).FirstOrDefault());
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            w.ShowDialog();           
+            w.ShowDialog();
+
+            /*var psi = new ProcessStartInfo(@"devenv.exe")
+            {
+                Arguments = @"/diff ""C:\Users\rmanzana\Downloads\mba_opencontactquickcreateform.js"" ""C:\Users\rmanzana\Downloads\mba_opencontactquickcreateform 1.js"" ""file1"" ""file 2""",
+                UseShellExecute = true,
+                CreateNoWindow = true
+            };
+            Process.Start(psi);*/
         }
     }
 }

@@ -53,6 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Converters\StatusRowConverter.cs" />
     <Compile Include="DifferencesResourceWindowControlControl.xaml.cs">
       <DependentUpon>DifferencesResourceWindowControlControl.xaml</DependentUpon>
     </Compile>

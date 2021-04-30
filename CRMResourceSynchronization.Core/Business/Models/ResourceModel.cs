@@ -1,10 +1,8 @@
-﻿using System;
+﻿using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRMResourceSynchronization.Core.Business.Models
 {
@@ -30,14 +28,9 @@ namespace CRMResourceSynchronization.Core.Business.Models
         public string contentCRM { get; set; }
 
         [Browsable(false)]
-        public List<ResourceContentModel> contentRowsCRM = new List<ResourceContentModel>();
-
-        [Browsable(false)]
         public string contentLocal { get; set; }
 
-        [Browsable(false)]
-        public List<ResourceContentModel> contentRowsLocal = new List<ResourceContentModel>();
-        public string resourcesStatus { get; set; }
+        public SideBySideDiffModel resourceCompareStatus { get; set; }
 
         [Description("Proyecto F. Creación")]
         public string localcreatedon { get; set; }
@@ -49,6 +42,15 @@ namespace CRMResourceSynchronization.Core.Business.Models
         public int webresourcetype { get; set; }
 
         [Browsable(false)]
-        public string pathlocal { get; set; }        
+        public string pathlocal { get; set; }
+
+        [Browsable(false)]
+        public int rowsDifference { get; set; }
+        [Browsable(false)]
+        public int rowsEquals { get; set; }
+        [Browsable(false)]
+        public int rowsInsert { get; set; }
+        [Browsable(false)]
+        public int rowsDelete { get; set; }
     }
 }

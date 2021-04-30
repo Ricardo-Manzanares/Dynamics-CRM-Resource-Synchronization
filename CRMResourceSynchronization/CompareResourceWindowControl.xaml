@@ -212,7 +212,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0" Margin="10,0,10,10" Orientation="Vertical">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                <DataGrid x:Name="DataResources" Width="1100" Grid.Row="1" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
+                                <DataGrid x:Name="DataResources" Grid.Row="1" MinWidth="1100" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
                                     <DataGrid.Resources>
                                         <Style TargetType="{x:Type DataGridRow}">
                                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>

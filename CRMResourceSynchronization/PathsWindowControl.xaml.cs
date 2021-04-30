@@ -125,10 +125,18 @@ namespace CRMResourceSynchronization
                     else
                     {
                         EnvDTE.Project selectedProject = selectedObject as EnvDTE.Project;
-                        INFO.Text = "INFO - Set project path as initial path of resource types. Path of proyect : " + selectedProject.FullName;
-                        pathOfProyect = selectedProject.FullName.Substring(0, selectedProject.FullName.IndexOf(selectedProject.FullName.Split('\\').Last()));
-                        INFOPATHTrue.Visibility = Visibility.Visible;
-                        INFOPATHFalse.Visibility = Visibility.Visible;
+                        if (selectedProject == null)
+                        {
+                            INFO.Text = "INFO - You do not have any active projects in the solution";
+                        }
+                        else
+                        {
+
+                            INFO.Text = "INFO - Set project path as initial path of resource types. Path of proyect : " + selectedProject.FullName;
+                            pathOfProyect = selectedProject.FullName.Substring(0, selectedProject.FullName.IndexOf(selectedProject.FullName.Split('\\').Last()));
+                            INFOPATHTrue.Visibility = Visibility.Visible;
+                            INFOPATHFalse.Visibility = Visibility.Visible;
+                        }
                     }
                 }
             }
