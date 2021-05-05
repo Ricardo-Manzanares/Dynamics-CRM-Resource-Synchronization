@@ -106,10 +106,13 @@ namespace CRMResourceSynchronization.Core.Business
                 string pathResourceLocal = existResourceLocal(model);
                 if (pathResourceLocal != "")
                 {
+                    model.pathlocal = pathResourceLocal;
                     model.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
                     FileInfo fi = new FileInfo(pathResourceLocal);
                     model.localcreatedon = fi.CreationTime.ToString();
                     model.localmodifiedon = fi.LastWriteTimeUtc.ToString();
+                    model.resourceCompareStatus = SideBySideDiffBuilder.Diff(model.contentCRM, model.contentLocal);
+                    model.resourceDifference = model.resourceCompareStatus.NewText.HasDifferences || model.resourceCompareStatus.OldText.HasDifferences;
                 }
             }          
 

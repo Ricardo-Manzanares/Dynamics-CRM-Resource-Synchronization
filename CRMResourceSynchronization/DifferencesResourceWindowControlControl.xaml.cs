@@ -18,47 +18,87 @@ namespace CRMResourceSynchronization
     public partial class DifferencesResourceWindowControlControl : UserControl
     {
         private ResourceModel resource { get; set; }
+        private List<ResourceModel> resources { get; set; }
+
+        private int posResource = 0;
+
         private ScrollViewer resourceCRMScroll, resourceLocalScroll, resourceCombinedScroll = new ScrollViewer();
-        private string colorFocusBorderRowSelected = "#70C0E7";
+              
 
-       
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DifferencesResourceWindowControlControl"/> class.
-    /// </summary>
-    public DifferencesResourceWindowControlControl(ResourceModel resourceToView)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DifferencesResourceWindowControlControl"/> class.
+        /// </summary>
+        public DifferencesResourceWindowControlControl(List<ResourceModel> resourcesToView)
         {
             this.InitializeComponent();
 
-            if(resourceToView != null)
-                resource = resourceToView;
+            if (resourcesToView is null)
+                return;
 
-            resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
+            resources = resourcesToView;
+            loadResource();
 
+            InfoResourcesSize.Text = "1 of " + resourcesToView.Count;
+        }
+
+        private void loadResource()
+        {
+            if (posResource < 0 && posResource > (resources.Count - 1))
+                return;
+
+            if (posResource == 0)
+            {
+                btnPrev.Opacity = 0.4;
+                btnPrev.IsEnabled = false;
+            }
+            else if(posResource > 0)
+            {
+                btnPrev.Opacity = 1;
+                btnPrev.IsEnabled = true;
+            }
+
+            if (posResource == (resources.Count - 1))
+            {
+                btnNext.Opacity = 0.4;
+                btnNext.IsEnabled = false;
+            }
+            else if (posResource < (resources.Count - 1))
+            {
+                btnNext.Opacity = 1;
+                btnNext.IsEnabled = true;
+            }
+
+            resource = null;
             ResourceCRM.Items.Clear();
-            ResourceCRM.ItemsSource = resource.resourceCompareStatus.OldText.Lines;
             ResourceLocal.Items.Clear();
-            ResourceLocal.ItemsSource = resource.resourceCompareStatus.NewText.Lines;
-
             ResourceCombined.Items.Clear();
-            ResourceCombined.ItemsSource = InlineDiffBuilder.Diff(resource.contentCRM, resource.contentLocal).Lines;
 
-            int rowsMax = resource.resourceCompareStatus.OldText.Lines.Count > resource.resourceCompareStatus.NewText.Lines.Count ? resource.resourceCompareStatus.OldText.Lines.Count : resource.resourceCompareStatus.NewText.Lines.Count;
+            resource = resources[posResource];
 
-            //Size of differences in rows from resource CRM vs Local
-            Modified.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Modified).Count() + "/" + rowsMax + ")";
-            Unchanged.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Unchanged).Count() + "/" + rowsMax + ")";
-            Inserted.Text += " (" + resource.resourceCompareStatus.NewText.Lines.Where(k => k.Type == ChangeType.Inserted).Count() + "/" + rowsMax + ")";
-            Deleted.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Deleted).Count() + "/" + rowsMax + ")";
+            if (!string.IsNullOrEmpty(resource.contentCRM) && !string.IsNullOrEmpty(resource.contentLocal))
+            {
+                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
 
-            //Set info of resource CRM and Local
-            InfoResource.Text += resourceToView.name;
-            InfoCRMDate.Text = resourceToView.modifiedon;
-            InfoLocalDate.Text = resourceToView.localmodifiedon;
+                ResourceCRM.ItemsSource = resource.resourceCompareStatus.OldText.Lines;
+                ResourceLocal.ItemsSource = resource.resourceCompareStatus.NewText.Lines;
+                ResourceCombined.ItemsSource = InlineDiffBuilder.Diff(resource.contentCRM, resource.contentLocal).Lines;
+
+                int rowsMax = resource.resourceCompareStatus.OldText.Lines.Count > resource.resourceCompareStatus.NewText.Lines.Count ? resource.resourceCompareStatus.OldText.Lines.Count : resource.resourceCompareStatus.NewText.Lines.Count;
+
+                //Size of differences in rows from resource CRM vs Local
+                Modified.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Modified).Count() + "/" + rowsMax + ")";
+                Unchanged.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Unchanged).Count() + "/" + rowsMax + ")";
+                Inserted.Text += " (" + resource.resourceCompareStatus.NewText.Lines.Where(k => k.Type == ChangeType.Inserted).Count() + "/" + rowsMax + ")";
+                Deleted.Text += " (" + resource.resourceCompareStatus.OldText.Lines.Where(k => k.Type == ChangeType.Deleted).Count() + "/" + rowsMax + ")";
+
+                //Set info of resource CRM and Local
+                InfoResource.Text += resource.name;
+                InfoCRMDate.Text = resource.modifiedon;
+                InfoLocalDate.Text = resource.localmodifiedon;
+            }
         }
 
         #region Events Scroll and Event mouse
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             resourceCRMScroll = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild((ListView)ResourceCRM, 0), 0);
@@ -74,7 +114,8 @@ namespace CRMResourceSynchronization
         {
             resourceLocalScroll.ScrollToVerticalOffset(resourceCRMScroll.VerticalOffset);
             resourceLocalScroll.ScrollToHorizontalOffset(resourceCRMScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
+            resourceCombinedScroll.ScrollToHorizontalOffset(resourceCRMScroll.HorizontalOffset);
+            resourceCombinedScroll.ScrollToVerticalOffset(resourceCRMScroll.VerticalOffset);
         }
 
         private void ResourceLocal_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -82,69 +123,42 @@ namespace CRMResourceSynchronization
             resourceCRMScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
             resourceCRMScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
             resourceCombinedScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
+            resourceCombinedScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
         }
         private void ResourceCombined_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            resourceCRMScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
-            resourceCRMScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
+            resourceCRMScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
+            resourceCRMScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
+            resourceLocalScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
+            resourceLocalScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
         }
-        private void ListViewItem_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Grid item = (Grid)sender;
-            if (item != null)
-            {
-                DiffPiece r = (DiffPiece)((Grid)sender).DataContext;
-                if (r.Position == null)
-                    return;
-
-                if (ResourceCRM.Items.Count > 0 && (r.Position.Value - 1) <= (ResourceCRM.Items.Count - 1))
-                {
-                    if (ResourceCRM.Items[r.Position.Value - 1] != null)
-                    {
-                        ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.Position.Value - 1]);
-                        LVIRsourceCRM.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
-                    }
-                }
-                if (ResourceLocal.Items.Count > 0 && (r.Position.Value - 1) <= (ResourceLocal.Items.Count - 1))
-                {
-                    if (ResourceLocal.Items[r.Position.Value - 1] != null)
-                    {
-                        ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.Position.Value - 1]);
-                        LVIRsourceLocal.BorderBrush = (Brush)(new BrushConverter().ConvertFrom(colorFocusBorderRowSelected));
-                    }
-                }
-            }
-        }
-
-        private void ListViewItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            Grid item = (Grid)sender;
-            if (item != null)
-            {
-                DiffPiece r = (DiffPiece)((Grid)sender).DataContext;
-                if (r.Position == null)
-                    return;
-
-                if (ResourceCRM.Items.Count > 0 && ((r.Position.Value - 1)) <= (ResourceCRM.Items.Count - 1))
-                {
-                    if (ResourceCRM.Items[r.Position.Value - 1] != null)
-                    {
-                        ListViewItem LVIRsourceCRM = (ListViewItem)ResourceCRM.ItemContainerGenerator.ContainerFromItem(ResourceCRM.Items[r.Position.Value - 1]);
-                        LVIRsourceCRM.BorderBrush = Brushes.White;
-                    }
-                }
-                if (ResourceLocal.Items.Count > 0 && (r.Position.Value - 1) <= (ResourceLocal.Items.Count - 1))
-                {
-                    if (ResourceLocal.Items[r.Position.Value - 1] != null)
-                    {
-                        ListViewItem LVIRsourceLocal = (ListViewItem)ResourceLocal.ItemContainerGenerator.ContainerFromItem(ResourceLocal.Items[r.Position.Value - 1]);
-                        LVIRsourceLocal.BorderBrush = Brushes.White;
-                    }
-                }
-            }
-        }
-
         #endregion
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if(posResource < (resources.Count - 1))
+                posResource += 1;
+
+            loadResource();
+        }
+
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            if(posResource > 0)
+                posResource -= 1;
+
+            loadResource();
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            var window = Window.GetWindow(this);
+            window.Close();
+        }
     }
 }

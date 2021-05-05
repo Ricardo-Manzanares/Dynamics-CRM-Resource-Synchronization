@@ -32,6 +32,8 @@ namespace CRMResourceSynchronization.Core.Business.Models
 
         public SideBySideDiffModel resourceCompareStatus { get; set; }
 
+        public bool resourceDifference { get; set; }
+
         [Description("Proyecto F. Creación")]
         public string localcreatedon { get; set; }
 

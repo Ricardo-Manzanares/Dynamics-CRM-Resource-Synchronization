@@ -1,5 +1,4 @@
 ﻿using CRMResourceSynchronization.Core.Dynamics;
-using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;

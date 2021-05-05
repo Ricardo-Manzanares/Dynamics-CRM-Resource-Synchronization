@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CRMResourceSynchronization.Extensions
+namespace CRMResourceSynchronization.Controls
 {
     public class CRMResourceSynchronizationDataGrid : DataGrid
     {

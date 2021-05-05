@@ -1,12 +1,11 @@
 ﻿using CRMResourceSynchronization.Core.Business;
 using CRMResourceSynchronization.Core.Business.Models;
 using CRMResourceSynchronization.Core.Dynamics;
-using CRMResourceSynchronization.Extensions;
 using CRMResourceSynchronization.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -41,8 +40,11 @@ namespace CRMResourceSynchronization
         public CompareResourceWindowControl()
         {
             this.InitializeComponent();
-            ActionsOfSolutions(Visibility.Hidden);
+            
             CRMNameSearchResource.Text = CRMNameSearchResourceDefaultText;
+            loading.Visibility = Visibility.Hidden;
+
+            ActionsOfSolutions(Visibility.Hidden);
             SetEnvironment();
         }
 
@@ -98,17 +100,7 @@ namespace CRMResourceSynchronization
                 if (connectCRM())
                 {
                     CRMSolutions.ItemsSource = null;
-                    solutions = new SolutionsBusiness(CRMClient, reloadSettingsToModel());
-                    listSolutions = solutions.GetSolutionsManaged();
-                    if (listSolutions.Count > 0)
-                    {
-                        listSolutions.Insert(0, new SolutionModel() { solutionid = "", friendlyname = "-- Select a solution --" });
-                        ActionsOfSolutions(Visibility.Visible);
-                    }
-                    else
-                    {
-                        ActionsOfSolutions(Visibility.Hidden);
-                    }
+                    CRMLoadSolutionsAsync();                    
                 }
             }
             catch (Exception ex)
@@ -116,17 +108,64 @@ namespace CRMResourceSynchronization
                 MessageBox.Show(string.Format("Unable to retrieve CRM solutions : '{0}'", ex.Message));
             }
         }
-       
+
+        private async Task<bool> CRMLoadSolutionsAsync()
+        {
+            bool finish = false;
+            loading.Visibility = Visibility.Visible;
+
+            await Task.Run(() =>
+            {
+                solutions = new SolutionsBusiness(CRMClient, reloadSettingsToModel());
+                listSolutions = solutions.GetSolutionsManaged();
+                if (listSolutions.Count > 0)
+                {
+                    listSolutions.Insert(0, new SolutionModel() { solutionid = "", friendlyname = "-- Select a solution --" });
+                    finish = true;
+                }                
+            }).ContinueWith(resp => {
+                
+            });
+
+            loading.Visibility = Visibility.Hidden;
+
+            if (finish)
+            {
+                ActionsOfSolutions(Visibility.Visible);
+            }
+            else
+            {
+                ActionsOfSolutions(Visibility.Hidden);
+            }
+
+            return finish;
+        }
+
         private void CRMSolutions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                listResources.Clear();
-               
-                if (CRMSolutions.SelectedItem != null && CRMSolutions.SelectedIndex > 0)
+                CRMLoadResourcesAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Unable to retrieve CRM solution resources : {0} - {0}", ((SolutionModel)CRMSolutions.SelectedItem).solutionid, ex.Message));
+            }
+        }
+
+        private async Task<bool> CRMLoadResourcesAsync()
+        {
+            bool finish = false;
+            loading.Visibility = Visibility.Visible;
+
+            listResources.Clear();
+
+            if (CRMSolutions.SelectedItem != null && CRMSolutions.SelectedIndex > 0)
+            {
+                Guid solutionParse = Guid.Empty;
+                if (Guid.TryParse(((SolutionModel)CRMSolutions.SelectedItem).solutionid, out solutionParse))
                 {
-                    Guid solutionParse = Guid.Empty;
-                    if (Guid.TryParse(((SolutionModel)CRMSolutions.SelectedItem).solutionid, out solutionParse))
+                    await Task.Run(() =>
                     {
                         if (connectCRM())
                         {
@@ -135,27 +174,38 @@ namespace CRMResourceSynchronization
                             listResources = listResources.OrderBy(k => k.name).ToList();
                             if (listResources.Count > 0)
                             {
-                                Navigate((int)PagingMode.PageCountChange);
-                                ActionsOfResources(Visibility.Visible);
-                                CRMTypeResource.SelectedIndex = 0;
-                            }
-                            else
-                            {
-                                ActionsOfResources(Visibility.Hidden);
-                                CRMSolutions.SelectedIndex = 0;
+                                finish = true;
                             }
                         }
-                    }
+                    }).ContinueWith(resp => {
+
+                    });                   
                 }
                 else
                 {
                     ActionsOfResources(Visibility.Hidden);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(string.Format("Unable to retrieve CRM solution resources : {0} - {0}", ((SolutionModel)CRMSolutions.SelectedItem).solutionid, ex.Message));
+                ActionsOfResources(Visibility.Hidden);
             }
+
+            loading.Visibility = Visibility.Hidden;
+
+            if (finish)
+            {
+                Navigate((int)PagingMode.PageCountChange);
+                ActionsOfResources(Visibility.Visible);
+                CRMTypeResource.SelectedIndex = 0;
+            }
+            else
+            {
+                ActionsOfResources(Visibility.Hidden);
+                CRMSolutions.SelectedIndex = 0;
+            }
+
+            return finish;
         }
 
         private SettingsModel reloadSettingsToModel()
@@ -197,9 +247,10 @@ namespace CRMResourceSynchronization
                 CRMNameSearchResource.IsEnabled = true;
                 CRMNameSearchResource.Opacity = 1;
                 CRMSearchResource.IsEnabled = true;
+                ScrollDataSources.Visibility = Visibility.Visible;
                 GridResourceActions.Visibility = Visibility.Visible;
                 GridPagination.Visibility = Visibility.Visible;
-                DataResources.Visibility = Visibility.Visible;
+                DataResources.Visibility = Visibility.Visible;                
             }
             else
             {
@@ -209,6 +260,7 @@ namespace CRMResourceSynchronization
                 CRMNameSearchResource.IsEnabled = false;
                 CRMNameSearchResource.Opacity = 0.4;
                 CRMSearchResource.IsEnabled = false;
+                ScrollDataSources.Visibility = Visibility.Hidden;
                 GridResourceActions.Visibility = Visibility.Hidden;
                 GridPagination.Visibility = Visibility.Hidden;
                 DataResources.Visibility = Visibility.Hidden;
@@ -218,12 +270,16 @@ namespace CRMResourceSynchronization
 
         private void ActionsOfActionsOfResources()
         {
-            bool enableBtnUploadAndPublishResurce = true;
+            bool enableBtnUploadAndPublishResource = true;
+            bool enableBtnCompareResource = true;
 
             foreach (var resource in listResources.Where(k => k.selectResource))
             {
-                if (enableBtnUploadAndPublishResurce && String.IsNullOrEmpty(resource.pathlocal))
-                    enableBtnUploadAndPublishResurce = false;
+                if (enableBtnUploadAndPublishResource && String.IsNullOrEmpty(resource.pathlocal))
+                    enableBtnUploadAndPublishResource = false;
+
+                if (enableBtnCompareResource && String.IsNullOrEmpty(resource.contentLocal))
+                    enableBtnUploadAndPublishResource = false;
             }
 
             //Enabled/Disabled button donwload resources
@@ -232,8 +288,11 @@ namespace CRMResourceSynchronization
                 CRMDownloadResource.Opacity = 1;
                 CRMDownloadResource.IsEnabled = true;
                 CRMDownloadResource.Visibility = Visibility.Visible;
-                CRMCompareResources.Opacity = 1;
-                CRMCompareResources.IsEnabled = true;
+                if (enableBtnUploadAndPublishResource)
+                {
+                    CRMCompareResources.Opacity = 1;
+                    CRMCompareResources.IsEnabled = true;
+                }
             }
             else
             {
@@ -244,7 +303,7 @@ namespace CRMResourceSynchronization
             }
 
             //Enabled/Disabled button upload and publish resources
-            if (listResources.Where(k => k.selectResource).Count() > 0 && enableBtnUploadAndPublishResurce)
+            if (listResources.Where(k => k.selectResource).Count() > 0 && enableBtnUploadAndPublishResource)
             {
                 CRMUploadResource.IsEnabled = true;
                 CRMUploadResource.Opacity = 1;
@@ -314,33 +373,38 @@ namespace CRMResourceSynchronization
 
         private void Navigate(int mode)
         {
-            int count;
+            int from = 0;
+            int to = 0;
+            
             switch (mode)
             {
                 case (int)PagingMode.Next:
                     btnPrev.IsEnabled = true;
                     btnPrev.Opacity = 1;
                     btnFirst.IsEnabled = true;
-                    btnFirst.Opacity = 1;
-                    if (listResources.Count >= (pageIndex * numberOfRecPerPage))
-                    {
-                        DataResources.ItemsSource = null;
-                        if (listResources.Count > (pageIndex * numberOfRecPerPage) + numberOfRecPerPage)
-                        {                           
-                            DataResources.ItemsSource = listResources.GetRange((pageIndex * numberOfRecPerPage) - numberOfRecPerPage, numberOfRecPerPage);
-                            count = (pageIndex * numberOfRecPerPage) + (listResources.GetRange(pageIndex * numberOfRecPerPage, numberOfRecPerPage).Count);
-                        }
-                        else
-                        {
-                            DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, listResources.Count - (pageIndex * numberOfRecPerPage));
-                            count = (pageIndex * numberOfRecPerPage) + (listResources.GetRange(pageIndex * numberOfRecPerPage, listResources.Count - (pageIndex * numberOfRecPerPage)).Count);
-                            pageIndex++;
-                        }
+                    btnFirst.Opacity = 1;                   
 
-                        lblpageInformation.Content = count + " of " + listResources.Count;
+                    DataResources.ItemsSource = null;
+
+                    from = (pageIndex * numberOfRecPerPage);
+
+                    pageIndex += 1;
+
+                    if (listResources.Count >= ((pageIndex * numberOfRecPerPage) + numberOfRecPerPage))
+                    {                       
+                        DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, numberOfRecPerPage);
+                        to = (pageIndex * numberOfRecPerPage);
+                    }
+                    else
+                    {
+                        DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, listResources.Count - (pageIndex * numberOfRecPerPage));
+                        from = pageIndex * numberOfRecPerPage;
+                        to = listResources.Count;
                     }
 
-                    if (listResources.Count <= (pageIndex * numberOfRecPerPage))
+                    lblpageInformation.Content = from + " to " + to + " of " + listResources.Count;
+
+                    if (((pageIndex * numberOfRecPerPage) + numberOfRecPerPage) > listResources.Count)
                     {
                         btnNext.IsEnabled = false;
                         btnNext.Opacity = 0.4;
@@ -361,16 +425,18 @@ namespace CRMResourceSynchronization
                         if (pageIndex == 1)
                         {
                             DataResources.ItemsSource = listResources.GetRange(0, numberOfRecPerPage);
-                            count = listResources.GetRange(0, numberOfRecPerPage).Count;
-                            lblpageInformation.Content = count + " of " + listResources.Count;
+                            from = 1;
+                            to = listResources.GetRange(0, numberOfRecPerPage).Count;
                         }
                         else
                         {
                             DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, numberOfRecPerPage);
-                            count = Math.Min(pageIndex * numberOfRecPerPage, listResources.Count);
-                            lblpageInformation.Content = count + " of " + listResources.Count;
+                            from = (pageIndex * numberOfRecPerPage);
+                            to = (pageIndex * numberOfRecPerPage) + numberOfRecPerPage;
                         }
                     }
+
+                    lblpageInformation.Content =  from + " to " + to + " of " + listResources.Count;
 
                     if (pageIndex <= 1)
                     {
@@ -388,7 +454,7 @@ namespace CRMResourceSynchronization
                 case (int)PagingMode.Last:
                     if (numberOfRecPerPage > 0)
                     {
-                        pageIndex = (listResources.Count / numberOfRecPerPage);
+                        pageIndex = (listResources.Count / numberOfRecPerPage) - 1;
                         Navigate((int)PagingMode.Next);
                     }
                     break;
@@ -401,14 +467,14 @@ namespace CRMResourceSynchronization
                         if (numberOfRecPerPage < listResources.Count)
                         {
                             DataResources.ItemsSource = listResources.GetRange(0, numberOfRecPerPage);
-                            count = listResources.GetRange(0, numberOfRecPerPage).Count;
+                            to = listResources.GetRange(0, numberOfRecPerPage).Count;
                         }
                         else
                         {
                             DataResources.ItemsSource = listResources.GetRange(0, listResources.Count);
-                            count = listResources.GetRange(0, listResources.Count).Count;
+                            to = listResources.GetRange(0, listResources.Count).Count;
                         }
-                        lblpageInformation.Content = count + " de " + listResources.Count;
+                        lblpageInformation.Content = to + " de " + listResources.Count;
                     }
 
                     if (listResources.Count <= (pageIndex * numberOfRecPerPage))
@@ -461,7 +527,7 @@ namespace CRMResourceSynchronization
 
                     DataResources.ItemsSource = newData;
 
-                    lblpageInformation.Content = newData.Count + " de " + listResources.Count;
+                    lblpageInformation.Content = newData.Count + " to " + listResources.Count;
 
                     break;
             }            
@@ -583,17 +649,14 @@ namespace CRMResourceSynchronization
         {
             Window w = new Window();
             w.Title = "Differences of resources";
-            w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).FirstOrDefault());
+            w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).ToList());
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             w.ShowDialog();
+        }
 
-            /*var psi = new ProcessStartInfo(@"devenv.exe")
-            {
-                Arguments = @"/diff ""C:\Users\rmanzana\Downloads\mba_opencontactquickcreateform.js"" ""C:\Users\rmanzana\Downloads\mba_opencontactquickcreateform 1.js"" ""file1"" ""file 2""",
-                UseShellExecute = true,
-                CreateNoWindow = true
-            };
-            Process.Start(psi);*/
+        private void CRMDownloadResource_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

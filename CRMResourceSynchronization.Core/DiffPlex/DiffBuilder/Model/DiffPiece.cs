@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model
 {
@@ -17,6 +18,7 @@ namespace CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model
         public int? Position { get; set; }
         public string Text { get; set; }
         public List<DiffPiece> SubPieces { get; set; } = new List<DiffPiece>();
+        public bool Merge { get; set; }
 
         public DiffPiece(string text, ChangeType type, int? position = null)
         {
@@ -28,6 +30,14 @@ namespace CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model
         public DiffPiece()
             : this(null, ChangeType.Modified)
         {
+        }
+
+        public void MergeSubPiece(int position)
+        {
+            if (SubPieces is null)
+                return;
+
+            SubPieces.Where(k => k.Position == position).FirstOrDefault().Merge = true;
         }
 
         public override bool Equals(object obj)
