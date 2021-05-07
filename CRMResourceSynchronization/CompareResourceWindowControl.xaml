@@ -9,6 +9,7 @@
              Name="CompareResource">
     <UserControl.Resources>
         <Converters:NameTypeResourceConverter x:Key="NameTypeResourceConverter" />
+        <Converters:StatusRowDifferenceResourceConverter x:Key="StatusRowDifferenceResourceConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
         <Grid.RowDefinitions>
@@ -140,7 +141,7 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Grid.Column="2" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload resource to CRM" BorderBrush="Transparent" x:Name="CRMUploadResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                    <Button Grid.Column="2" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload resource to CRM" BorderBrush="Transparent" x:Name="CRMUploadResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMUploadResource_Click">
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
@@ -159,7 +160,7 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Grid.Column="3" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload and publish resource to CRM" BorderBrush="Transparent" x:Name="CRMPublishResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand">
+                    <Button Grid.Column="3" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload and publish resource to CRM" BorderBrush="Transparent" x:Name="CRMPublishResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMPublishResource_Click">
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
@@ -204,6 +205,7 @@
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                    <Setter Property="Background" Value="{Binding resourceDifference, Converter={StaticResource StatusRowDifferenceResourceConverter}}" />
                 </Style>
                 <Style TargetType="{x:Type DataGridCell}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
@@ -211,6 +213,11 @@
                     <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
                 </Style>
             </DataGrid.Resources>
+            <!--<DataGrid.RowStyle>                
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding resourceDifference, Converter={StaticResource StatusRowDifferenceResourceConverter}}" />
+                </Style>
+            </DataGrid.RowStyle>-->
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
                     <DataGridCheckBoxColumn.Header>

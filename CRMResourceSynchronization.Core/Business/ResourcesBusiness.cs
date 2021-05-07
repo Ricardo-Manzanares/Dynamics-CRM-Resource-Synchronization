@@ -104,20 +104,25 @@ namespace CRMResourceSynchronization.Core.Business
             if (!string.IsNullOrEmpty(model.contentCRM))
             {
                 model.contentCRM = Encoding.UTF8.GetString(Convert.FromBase64String(model.contentCRM));
-                string pathResourceLocal = existResourceLocal(model);
-                if (pathResourceLocal != null)
-                {
-                    model.pathlocal = pathResourceLocal;
-                    model.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
-                    FileInfo fi = new FileInfo(pathResourceLocal);
-                    model.localcreatedon = fi.CreationTime.ToString();
-                    model.localmodifiedon = fi.LastWriteTimeUtc.ToString();
-                    model.resourceCompareStatus = SideBySideDiffBuilder.Diff(model.contentCRM, model.contentLocal);
-                    model.resourceDifference = model.resourceCompareStatus.NewText.HasDifferences || model.resourceCompareStatus.OldText.HasDifferences;
-                }
+                processResourceInLocal(model);
             }          
 
             return model;
+        }
+
+        public void processResourceInLocal (ResourceModel resource)
+        {
+            string pathResourceLocal = existResourceLocal(resource);
+            if (pathResourceLocal != null)
+            {
+                resource.pathlocal = pathResourceLocal;
+                resource.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
+                FileInfo fi = new FileInfo(pathResourceLocal);
+                resource.localcreatedon = fi.CreationTime.ToString();
+                resource.localmodifiedon = fi.LastWriteTimeUtc.ToString();
+                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
+                resource.resourceDifference = resource.resourceCompareStatus.NewText.HasDifferences || resource.resourceCompareStatus.OldText.HasDifferences;
+            }
         }
 
         private string existResourceLocal (ResourceModel resource)

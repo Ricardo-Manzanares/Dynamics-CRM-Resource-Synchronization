@@ -45,14 +45,5 @@ namespace CRMResourceSynchronization.Core.Business.Models
 
         [Browsable(false)]
         public string pathlocal { get; set; }
-
-        [Browsable(false)]
-        public int rowsDifference { get; set; }
-        [Browsable(false)]
-        public int rowsEquals { get; set; }
-        [Browsable(false)]
-        public int rowsInsert { get; set; }
-        [Browsable(false)]
-        public int rowsDelete { get; set; }
     }
 }

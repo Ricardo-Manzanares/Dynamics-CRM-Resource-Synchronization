@@ -57,6 +57,7 @@
     <Compile Include="Controls\ImageBehavior.cs" />
     <Compile Include="Converters\SelectedMergeRowConverter.cs" />
     <Compile Include="Converters\NameTypeResourceConverter.cs" />
+    <Compile Include="Converters\StatusRowDifferenceResourceConverter.cs" />
     <Compile Include="Converters\StatusRowConverter.cs" />
     <Compile Include="DifferencesResourceWindowControlControl.xaml.cs">
       <DependentUpon>DifferencesResourceWindowControlControl.xaml</DependentUpon>

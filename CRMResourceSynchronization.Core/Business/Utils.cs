@@ -104,82 +104,84 @@ namespace CRMResourceSynchronization.Core.Business
         public static PathAndNameResourceModel getFormatPathAndNameResource(SettingsModel Settings, string resourceName, int typeFile)
         {
             PathAndNameResourceModel resource = new PathAndNameResourceModel();
+            resourceName = removeCharactersInvalidInResourceLocal(resourceName);
             resource.name = resourceName;
 
             try
             {
+
                 switch (typeFile)
                 {
                     case 1:
                         //*.htm, *.html
                         resource.path = Settings.PathHTML;
-                        if (!resourceName.ToLower().Contains(".htm") || !resourceName.ToLower().Contains(".html"))
+                        if (!resource.name.ToLower().Contains(".htm") || !resource.name.ToLower().Contains(".html"))
                             resource.name += ".html";
                         break;
                     case 2:
                         //*.css
                         resource.path = Settings.PathCSS;
-                        if (!resourceName.ToLower().Contains(".css"))
+                        if (!resource.name.ToLower().Contains(".css"))
                             resource.name += ".css";
                         break;
                     case 3:
                         //.js
                         resource.path = Settings.PathJS;
-                        if (!resourceName.ToLower().Contains(".js"))
+                        if (!resource.name.ToLower().Contains(".js"))
                             resource.name += ".js";
                         break;
                     case 4:
                         //.xml
                         resource.path = Settings.PathXML;
-                        if (!resourceName.ToLower().Contains(".xml"))
+                        if (!resource.name.ToLower().Contains(".xml"))
                             resource.name += ".xml";
                         break;
                     case 5:
                         //.png
                         resource.path = Settings.PathPNG;
-                        if (!resourceName.ToLower().Contains(".png"))
+                        if (!resource.name.ToLower().Contains(".png"))
                             resource.name += ".png";
                         break;
                     case 6:
                         //.jpg
                         resource.path = Settings.PathJPG;
-                        if (!resourceName.ToLower().Contains(".jpg"))
+                        if (!resource.name.ToLower().Contains(".jpg"))
                             resource.name += ".jpg";
                         break;
                     case 7:
                         //.gif
                         resource.path = Settings.PathGIF;
-                        if (!resourceName.ToLower().Contains(".gif"))
+                        if (!resource.name.ToLower().Contains(".gif"))
                             resource.name += ".gif";
                         break;
                     case 8:
                         //.xap
                         resource.path = Settings.PathXAP;
-                        if (!resourceName.ToLower().Contains(".xap"))
+                        if (!resource.name.ToLower().Contains(".xap"))
                             resource.name += ".xap";
                         break;
                     case 9:
                         //.xsl, xslt
                         resource.path = Settings.PathXSL;
-                        if (!resourceName.ToLower().Contains(".xsl") || !resourceName.ToLower().Contains(".xslt"))
+                        if (!resource.name.ToLower().Contains(".xsl") || !resource.name.ToLower().Contains(".xslt"))
                             resource.name += ".xslt";
                         break;
                     case 10:
                         //.ico
                         resource.path = Settings.PathICO;
-                        if (!resourceName.ToLower().Contains(".ico"))
+                        if (!resource.name.ToLower().Contains(".ico"))
                             resource.name += ".ico";
                         break;
                     case 11:
                         //.svg
                         resource.path = Settings.PathSVG;
-                        if (!resourceName.ToLower().Contains(".svg"))
+                        if (!resource.name.ToLower().Contains(".svg"))
                             resource.name += ".svg";
                         break;
                     case 12:
                         //.resx
                         resource.path = Settings.PathRESX;
-                        if (!resourceName.ToLower().Contains(".resx"))
+                        if (!resource.name.ToLower().Contains(".resx"))
                             resource.name += ".resx";
                         break;
                 }
@@ -190,6 +192,11 @@ namespace CRMResourceSynchronization.Core.Business
                 resource.path += "\\";
 
             return resource;
+        }
+
+        private static string removeCharactersInvalidInResourceLocal(string resourceName)
+        {
+            return resourceName.Replace("\\", "_").Replace("/", "_").Replace(":", "_").Replace("*", "_").Replace("?", "_").Replace('"', '_').Replace("<", "_").Replace(">", "_").Replace("|", "_");
         }
     }
 }

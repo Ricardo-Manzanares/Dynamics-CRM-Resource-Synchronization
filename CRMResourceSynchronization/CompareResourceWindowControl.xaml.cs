@@ -43,14 +43,12 @@ namespace CRMResourceSynchronization
         /// </summary>
         public CompareResourceWindowControl()
         {
-            this.InitializeComponent();
-            
-            CRMNameSearchResource.Text = CRMNameSearchResourceDefaultText;
-            loading.Visibility = Visibility.Hidden;
+            this.InitializeComponent();           
 
-            ActionsOfSolutions(VisibilityType.Hidden);
-            SetEnvironment();
+            ActionsOfSolutions(VisibilityType.Hidden);            
+            ActionsOfResources(VisibilityType.Hidden);
             ActionsOfEnvironment(VisibilityType.Visible);
+            SetEnvironment();
         }
 
         private bool connectCRM()
@@ -76,7 +74,6 @@ namespace CRMResourceSynchronization
             else
                 return false;
         }
-
 
         private void ConfiEnvironment_Click(object sender, RoutedEventArgs e)
         {
@@ -119,6 +116,7 @@ namespace CRMResourceSynchronization
             bool finish = false;
             loading.Visibility = Visibility.Visible;
             ActionsOfSolutions(VisibilityType.Disabled);
+            ActionsOfResources(VisibilityType.Disabled);
             ActionsOfEnvironment(VisibilityType.Disabled);
 
             await Task.Run(() =>
@@ -139,10 +137,17 @@ namespace CRMResourceSynchronization
 
             if (finish)
             {
+                CRMSolutions.ItemsSource = listSolutions.OrderBy(k => k.friendlyname);
+                CRMSolutions.SelectedValue = "solutionid";
+                CRMSolutions.SelectedItem = "friendlyname";
+                CRMSolutions.DisplayMemberPath = "friendlyname";
+                CRMSolutions.SelectedValuePath = "solutionid";
+                CRMSolutions.SelectedIndex = 0;
                 ActionsOfSolutions(VisibilityType.Visible);
             }
             else
             {
+                CRMSolutions.SelectedIndex = 0;
                 ActionsOfSolutions(VisibilityType.Hidden);
             }
 
@@ -165,7 +170,8 @@ namespace CRMResourceSynchronization
         {
             bool finish = false;
             loading.Visibility = Visibility.Visible;
-            ActionsOfResources(VisibilityType.Disabled);
+            ActionsOfSolutions(VisibilityType.Disabled);
+            ActionsOfResources(VisibilityType.Hidden);
             ActionsOfEnvironment(VisibilityType.Disabled);
 
             listResources.Clear();
@@ -203,6 +209,7 @@ namespace CRMResourceSynchronization
 
             loading.Visibility = Visibility.Collapsed;
             ActionsOfEnvironment(VisibilityType.Visible);
+            ActionsOfSolutions(VisibilityType.Visible);
 
             if (finish)
             {
@@ -395,22 +402,24 @@ namespace CRMResourceSynchronization
             switch (type)
             {
                 case VisibilityType.Visible:
-                    CRMSolutions.ItemsSource = listSolutions.OrderBy(k => k.friendlyname);
-                    CRMSolutions.SelectedValue = "solutionid";
-                    CRMSolutions.SelectedItem = "friendlyname";
-                    CRMSolutions.DisplayMemberPath = "friendlyname";
-                    CRMSolutions.SelectedValuePath = "solutionid";
                     CRMSolutions.IsEnabled = true;
-                    CRMSolutions.SelectedIndex = 0;
+                    CRMSolutions.Opacity = 1;
+                    CRMLoadSolutions.Opacity = 1;
+                    CRMLoadSolutions.IsEnabled = true;
                     break;
                 case VisibilityType.Hidden:
                     CRMSolutions.IsEnabled = false;
-                    CRMSolutions.SelectedIndex = 0;
+                    CRMSolutions.Opacity = 0.4;
+                    CRMLoadSolutions.Opacity = 0.4;
+                    CRMLoadSolutions.IsEnabled = false;
                     ActionsOfResources(type);
                     break;
                 case VisibilityType.Disabled:
                     CRMSolutions.ItemsSource = listSolutions.OrderBy(k => k.friendlyname);
                     CRMSolutions.IsEnabled = false;
+                    CRMSolutions.Opacity = 0.4;
+                    CRMLoadSolutions.Opacity = 0.4;
+                    CRMLoadSolutions.IsEnabled = false;
                     break;
                 default:
                     break;
@@ -450,6 +459,10 @@ namespace CRMResourceSynchronization
 
         private void SetEnvironment()
         {
+            loading.Visibility = Visibility.Hidden;
+            CRMNameSearchResource.Text = CRMNameSearchResourceDefaultText;
+            CRMLoadSolutions.Opacity = 1;
+            CRMLoadSolutions.IsEnabled = true;
             CRMUser.Text = Settings.Default.CRMUserName;
             CRMUrl.Text = Settings.Default.CRMUrl;
         }
@@ -769,38 +782,180 @@ namespace CRMResourceSynchronization
             Navigate((int)PagingMode.Filter);
         }
 
+        private void resetSelectedResourcesAfterAction()
+        {
+            foreach (ResourceModel c in listResources)
+            {
+                c.selectResource = false;
+            }
+            Navigate((int)PagingMode.Refresh);
+            ActionsOfActionsOfResources();
+        }
+
         private void CRMCompareResources_Click(object sender, RoutedEventArgs e)
         {
-            Window w = new Window();
-            w.Title = "Differences of resources";
-            w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).ToList());
-            w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            w.ShowDialog();
+            try
+            {
+                bool finish = false;
+                loading.Visibility = Visibility.Visible;
+                ActionsOfSolutions(VisibilityType.Disabled);
+                ActionsOfResources(VisibilityType.Disabled);
+                ActionsOfEnvironment(VisibilityType.Disabled);
+
+                Window w = new Window();
+                w.Title = "Differences of resources";
+                w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).ToList());
+                w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                w.ShowDialog();
+
+                loading.Visibility = Visibility.Collapsed;
+                ActionsOfSolutions(VisibilityType.Visible);
+                ActionsOfResources(VisibilityType.Visible);
+                ActionsOfEnvironment(VisibilityType.Visible);
+                resetSelectedResourcesAfterAction();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Cannot compare selected resources : '{0}'", ex.Message));
+            }            
         }
 
         private void CRMDownloadResource_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var resource in listResources.Where(k => k.selectResource))
+            try
             {
-                PathAndNameResourceModel resourceModel = Utils.getFormatPathAndNameResource(reloadSettingsToModel(), resource.name, resource.webresourcetype);
-
-                if (!string.IsNullOrEmpty(resourceModel.path))
-                {
-                    
-                    if (!Directory.Exists(resourceModel.path) && Utils.DirectoryHasPermission(string.Join("\\", resourceModel.path.Split('\\').Take(resourceModel.path.Split('\\').Length - 2)), FileSystemRights.Write))
-                        Directory.CreateDirectory(resourceModel.path);
-
-                    if (File.Exists(resourceModel.path + resourceModel.name) && Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Delete))
-                    {
-                        //Backup of resource ¿?
-
-                        File.Delete(resourceModel.path + resourceModel.name);
-                    }
-
-                    if(Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Write))
-                        File.WriteAllText(resourceModel.path + resourceModel.name, resource.contentCRM);
-                }
+                CRMDownloadResourceAsync();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Unable to download selected resources : '{0}'", ex.Message));
+            }            
+        }
+
+        private async Task<bool> CRMDownloadResourceAsync()
+        {
+            bool finish = false;
+            loading.Visibility = Visibility.Visible;
+            ActionsOfSolutions(VisibilityType.Disabled);
+            ActionsOfResources(VisibilityType.Disabled);
+            ActionsOfEnvironment(VisibilityType.Disabled);
+
+            await Task.Run(() =>
+            {
+                foreach (var resource in listResources.Where(k => k.selectResource))
+                {
+                    PathAndNameResourceModel resourceModel = Utils.getFormatPathAndNameResource(reloadSettingsToModel(), resource.name, resource.webresourcetype);
+
+                    if (!string.IsNullOrEmpty(resourceModel.path))
+                    {
+
+                        if (!Directory.Exists(resourceModel.path) && Utils.DirectoryHasPermission(string.Join("\\", resourceModel.path.Split('\\').Take(resourceModel.path.Split('\\').Length - 2)), FileSystemRights.Write))
+                            Directory.CreateDirectory(resourceModel.path);
+
+                        if (File.Exists(resourceModel.path + resourceModel.name) && Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Delete))
+                        {
+                            //Backup of resource ¿?
+
+                            File.Delete(resourceModel.path + resourceModel.name);
+                        }
+
+                        if (Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Write))
+                        {
+                            File.WriteAllText(resourceModel.path + resourceModel.name, resource.contentCRM);
+                            resources.processResourceInLocal(resource);
+                        }
+                    }
+                }
+            }).ContinueWith(resp => {
+
+            });
+
+            loading.Visibility = Visibility.Collapsed;
+            ActionsOfSolutions(VisibilityType.Visible);
+            ActionsOfResources(VisibilityType.Visible);
+            ActionsOfEnvironment(VisibilityType.Visible);
+            resetSelectedResourcesAfterAction();
+
+            return finish;
+        }
+
+
+        private void CRMUploadResource_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CRMUploadResourceAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Cannot upload selected resources : '{0}'", ex.Message));
+            }           
+        }
+
+        private async Task<bool> CRMUploadResourceAsync()
+        {
+            bool finish = false;
+            loading.Visibility = Visibility.Visible;
+            ActionsOfSolutions(VisibilityType.Disabled);
+            ActionsOfResources(VisibilityType.Disabled);
+            ActionsOfEnvironment(VisibilityType.Disabled);
+
+            await Task.Run(() =>
+            {
+                foreach (var resource in listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)))
+                {
+
+                }
+            }).ContinueWith(resp => {
+
+            });
+
+            loading.Visibility = Visibility.Collapsed;
+            ActionsOfSolutions(VisibilityType.Visible);
+            ActionsOfResources(VisibilityType.Visible);
+            ActionsOfEnvironment(VisibilityType.Visible);
+            resetSelectedResourcesAfterAction();
+
+            return finish;
+        }
+
+        private void CRMPublishResource_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CRMUploadResourceAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Unable to upload and publish selected resources : '{0}'", ex.Message));
+            }
+        }
+
+        private async Task<bool> CRMPublishResourceAsync()
+        {
+            bool finish = false;
+            loading.Visibility = Visibility.Visible;
+            ActionsOfSolutions(VisibilityType.Disabled);
+            ActionsOfResources(VisibilityType.Disabled);
+            ActionsOfEnvironment(VisibilityType.Disabled);
+
+            await Task.Run(() =>
+            {
+                foreach (var resource in listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)))
+                {
+
+                }
+            }).ContinueWith(resp => {
+
+            });
+
+            loading.Visibility = Visibility.Collapsed;
+            ActionsOfSolutions(VisibilityType.Visible);
+            ActionsOfResources(VisibilityType.Visible);
+            ActionsOfEnvironment(VisibilityType.Visible);
+            resetSelectedResourcesAfterAction();
+
+            return finish;
         }
     }
 }
