@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Dynamic;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model;
+using System.Security.AccessControl;
 
 namespace CRMResourceSynchronization.Core.Business
 {
@@ -104,7 +105,7 @@ namespace CRMResourceSynchronization.Core.Business
             {
                 model.contentCRM = Encoding.UTF8.GetString(Convert.FromBase64String(model.contentCRM));
                 string pathResourceLocal = existResourceLocal(model);
-                if (pathResourceLocal != "")
+                if (pathResourceLocal != null)
                 {
                     model.pathlocal = pathResourceLocal;
                     model.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
@@ -121,26 +122,24 @@ namespace CRMResourceSynchronization.Core.Business
 
         private string existResourceLocal (ResourceModel resource)
         {
-            string path = "";
-            try
-            {
-                switch (resource.webresourcetype)
-                {
-                    case 3:
-                        if (!string.IsNullOrEmpty(this._Settings.PathJS))
-                        {
-                            string resourceName = resource.name;
-                            if (!resourceName.ToLower().Contains(".js"))
-                                resourceName += ".js";
+            PathAndNameResourceModel resourceModel = Utils.getFormatPathAndNameResource(this._Settings, resource.name, resource.webresourcetype);
 
-                            if (File.Exists(this._Settings.PathJS + resourceName))
-                            {
-                                path = this._Settings.PathJS + resourceName;
-                            }
-                        }
-                        break;
-                    default:
-                        break;
+            try
+            {                
+                if (!string.IsNullOrEmpty(resourceModel.name) && !string.IsNullOrEmpty(resourceModel.path))
+                {
+                    if (File.Exists(resourceModel.path + resourceModel.name) && Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Read))
+                    {
+                        resourceModel.path = resourceModel.path + resourceModel.name;
+                    }
+                    else
+                    {
+                        resourceModel.path = null;
+                    }
+                }
+                else
+                {
+                    resourceModel.path = null;
                 }
             }
             catch (Exception ex)
@@ -148,7 +147,7 @@ namespace CRMResourceSynchronization.Core.Business
                 throw ex;
             }
             
-            return path;
+            return resourceModel.path;
         }
     }
 }

@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:CustomControls="clr-namespace:CRMResourceSynchronization.Controls"          
+             xmlns:CustomControls="clr-namespace:CRMResourceSynchronization.Controls"
+             xmlns:Converters="clr-namespace:CRMResourceSynchronization.Converters"
              mc:Ignorable="d"
              Name="CompareResource">
+    <UserControl.Resources>
+        <Converters:NameTypeResourceConverter x:Key="NameTypeResourceConverter" />
+    </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="18" />
@@ -196,33 +200,32 @@
                 </Grid>
             </Grid>
         </StackPanel>
-        <ScrollViewer x:Name="ScrollDataSources" Grid.Row="5" Visibility="Hidden" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10">
-            <DataGrid x:Name="DataResources" Grid.Row="1" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                    </Style>
-                    <Style TargetType="{x:Type DataGridCell}">
-                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
-                        <EventSetter Event="CheckBox.Checked" Handler="ResourceChecked"/>
-                        <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
-                        <DataGridCheckBoxColumn.Header>
-                            <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
-                        </DataGridCheckBoxColumn.Header>
-                    </DataGridCheckBoxColumn>
-                    <DataGridTextColumn x:Name="Resource_name" Width="Auto" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
-                    <DataGridTextColumn x:Name="Resource_status" Header="Resource modified" IsReadOnly="True" Binding="{Binding resourceDifference}" />
-                    <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
-                    <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
-                    <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
-                    <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </ScrollViewer>        
+        <DataGrid x:Name="DataResources" Margin="10" Grid.Row="5" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"/>
+                    <EventSetter Event="CheckBox.Checked" Handler="ResourceChecked"/>
+                    <EventSetter Event="CheckBox.Unchecked" Handler="ResourceUnChecked"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn x:Name="Resource_selectResource" Binding="{Binding selectResource}" IsReadOnly="False">
+                    <DataGridCheckBoxColumn.Header>
+                        <CheckBox Name="chkSelectAll" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                    </DataGridCheckBoxColumn.Header>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn x:Name="Resource_name" Width="*" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
+                <DataGridTextColumn x:Name="Resource_status" Header="Resource modified" IsReadOnly="True" Binding="{Binding resourceDifference}" />
+                <DataGridTextColumn x:Name="Resource_type" Header="Type resource" IsReadOnly="True" Binding="{Binding webresourcetype, Converter={StaticResource  NameTypeResourceConverter}}" />
+                <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
+                <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
+                <DataGridTextColumn x:Name="Resource_localcreatedon" Header="Creation date (Proyect)" IsReadOnly="True" Binding="{Binding localcreatedon}" />
+                <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel HorizontalAlignment="Center" Grid.Row="6">
             <Grid x:Name="GridPagination">
                 <Grid.ColumnDefinitions>
@@ -337,11 +340,11 @@
         <StackPanel Grid.Row="7" VerticalAlignment="Bottom">
             <Grid  Margin="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />                    
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Vertical">
+                <StackPanel Grid.Column="1" Orientation="Vertical">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -351,7 +354,7 @@
                         <TextBlock x:Name="CRMUrl" Text="--" Grid.Row="1" Padding="10,0" FontWeight="Light" />
                     </Grid>
                 </StackPanel>
-                <Button Grid.Column="1" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Column="0" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
                             <DrawingImage>

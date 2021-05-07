@@ -155,10 +155,10 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="1500" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Position}" FontWeight="Bold" />
+                        <TextBlock Grid.Column="0" Text="{Binding Position}" FontWeight="Bold" Margin="3" />
                         <TextBlock Grid.Column="1" Text="{Binding Text}" Background="{Binding Type, Converter={StaticResource StatusRowConverter}}" />
                     </Grid>
                 </DataTemplate>
@@ -197,10 +197,10 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="1500" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Position}" FontWeight="Bold" />
+                        <TextBlock Grid.Column="0" Text="{Binding Position}" FontWeight="Bold" Margin="3" />
                         <TextBlock Grid.Column="1" Text="{Binding Text}" Background="{Binding Type, Converter={StaticResource StatusRowConverter}}"/>
                     </Grid>
                 </DataTemplate>
@@ -239,11 +239,11 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
                             <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" Visibility="{Binding Type, Converter={StaticResource SelectedMergeRowConverter }}" />
+                        <CheckBox Grid.Column="0" Visibility="{Binding Type, Converter={StaticResource SelectedMergeRowConverter }}" Margin="3" />
                         <TextBlock Grid.Column="1" Text="{Binding Position}" FontWeight="Bold" />
                         <TextBlock Grid.Column="2" Text="{Binding Text}" Background="{Binding Type, Converter={StaticResource StatusRowConverter}}"/>
                     </Grid>
