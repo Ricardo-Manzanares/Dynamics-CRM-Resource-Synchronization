@@ -693,13 +693,19 @@ namespace CRMResourceSynchronization
         }
         private void ResourceChecked(object sender, RoutedEventArgs e)
         {
-            ((ResourceModel)((DataGridCell)sender).DataContext).selectResource = true;
-            ActionsOfActionsOfResources();
+            if (((DataGridCell)sender).DataContext is ResourceModel)
+            {
+                ((ResourceModel)((DataGridCell)sender).DataContext).selectResource = true;
+                ActionsOfActionsOfResources();
+            }
         }
         private void ResourceUnChecked(object sender, RoutedEventArgs e)
         {
-            ((ResourceModel)((DataGridCell)sender).DataContext).selectResource = false;
-            ActionsOfActionsOfResources();
+            if (((DataGridCell)sender).DataContext is ResourceModel)
+            {
+                ((ResourceModel)((DataGridCell)sender).DataContext).selectResource = false;
+                ActionsOfActionsOfResources();
+            }
         }
         /// <summary>
         /// Allow resource selection when selecting the resource line in grid
@@ -879,12 +885,15 @@ namespace CRMResourceSynchronization
             return finish;
         }
 
-
         private void CRMUploadResource_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                CRMUploadResourceAsync();
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("The selected resources will be updated in CRM by the latest version of the local resource. You're sure?", "Update resources", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    CRMUploadResourceAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -899,22 +908,22 @@ namespace CRMResourceSynchronization
             ActionsOfSolutions(VisibilityType.Disabled);
             ActionsOfResources(VisibilityType.Disabled);
             ActionsOfEnvironment(VisibilityType.Disabled);
+            List<ExecuteMultipleResponseModel> responses = new List<ExecuteMultipleResponseModel>();
 
             await Task.Run(() =>
             {
-                foreach (var resource in listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)))
-                {
-
-                }
+                responses = resources.UploadResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
             }).ContinueWith(resp => {
 
             });
 
-            loading.Visibility = Visibility.Collapsed;
+            GetLastContentResourceAfterUpdate(responses);
+
             ActionsOfSolutions(VisibilityType.Visible);
             ActionsOfResources(VisibilityType.Visible);
             ActionsOfEnvironment(VisibilityType.Visible);
             resetSelectedResourcesAfterAction();
+            loading.Visibility = Visibility.Collapsed;
 
             return finish;
         }
@@ -923,7 +932,11 @@ namespace CRMResourceSynchronization
         {
             try
             {
-                CRMUploadResourceAsync();
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("The selected resources will be updated and published in CRM by the latest version of the local resource. You're sure?", "Update and publish resources", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    CRMPublishResourceAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -938,24 +951,45 @@ namespace CRMResourceSynchronization
             ActionsOfSolutions(VisibilityType.Disabled);
             ActionsOfResources(VisibilityType.Disabled);
             ActionsOfEnvironment(VisibilityType.Disabled);
-
+            List<ExecuteMultipleResponseModel> responses = new List<ExecuteMultipleResponseModel>();
             await Task.Run(() =>
             {
-                foreach (var resource in listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)))
-                {
-
-                }
+                responses = resources.UploadAndPublishResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
+               
             }).ContinueWith(resp => {
 
             });
 
-            loading.Visibility = Visibility.Collapsed;
+            GetLastContentResourceAfterUpdate(responses);
+            
             ActionsOfSolutions(VisibilityType.Visible);
             ActionsOfResources(VisibilityType.Visible);
             ActionsOfEnvironment(VisibilityType.Visible);
             resetSelectedResourcesAfterAction();
+            loading.Visibility = Visibility.Collapsed;
 
             return finish;
+        }
+
+        private void GetLastContentResourceAfterUpdate (List<ExecuteMultipleResponseModel> responses)
+        {
+            try
+            {
+                foreach (var item in responses)
+                {
+                    //Update resource CRM from new content upload
+                    if (!item.error)
+                    {
+                        int indexResourceInList = listResources.IndexOf(listResources.Where(k => k.resourceid == item.id).FirstOrDefault());
+                        ResourceModel lastContentResourceFromCRM = resources.DonwloadResourceFromCRM(item.id);
+                        listResources[indexResourceInList] = lastContentResourceFromCRM;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

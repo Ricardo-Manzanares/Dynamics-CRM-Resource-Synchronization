@@ -33,9 +33,9 @@ namespace CRMResourceSynchronization
 
             CRMUrl.Text = Settings.Default.CRMUrl;
             CRMOAuthUserName.Text = Settings.Default.CRMUserName;
-            CRMOAuthPassword.Text = Settings.Default.CRMPassword;
+            CRMOAuthPassword.Password = Settings.Default.CRMPassword;
             CRMOffice365UserName.Text = Settings.Default.CRMUserName;
-            CRMOffice365Password.Text = Settings.Default.CRMPassword;
+            CRMOffice365Password.Password = Settings.Default.CRMPassword;
             CRMOAuthClientId.Text = Settings.Default.ClientId;
             CRMClientSecretClientId.Text = Settings.Default.ClientId;
             CRMOAuthRedirectUri.Text = Settings.Default.RedirectUri;
@@ -90,7 +90,7 @@ namespace CRMResourceSynchronization
             {
                 case AutenticationType.AD:
                     Settings.Default.CRMUserName = CRMADUserName.Text;
-                    Settings.Default.CRMPassword = CRMADPassword.Text;
+                    Settings.Default.CRMPassword = CRMADPassword.Password;
 
                     Settings.Default.ClientId = "";
                     Settings.Default.RedirectUri = "";
@@ -102,7 +102,7 @@ namespace CRMResourceSynchronization
                     break;
                 case AutenticationType.OAuth:
                     Settings.Default.CRMUserName = CRMOAuthUserName.Text;
-                    Settings.Default.CRMPassword = CRMOAuthPassword.Text;
+                    Settings.Default.CRMPassword = CRMOAuthPassword.Password;
                     Settings.Default.ClientId = CRMOAuthClientId.Text;
                     Settings.Default.RedirectUri = CRMOAuthRedirectUri.Text;
                     Settings.Default.TokenCacheStorePath = CRMOAuthTokenPath.Text;
@@ -138,7 +138,7 @@ namespace CRMResourceSynchronization
                     break;
                 case AutenticationType.Office365:
                     Settings.Default.CRMUserName = CRMOffice365UserName.Text;
-                    Settings.Default.CRMPassword = CRMOffice365Password.Text;
+                    Settings.Default.CRMPassword = CRMOffice365Password.Password;
 
                     Settings.Default.CertificateThumprint = "";
                     Settings.Default.ClientSecret = "";
@@ -218,7 +218,7 @@ namespace CRMResourceSynchronization
             {
                 case AutenticationType.AD:
                     CRMOAuthUserName.Text = "";
-                    CRMOAuthPassword.Text = "";
+                    CRMOAuthPassword.Password = "";
                     CRMOAuthClientId.Text = "";
                     CRMOAuthRedirectUri.Text = "";
                     CRMOAuthTokenPath.Text = "";
@@ -229,24 +229,23 @@ namespace CRMResourceSynchronization
                     CRMClientSecretClientId.Text = "";
                     CRMClientSecretClientSecret.Text = "";
                     CRMOffice365UserName.Text = "";
-                    CRMOffice365Password.Text = "";                   
+                    CRMOffice365Password.Password = "";                   
                     break;
                 case AutenticationType.OAuth:
                     CRMADIFDTrue.IsChecked = false;
                     CRMADIFDFalse.IsChecked = true;
                     CRMADUserName.Text = "";
-                    CRMADPassword.Text = "";
+                    CRMADPassword.Password = "";
                     CRMCertificateThumprint.Text = "";
                     CRMClientSecretClientId.Text = "";
                     CRMClientSecretClientSecret.Text = "";
                     CRMOffice365UserName.Text = "";
-                    CRMOffice365Password.Text = "";
+                    CRMOffice365Password.Password = "";
                     CRMOffice365UserName.Text = "";
-                    CRMOffice365Password.Text = "";
                     break;
                 case AutenticationType.Certificate:
                     CRMOAuthUserName.Text = "";
-                    CRMOAuthPassword.Text = "";
+                    CRMOAuthPassword.Password = "";
                     CRMOAuthClientId.Text = "";
                     CRMOAuthRedirectUri.Text = "";
                     CRMOAuthTokenPath.Text = "";
@@ -256,15 +255,15 @@ namespace CRMResourceSynchronization
                     CRMADIFDTrue.IsChecked = false;
                     CRMADIFDFalse.IsChecked = true;
                     CRMADUserName.Text = "";
-                    CRMADPassword.Text = "";
+                    CRMADPassword.Password = "";
                     CRMClientSecretClientId.Text = "";
                     CRMClientSecretClientSecret.Text = "";
                     CRMOffice365UserName.Text = "";
-                    CRMOffice365Password.Text = "";
+                    CRMOffice365Password.Password = "";
                     break;
                 case AutenticationType.ClientSecret:
                     CRMOAuthUserName.Text = "";
-                    CRMOAuthPassword.Text = "";
+                    CRMOAuthPassword.Password = "";
                     CRMOAuthClientId.Text = "";
                     CRMOAuthRedirectUri.Text = "";
                     CRMOAuthTokenPath.Text = "";
@@ -274,14 +273,14 @@ namespace CRMResourceSynchronization
                     CRMADIFDTrue.IsChecked = false;
                     CRMADIFDFalse.IsChecked = true;
                     CRMADUserName.Text = "";
-                    CRMADPassword.Text = "";
+                    CRMADPassword.Password = "";
                     CRMCertificateThumprint.Text = "";
                     CRMOffice365UserName.Text = "";
-                    CRMOffice365Password.Text = "";
+                    CRMOffice365Password.Password = "";
                     break;
                 case AutenticationType.Office365:
                     CRMOAuthUserName.Text = "";
-                    CRMOAuthPassword.Text = "";
+                    CRMOAuthPassword.Password = "";
                     CRMOAuthClientId.Text = "";
                     CRMOAuthRedirectUri.Text = "";
                     CRMOAuthTokenPath.Text = "";
@@ -291,7 +290,7 @@ namespace CRMResourceSynchronization
                     CRMADIFDTrue.IsChecked = false;
                     CRMADIFDFalse.IsChecked = true;
                     CRMADUserName.Text = "";
-                    CRMADPassword.Text = "";
+                    CRMADPassword.Password = "";
                     CRMCertificateThumprint.Text = "";
                     CRMClientSecretClientId.Text = "";
                     CRMClientSecretClientSecret.Text = "";
@@ -308,7 +307,7 @@ namespace CRMResourceSynchronization
             ValidateConnectionClose.Visibility = Visibility.Visible;
             ValidateConnectionOpen.Visibility = Visibility.Hidden;
 
-            AuthenticationParameters authenticationParameters = new AuthenticationParameters();
+             AuthenticationParameters authenticationParameters = new AuthenticationParameters();
             authenticationParameters._CRMUrl = Settings.Default.CRMUrl;
             authenticationParameters._CRMUserName = Settings.Default.CRMUserName;
             authenticationParameters._CRMPassword = Settings.Default.CRMPassword;
@@ -348,7 +347,7 @@ namespace CRMResourceSynchronization
             if (rb.Name == "CRMOAuthIntegratedSecurityTrue" && rb.IsChecked != null && rb.IsChecked.Value)
             {
                 CRMOAuthPassword.IsEnabled = false;
-                CRMOAuthPassword.Text = "";
+                CRMOAuthPassword.Password = "";
             }
             else
             {

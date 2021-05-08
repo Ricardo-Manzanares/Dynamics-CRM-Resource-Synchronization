@@ -34,7 +34,7 @@ namespace CRMResourceSynchronization.Core.Business
 
                 var queryExpresion = new QueryExpression
                 {
-                    EntityName = EntityNames.Soluciones,
+                    EntityName = EntityNames.Solution,
                     ColumnSet = new ColumnSet("solutionid", "friendlyname"),
                     Distinct = true,
                     NoLock = true
@@ -65,7 +65,7 @@ namespace CRMResourceSynchronization.Core.Business
         /// <returns></returns>
         private Entity MapperToEntity(SolutionModel usuario)
         {
-            Entity entity = new Entity(EntityNames.Soluciones, Guid.Parse(usuario.solutionid));
+            Entity entity = new Entity(EntityNames.Solution, Guid.Parse(usuario.solutionid));
             entity["friendlyname"] = usuario.friendlyname;
             return entity;
         }

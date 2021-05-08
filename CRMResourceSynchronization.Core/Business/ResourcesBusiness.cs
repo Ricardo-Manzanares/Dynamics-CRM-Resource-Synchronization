@@ -14,6 +14,8 @@ using System.Dynamic;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model;
 using System.Security.AccessControl;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Crm.Sdk.Messages;
 
 namespace CRMResourceSynchronization.Core.Business
 {
@@ -31,7 +33,7 @@ namespace CRMResourceSynchronization.Core.Business
         /// <summary>
         /// Get resources from solution parameter
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<ResourceModel></returns>
         public List<ResourceModel> GetResourcesFromSolution(Guid solution)
         {
             try
@@ -43,7 +45,7 @@ namespace CRMResourceSynchronization.Core.Business
 
                 var queryExpresion = new QueryExpression
                 {
-                    EntityName = EntityNames.Recursos,
+                    EntityName = EntityNames.Resources,
                     ColumnSet = new ColumnSet("webresourceid"),
                     Distinct = true,
                     NoLock = true
@@ -58,8 +60,7 @@ namespace CRMResourceSynchronization.Core.Business
 
                 foreach (dynamic item in response.Entities)
                 {
-                    var responseResource = this._CRMClient._Client.Retrieve(EntityNames.Recursos, Guid.Parse(item.Attributes["webresourceid"].ToString()), new ColumnSet("webresourceid", "name", "createdon", "modifiedon", "content", "webresourcetype"));
-                    resources.Add(EntityToModel(responseResource));
+                    resources.Add(DonwloadResourceFromCRM(Guid.Parse(item.Attributes["webresourceid"].ToString())));
                 }
 
                 return resources;
@@ -71,17 +72,175 @@ namespace CRMResourceSynchronization.Core.Business
         }
 
         /// <summary>
+        /// Donwload resource from CRM
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns>ResourceModel</returns>
+        public ResourceModel DonwloadResourceFromCRM(Guid resourceId)
+        {
+            try
+            {
+                var responseResource = this._CRMClient._Client.Retrieve(EntityNames.Resources, resourceId, new ColumnSet("webresourceid", "name", "createdon", "modifiedon", "content", "webresourcetype"));
+                return EntityToModel(responseResource);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Upload resources to CRM environment
+        /// </summary>
+        /// <param name="solution"></param>
+        /// <returns>bool</returns>
+        public List<ExecuteMultipleResponseModel> UploadResources(List<ResourceModel> resources)
+        {
+            List<ExecuteMultipleResponseModel> lst_Response = new List<ExecuteMultipleResponseModel>();
+
+            try
+            {
+                if (this._CRMClient == null)
+                    throw new Exception("The connection to CRM is not configured, it is necessary before connecting to CRM");
+
+                ExecuteMultipleRequest executemultiplerequest = new ExecuteMultipleRequest();
+                executemultiplerequest.Settings = new ExecuteMultipleSettings();
+                executemultiplerequest.Settings.ContinueOnError = false;
+                executemultiplerequest.Settings.ReturnResponses = true;
+
+                executemultiplerequest.Requests = new OrganizationRequestCollection();
+
+                foreach (var resource in resources)
+                {
+                    Entity resourceUpdate = MapperToEntity(resource);
+                    UpdateRequest updateRequest = new UpdateRequest { Target = resourceUpdate };
+                    executemultiplerequest.Requests.Add(updateRequest);
+                }
+
+                ExecuteMultipleResponse responseWithResults = (ExecuteMultipleResponse)this._CRMClient._Client.Execute(executemultiplerequest);
+
+                lst_Response = ParseResponseExecuteMultiple(executemultiplerequest, responseWithResults);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return lst_Response;
+        }
+
+        /// <summary>
+        /// Upload and publish resources to CRM environment
+        /// </summary>
+        /// <param name="solution"></param>
+        /// <returns>bool</returns>
+        public List<ExecuteMultipleResponseModel> UploadAndPublishResources(List<ResourceModel> resources)
+        {
+            List<ExecuteMultipleResponseModel> lst_Response = new List<ExecuteMultipleResponseModel>();
+
+            try
+            {
+                if (this._CRMClient == null)
+                    throw new Exception("The connection to CRM is not configured, it is necessary before connecting to CRM");
+
+                List<ExecuteMultipleResponseModel> resourcesToPublish = UploadResources(resources);
+
+                if (resourcesToPublish.Where(k => k.error == false).Count() > 0)
+                {
+                    ExecuteMultipleRequest executemultiplerequest = new ExecuteMultipleRequest();
+                    executemultiplerequest.Settings = new ExecuteMultipleSettings();
+                    executemultiplerequest.Settings.ContinueOnError = false;
+                    executemultiplerequest.Settings.ReturnResponses = true;
+
+                    executemultiplerequest.Requests = new OrganizationRequestCollection();
+
+                    foreach (var resource in resourcesToPublish.Where(k => k.error == false))
+                    {
+                        PublishAllXmlRequest publishResource = new PublishAllXmlRequest();
+                        publishResource.RequestId = resource.id;
+                        executemultiplerequest.Requests.Add(publishResource);
+                    }
+
+                    ExecuteMultipleResponse responseWithResults = (ExecuteMultipleResponse)this._CRMClient._Client.Execute(executemultiplerequest);
+
+                    lst_Response = ParseResponseExecuteMultiple(executemultiplerequest, responseWithResults);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return lst_Response;
+        }
+
+        private List<ExecuteMultipleResponseModel> ParseResponseExecuteMultiple (ExecuteMultipleRequest executemultiplerequest, ExecuteMultipleResponse responseWithResults)
+        {
+            List<ExecuteMultipleResponseModel> lst_Response = new List<ExecuteMultipleResponseModel>();
+
+            try
+            {
+                foreach (var responseItem in responseWithResults.Responses)
+                {
+                    // A valid response.
+                    if (responseItem.Response != null)
+                    {
+                        ExecuteMultipleResponseModel resourceResponse = new ExecuteMultipleResponseModel();
+                        resourceResponse.id = GetIdTypeResponse(executemultiplerequest, responseItem);
+                        resourceResponse.name = executemultiplerequest.Requests[responseItem.RequestIndex].RequestName;
+                        resourceResponse.description = responseItem.Response.ResponseName;
+                        resourceResponse.error = false;
+                        lst_Response.Add(resourceResponse);
+
+                        // An error has occurred.
+                    } else if (responseItem.Fault != null) {
+                        ExecuteMultipleResponseModel resourceResponse = new ExecuteMultipleResponseModel();
+                        resourceResponse.id = GetIdTypeResponse(executemultiplerequest, responseItem);
+                        resourceResponse.name = executemultiplerequest.Requests[responseItem.RequestIndex].RequestName;
+                        resourceResponse.description = "Error code : " + responseItem.Fault.ErrorCode + " - Error message : " + responseItem.Fault.Message + " - Error details : " + responseItem.Fault.ErrorDetails;
+                        resourceResponse.error = true;
+                        lst_Response.Add(resourceResponse);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return lst_Response;
+        }
+
+        private Guid GetIdTypeResponse(ExecuteMultipleRequest requests, ExecuteMultipleResponseItem item)
+        {
+            Guid id = Guid.Empty;
+            var typeOperation = requests.Requests[item.RequestIndex];
+            switch (typeOperation.GetType().Name)
+            {
+                case "UpdateRequest":
+                    id = ((UpdateRequest)requests.Requests[item.RequestIndex]).Target.Id;
+                    break;
+                case "PublishAllXmlRequest":
+                    id = ((PublishAllXmlRequest)requests.Requests[item.RequestIndex]).RequestId.Value;
+                    break;
+                default:
+                    break;
+            }
+            return id;
+        }
+
+        /// <summary>
         /// Mapper model resource to resource entity
         /// </summary>
         /// <param name="recurso"></param>
         /// <returns></returns>
         private dynamic MapperToEntity(ResourceModel recurso)
         {
-            Entity entity = new Entity(EntityNames.Recursos, recurso.resourceid);
+            Entity entity = new Entity(EntityNames.Resources, recurso.resourceid);
             entity["name"] = recurso.name;
-            entity["createdon"] = recurso.createdon;
-            entity["modifiedon"] = recurso.modifiedon;
-            entity["content"] = recurso.contentCRM;
+            entity["createdon"] = recurso.localcreatedon;
+            entity["modifiedon"] = recurso.localmodifiedon;
+            entity["content"] = Convert.ToBase64String(Encoding.UTF8.GetBytes(recurso.contentLocal));
             entity["webresourcetype"] = recurso.webresourcetype;
             return entity;
         }

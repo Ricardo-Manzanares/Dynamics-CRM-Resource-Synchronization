@@ -55,7 +55,7 @@
                 <TextBlock Text="Username" Grid.Row="0" Grid.Column="0"></TextBlock>
                 <TextBox x:Name="CRMADUserName" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" BorderBrush="Transparent"/>
                 <TextBlock Text="Password" Grid.Row="0" Grid.Column="2"></TextBlock>
-                <TextBox x:Name="CRMADPassword" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap" BorderBrush="Transparent"/>
+                <PasswordBox x:Name="CRMADPassword" Grid.Row="1" Grid.Column="2" PasswordChar="*" BorderBrush="Transparent" />
                 <TextBlock Text="IFD" Grid.Row="2" Grid.Column="0"></TextBlock>
                 <RadioButton x:Name="CRMADIFDTrue" Grid.Row="7" Grid.Column="0" Margin="0,5,0,0" GroupName="IFD">True</RadioButton>
                 <RadioButton x:Name="CRMADIFDFalse" Grid.Row="7" Grid.Column="0" Margin="45,5,0,0" GroupName="IFD">False</RadioButton>
@@ -82,7 +82,7 @@
                 <TextBlock Text="Username" Grid.Row="0" Grid.Column="0"></TextBlock>
                 <TextBox x:Name="CRMOAuthUserName" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" TextWrapping="Wrap" BorderBrush="Transparent"/>
                 <TextBlock Text="Password" Grid.Row="0" Grid.Column="2"></TextBlock>
-                <TextBox x:Name="CRMOAuthPassword" Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" TextWrapping="Wrap" BorderBrush="Transparent"/>
+                <PasswordBox x:Name="CRMOAuthPassword" Grid.Row="1" Grid.Column="2" PasswordChar="*" BorderBrush="Transparent" />
                 <TextBlock Text="ClientId" Grid.Row="2" Grid.Column="0"></TextBlock>
                 <TextBox x:Name="CRMOAuthClientId" Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" TextWrapping="Wrap" BorderBrush="Transparent"/>
                 <TextBlock Text="RedirectUri" Grid.Row="2" Grid.Column="2"></TextBlock>
@@ -148,7 +148,7 @@
                 <TextBlock Text="Username" Grid.Row="0" Grid.Column="0"></TextBlock>
                 <TextBox x:Name="CRMOffice365UserName" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" BorderBrush="Transparent"/>
                 <TextBlock Text="Password" Grid.Row="0" Grid.Column="2"></TextBlock>
-                <TextBox x:Name="CRMOffice365Password" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap" BorderBrush="Transparent"/>
+                <PasswordBox x:Name="CRMOffice365Password" Grid.Row="1" Grid.Column="2" PasswordChar="*" BorderBrush="Transparent" />
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="4">
