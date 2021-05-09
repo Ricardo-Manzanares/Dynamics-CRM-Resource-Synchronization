@@ -263,15 +263,15 @@ namespace CRMResourceSynchronization.Core.Business
             if (!string.IsNullOrEmpty(model.contentCRM))
             {
                 model.contentCRM = Encoding.UTF8.GetString(Convert.FromBase64String(model.contentCRM));
-                processResourceInLocal(model);
+                GetResourceLocal(model);
             }          
 
             return model;
         }
 
-        public void processResourceInLocal (ResourceModel resource)
+        public void GetResourceLocal (ResourceModel resource)
         {
-            string pathResourceLocal = existResourceLocal(resource);
+            string pathResourceLocal = GetPathResourceLocal(resource);
             if (pathResourceLocal != null)
             {
                 resource.pathlocal = pathResourceLocal;
@@ -284,7 +284,7 @@ namespace CRMResourceSynchronization.Core.Business
             }
         }
 
-        private string existResourceLocal (ResourceModel resource)
+        private string GetPathResourceLocal (ResourceModel resource)
         {
             PathAndNameResourceModel resourceModel = Utils.getFormatPathAndNameResource(this._Settings, resource.name, resource.webresourcetype);
 

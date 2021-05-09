@@ -21,9 +21,9 @@ namespace CRMResourceSynchronization
     public partial class CompareResourceWindowControl : UserControl
     {
         private CRMClient CRMClient = null;
-        public SolutionsBusiness solutions { get; set; }
+        private SolutionsBusiness solutions { get; set; }
         private List<SolutionModel> listSolutions = new List<SolutionModel>();
-        public ResourcesBusiness resources { get; set; }
+        private ResourcesBusiness resourcesBusiness { get; set; }
         private List<ResourceModel> listResources = new List<ResourceModel>();
 
         private enum VisibilityType { Visible, Hidden, Disabled}
@@ -185,8 +185,8 @@ namespace CRMResourceSynchronization
                     {
                         if (connectCRM())
                         {
-                            resources = new ResourcesBusiness(CRMClient, reloadSettingsToModel());
-                            listResources = resources.GetResourcesFromSolution(solutionParse);
+                            resourcesBusiness = new ResourcesBusiness(CRMClient, reloadSettingsToModel());
+                            listResources = resourcesBusiness.GetResourcesFromSolution(solutionParse);
                             listResources = listResources.OrderBy(k => k.name).ToList();
                             if (listResources.Count > 0)
                             {
@@ -619,7 +619,8 @@ namespace CRMResourceSynchronization
                     btnFirst.IsEnabled = false;
                     btnFirst.Opacity = 0.4;
                     break;
-                case (int)PagingMode.Refresh:                    
+                case (int)PagingMode.Refresh:
+                    DataResources.ItemsSource = null;
                     if (pageIndex > 1)
                     {
                         listResources = listResources.GetRange(((pageIndex - 1) * numberOfRecPerPage), listResources.Count - ((pageIndex - 1) * numberOfRecPerPage));
@@ -641,7 +642,6 @@ namespace CRMResourceSynchronization
 
                     lblpageInformation.Content = to + " to " + listResources.Count;
                     DataResources.ItemsSource = listResources;
-
                     break;
                 case (int)PagingMode.Filter:
                     newData = listResources;
@@ -802,7 +802,6 @@ namespace CRMResourceSynchronization
         {
             try
             {
-                bool finish = false;
                 loading.Visibility = Visibility.Visible;
                 ActionsOfSolutions(VisibilityType.Disabled);
                 ActionsOfResources(VisibilityType.Disabled);
@@ -810,7 +809,7 @@ namespace CRMResourceSynchronization
 
                 Window w = new Window();
                 w.Title = "Differences of resources";
-                w.Content = new DifferencesResourceWindowControlControl(listResources.Where(k => k.selectResource == true).ToList());
+                w.Content = new DifferencesResourceWindowControlControl(resourcesBusiness, listResources.Where(k => k.selectResource == true).ToList());
                 w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 w.ShowDialog();
 
@@ -868,7 +867,7 @@ namespace CRMResourceSynchronization
                         if (Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Write))
                         {
                             File.WriteAllText(resourceModel.path + resourceModel.name, resource.contentCRM);
-                            resources.processResourceInLocal(resource);
+                            resourcesBusiness.GetResourceLocal(resource);
                         }
                     }
                 }
@@ -912,7 +911,7 @@ namespace CRMResourceSynchronization
 
             await Task.Run(() =>
             {
-                responses = resources.UploadResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
+                responses = resourcesBusiness.UploadResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
             }).ContinueWith(resp => {
 
             });
@@ -954,7 +953,7 @@ namespace CRMResourceSynchronization
             List<ExecuteMultipleResponseModel> responses = new List<ExecuteMultipleResponseModel>();
             await Task.Run(() =>
             {
-                responses = resources.UploadAndPublishResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
+                responses = resourcesBusiness.UploadAndPublishResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
                
             }).ContinueWith(resp => {
 
@@ -981,7 +980,7 @@ namespace CRMResourceSynchronization
                     if (!item.error)
                     {
                         int indexResourceInList = listResources.IndexOf(listResources.Where(k => k.resourceid == item.id).FirstOrDefault());
-                        ResourceModel lastContentResourceFromCRM = resources.DonwloadResourceFromCRM(item.id);
+                        ResourceModel lastContentResourceFromCRM = resourcesBusiness.DonwloadResourceFromCRM(item.id);
                         listResources[indexResourceInList] = lastContentResourceFromCRM;
                     }
                 }

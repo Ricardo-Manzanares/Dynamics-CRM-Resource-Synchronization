@@ -1,4 +1,5 @@
-﻿using CRMResourceSynchronization.Core.Business.Models;
+﻿using CRMResourceSynchronization.Core.Business;
+using CRMResourceSynchronization.Core.Business.Models;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder;
 using CRMResourceSynchronization.Core.DiffPlex.DiffBuilder.Model;
 using System;
@@ -19,26 +20,26 @@ namespace CRMResourceSynchronization
     {
         private ResourceModel resource { get; set; }
         private List<ResourceModel> resources { get; set; }
+        private ResourcesBusiness resourcesBusiness { get; set; }
 
         private int posResource = 0;
-
         private ScrollViewer resourceCRMScroll, resourceLocalScroll, resourceCombinedScroll = new ScrollViewer();
-              
+        public string InfoResourceDefaultText = "Differences in resource ";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DifferencesResourceWindowControlControl"/> class.
         /// </summary>
-        public DifferencesResourceWindowControlControl(List<ResourceModel> resourcesToView)
+        public DifferencesResourceWindowControlControl(ResourcesBusiness resourceBusiness, List<ResourceModel> resourcesToView)
         {
             this.InitializeComponent();
 
-            if (resourcesToView is null)
+            if (resourcesToView is null || resourceBusiness is null)
                 return;
+
+            this.resourcesBusiness = resourceBusiness;
 
             resources = resourcesToView;
             loadResource();
-
-            InfoResourcesSize.Text = "1 of " + resourcesToView.Count;
         }
 
         private void loadResource()
@@ -69,15 +70,25 @@ namespace CRMResourceSynchronization
             }
 
             resource = null;
-            ResourceCRM.Items.Clear();
-            ResourceLocal.Items.Clear();
-            ResourceCombined.Items.Clear();
+            ResourceCRM.ItemsSource = null;
+            ResourceLocal.ItemsSource = null;
+            ResourceCombined.ItemsSource = null;
+            Modified.Text = "";
+            Unchanged.Text = "";
+            Inserted.Text = "";
+            Deleted.Text = "";
 
+            //Set info of resource CRM and Local
+            InfoResource.Text = InfoResourceDefaultText;
+            InfoResourcesSize.Text = (posResource + 1) + " of " + resources.Count;
             resource = resources[posResource];
+
+            //Get last content of resource local
+            resourcesBusiness.GetResourceLocal(resource);
 
             if (!string.IsNullOrEmpty(resource.contentCRM) && !string.IsNullOrEmpty(resource.contentLocal))
             {
-                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
+                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);                
 
                 ResourceCRM.ItemsSource = resource.resourceCompareStatus.OldText.Lines;
                 ResourceLocal.ItemsSource = resource.resourceCompareStatus.NewText.Lines;

@@ -23,12 +23,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>        
-        <TextBlock x:Name="InfoResource" Text="Differences in resource " Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="0" Margin="10, 10, 10, 0" ></TextBlock>
+        <TextBlock x:Name="InfoResource" Text="" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="0" Margin="10, 10, 10, 0" ></TextBlock>
         <StackPanel Grid.Column="2" Width="80" HorizontalAlignment="Right" Margin="10, 10, 10, 0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Height="15" Width="15" Background="Transparent" BorderBrush="Transparent" Name="btnPrev" Click="btnPrev_Click">
@@ -54,7 +54,7 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <TextBlock x:Name="InfoResourcesSize" Text="" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="0" ></TextBlock>
+                <TextBlock x:Name="InfoResourcesSize" Text="" Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" ></TextBlock>
                 <Button Grid.Column="2" Height="15" Width="15" Background="Transparent" BorderBrush="Transparent" Name="btnNext" Click="btnNext_Click">
                     <Image>
                         <Image.Source>

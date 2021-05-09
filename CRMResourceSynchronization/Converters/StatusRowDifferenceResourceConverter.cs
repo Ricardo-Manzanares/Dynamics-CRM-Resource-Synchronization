@@ -18,7 +18,7 @@ namespace CRMResourceSynchronization.Converters
             }
             else
             {
-                return "#FFFFFF";
+                return "#F0F0F0";
             }
         }
 
