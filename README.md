@@ -1,5 +1,5 @@
 # Dynamics-CRM-Resource-Synchronization
-Extension for Visual Studio superior to version 2017.
+Extension for Visual Studio higher to version 2017.
 
 It allows you to view and download CRM resource content from custom solutions, compare CRM resource versus resource differences, upload resources after merging differences between different sources (CRM vs Local), and publish selected resources to CRM.
 
