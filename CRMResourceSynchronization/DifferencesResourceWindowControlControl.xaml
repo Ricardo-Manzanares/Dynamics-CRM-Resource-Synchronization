@@ -8,6 +8,8 @@
     <UserControl.Resources>
         <Converters:StatusRowConverter x:Key="StatusRowConverter" />
         <Converters:SelectedMergeRowConverter x:Key="SelectedMergeRowConverter" />
+        <Converters:EnabledMergeRowConverter x:Key="EnabledMergeRowConverter" />
+        <Converters:CheckedMergeRowConverter x:Key="CheckedMergeRowConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Grid.Row="0">
         <Grid.ColumnDefinitions>
@@ -20,6 +22,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>        
@@ -206,7 +209,17 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView x:Name="ResourceCombined" Grid.Row="4" Grid.ColumnSpan="3" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10">
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="PendingConflict" Text="Pending conflict" Padding="5" FontSize="11" Grid.Column="0" Background="#FFFF00" />
+                <TextBlock x:Name="SolvedConflict" Text="Solved conflict" Padding="5" FontSize="11" Grid.Column="1" Background="#00E400" />
+            </Grid>
+        </StackPanel>
+        <ListView x:Name="ResourceCombined" Grid.Row="5" Grid.ColumnSpan="3" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10, 0, 10, 10">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Focusable" Value="False"/>
@@ -243,14 +256,14 @@
                             <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" Visibility="{Binding Type, Converter={StaticResource SelectedMergeRowConverter }}" Margin="3" />
+                        <CheckBox x:Name="MergeLine" Grid.Column="0" Visibility="{Binding Type, Converter={StaticResource SelectedMergeRowConverter }}" IsChecked="{Binding Type, Converter={StaticResource CheckedMergeRowConverter }}" IsEnabled="{Binding Type, Converter={StaticResource EnabledMergeRowConverter }}" Margin="3" Click="MergeLine_Click" />
                         <TextBlock Grid.Column="1" Text="{Binding Position}" FontWeight="Bold" />
                         <TextBlock Grid.Column="2" Text="{Binding Text}" Background="{Binding Type, Converter={StaticResource StatusRowConverter}}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Row="5" Grid.Column="3" HorizontalAlignment="Right" Margin="10">
+        <StackPanel Grid.Row="6" Grid.Column="3" HorizontalAlignment="Right" Margin="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

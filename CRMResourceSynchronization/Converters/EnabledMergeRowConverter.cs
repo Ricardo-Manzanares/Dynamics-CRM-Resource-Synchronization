@@ -4,42 +4,28 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace CRMResourceSynchronization.Converters
 {
-    public class StatusRowConverter : IValueConverter
+    public class EnabledMergeRowConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,  object parameter, CultureInfo culture)
         {
             string myValue = value.ToString();
-            string output;
+            bool output;
 
             switch (myValue)
             {
-                case "Modified":
-                    output = "#FF9999";
-                    break;
-                case "Unchanged":
-                    output = "#FFFFFF";
-                    break;
-                case "Inserted":
-                    output = "#D7E3BC";
-                    break;
-                case "Deleted":
-                    output = "#FF0000";
-                    break;
                 case "Merged":
-                    output = "#00E400";
-                    break;
-                case "Conflict":
-                    output = "#FFFF00";
+                    output = true;
                     break;
                 case "UnMerged":
-                    output = "#C0C0C0";
+                    output = false;
                     break;
                 default:
-                    output = "#C0C0C0";
+                    output = true;
                     break;
             }
 

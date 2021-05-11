@@ -357,7 +357,7 @@ namespace CRMResourceSynchronization
                     enableBtnUploadAndPublishResource = false;
 
                 if (enableBtnCompareResource && String.IsNullOrEmpty(resource.contentLocal))
-                    enableBtnUploadAndPublishResource = false;
+                    enableBtnCompareResource = false;
             }
 
             //Enabled/Disabled button donwload resources
@@ -366,10 +366,15 @@ namespace CRMResourceSynchronization
                 CRMDownloadResource.Opacity = 1;
                 CRMDownloadResource.IsEnabled = true;
                 CRMDownloadResource.Visibility = Visibility.Visible;
-                if (enableBtnUploadAndPublishResource)
+                if (enableBtnCompareResource)
                 {
                     CRMCompareResources.Opacity = 1;
                     CRMCompareResources.IsEnabled = true;
+                }
+                else
+                {
+                    CRMCompareResources.Opacity = 0.4;
+                    CRMCompareResources.IsEnabled = false;
                 }
             }
             else
@@ -809,7 +814,7 @@ namespace CRMResourceSynchronization
 
                 Window w = new Window();
                 w.Title = "Differences of resources";
-                w.Content = new DifferencesResourceWindowControlControl(resourcesBusiness, listResources.Where(k => k.selectResource == true).ToList());
+                w.Content = new DifferencesResourceWindowControlControl(reloadSettingsToModel(), resourcesBusiness, listResources.Where(k => k.selectResource == true).ToList());
                 w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 w.ShowDialog();
 

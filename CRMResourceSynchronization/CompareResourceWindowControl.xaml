@@ -385,22 +385,81 @@
                 </Button>
                 <Button Grid.Column="2" Click="ConfigPaths_Click" x:Name="ConfigPaths" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
                     <Image RenderTransformOrigin="0.5,0.5">
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="90"/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
-                                    <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-                                        <GeometryDrawing Geometry="F1 M24,24z M0,0z M12,6L12,4 M12,6A2,2,0,1,0,12,10 M12,6A2,2,0,1,1,12,10 M6,18A2,2,0,1,0,6,14 M6,18A2,2,0,1,1,6,14 M6,18L6,20 M6,14L6,4 M12,10L12,20 M18,18A2,2,0,1,0,18,14 M18,18A2,2,0,1,1,18,14 M18,18L18,20 M18,14L18,4">
+                                    <DrawingGroup ClipGeometry="M0,0 V32 H32 V0 H0 Z">
+                                        <GeometryDrawing>
                                             <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
                                             </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="23,7" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="3,7" EndPoint="20,7" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="29,7" EndPoint="26,7" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="12,16" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="3,16" EndPoint="9,16" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="29,16" EndPoint="15,16" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="23,25" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="3,25" EndPoint="20,25" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <LineGeometry StartPoint="29,25" EndPoint="26,25" />
+                                            </GeometryDrawing.Geometry>
                                         </GeometryDrawing>
                                     </DrawingGroup>
                                 </DrawingImage.Drawing>

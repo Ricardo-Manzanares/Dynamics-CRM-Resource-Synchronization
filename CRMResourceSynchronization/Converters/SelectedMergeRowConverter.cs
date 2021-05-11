@@ -30,6 +30,15 @@ namespace CRMResourceSynchronization.Converters
                 case "Deleted":
                     output = Visibility.Visible;
                     break;
+                case "Merged":
+                    output = Visibility.Visible;
+                    break;
+                case "UnMerged":
+                    output = Visibility.Visible;
+                    break;
+                case "Conflict":
+                    output = Visibility.Visible;
+                    break;
                 default:
                     output = Visibility.Hidden;
                     break;

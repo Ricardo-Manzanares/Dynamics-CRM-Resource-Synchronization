@@ -88,7 +88,7 @@ namespace CRMResourceSynchronization.Core.DiffPlex.DiffBuilder
 
                 int i = 0;
                 for (; i < Math.Min(diffBlock.DeleteCountA, diffBlock.InsertCountB); i++)
-                    pieces.Add(new DiffPiece(diffResult.PiecesOld[i + diffBlock.DeleteStartA], ChangeType.Deleted));
+                    pieces.Add(new DiffPiece(diffResult.PiecesOld[i + diffBlock.DeleteStartA], ChangeType.Deleted, bPos + 1));
 
                 i = 0;
                 for (; i < Math.Min(diffBlock.DeleteCountA, diffBlock.InsertCountB); i++)
@@ -100,7 +100,7 @@ namespace CRMResourceSynchronization.Core.DiffPlex.DiffBuilder
                 if (diffBlock.DeleteCountA > diffBlock.InsertCountB)
                 {
                     for (; i < diffBlock.DeleteCountA; i++)
-                        pieces.Add(new DiffPiece(diffResult.PiecesOld[i + diffBlock.DeleteStartA], ChangeType.Deleted));
+                        pieces.Add(new DiffPiece(diffResult.PiecesOld[i + diffBlock.DeleteStartA], ChangeType.Deleted, bPos + 1));
                 }
                 else
                 {

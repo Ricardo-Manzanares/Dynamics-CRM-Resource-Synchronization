@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Controls\ExtensionMethods.cs" />
     <Compile Include="Controls\ImageBehavior.cs" />
+    <Compile Include="Converters\CheckedMergeRowConverter.cs" />
+    <Compile Include="Converters\EnabledMergeRowConverter.cs" />
     <Compile Include="Converters\SelectedMergeRowConverter.cs" />
     <Compile Include="Converters\NameTypeResourceConverter.cs" />
     <Compile Include="Converters\StatusRowDifferenceResourceConverter.cs" />
