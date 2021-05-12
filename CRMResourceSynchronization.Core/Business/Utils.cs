@@ -15,11 +15,6 @@ namespace CRMResourceSynchronization.Core.Business
 {
     public static class Utils
     {
-        public static string GetDescriptionStatusFromEnumValue<T>(String value)
-        {
-            return GetEnumDescriptionFromValue<T>(value);
-        }
-
         public static string GetEnumValueFromDescription<T>(string description)
         {
             var type = typeof(T);

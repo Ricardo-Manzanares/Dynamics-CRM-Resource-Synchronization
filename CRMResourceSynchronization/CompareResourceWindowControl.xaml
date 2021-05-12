@@ -9,6 +9,7 @@
              Name="CompareResource">
     <UserControl.Resources>
         <Converters:NameTypeResourceConverter x:Key="NameTypeResourceConverter" />
+        <Converters:NameDifferenceResourceConverter x:Key="NameDifferenceResourceConverter" />
         <Converters:StatusRowDifferenceResourceConverter x:Key="StatusRowDifferenceResourceConverter" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
@@ -18,7 +19,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -40,7 +43,7 @@
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
                 <ComboBox x:Name="CRMSolutions" Grid.Column="0" Margin="10" IsEnabled="False" SelectionChanged="CRMSolutions_SelectionChanged" />
-                <Button Grid.Column="1" Click="CRMLoadSolutions_Click" Background="Transparent" ToolTip="Load environment solutions" x:Name="CRMLoadSolutions" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand" >
+                <Button Grid.Column="1" Click="CRMLoadSolutions_Click" Background="Transparent" ToolTip="Load environment solutions" x:Name="CRMLoadSolutions" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand" >
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -91,17 +94,20 @@
                     <ComboBoxItem Content="Vector format (SVG) .svg" Tag="11" />
                     <ComboBoxItem Content="Chain (RESX) .resx" Tag="12" />
                 </ComboBox>
-                <Button Grid.Column="2" Click="CRMSearchResource_Click" Background="Transparent" IsEnabled="False" x:Name="CRMSearchResource" ToolTip="Filter solution resources" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Column="2" Click="CRMSearchResource_Click" Background="Transparent" IsEnabled="False" x:Name="CRMSearchResource" ToolTip="Filter solution resources" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
-                                    <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-                                        <GeometryDrawing Geometry="F1 M24,24z M0,0z M22,3L22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3z">
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                        </GeometryDrawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V64 H64 V0 H0 Z">
+                                        <DrawingGroup.Transform>
+                                            <TranslateTransform X="0.0029550245963037014" Y="1.6138561704792664E-06" />
+                                        </DrawingGroup.Transform>
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF35353D" Geometry="F1 M64,64z M0,0z M37.33,64A2.8,2.8,0,0,1,36.69,63.92L26,61.25A2.65,2.65,0,0,1,24,58.67L24,33 0.6,4.36A2.67,2.67,0,0,1,2.67,0L61.33,0A2.67,2.67,0,0,1,63.4,4.36L40,33 40,61.33A2.68,2.68,0,0,1,37.33,64z M29.33,56.58L34.67,57.92 34.67,32A2.66,2.66,0,0,1,35.27,30.31L55.71,5.31 8.29,5.31 28.73,30.31A2.66,2.66,0,0,1,29.33,32z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
                                     </DrawingGroup>
                                 </DrawingImage.Drawing>
                             </DrawingImage>
@@ -109,30 +115,29 @@
                     </Image>
                 </Button>
             </Grid>
-            <Grid>
+            <Grid Margin="10, 10, 10, 0">
                 <Grid x:Name="GridResourceActions">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="120" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Download resource to proyect" x:Name="CRMDownloadResource" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMDownloadResource_Click" >
+                    <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsEnabled="False" ToolTip="Download resource to proyect" x:Name="CRMDownloadResource" BorderBrush="Transparent" Height="50" Width="50" BorderThickness="0" Cursor="Hand" Click="CRMDownloadResource_Click" >
+                        <Button.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Button.Background>
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
-                                        <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                        <DrawingGroup ClipGeometry="M0,0 V32 H32 V0 H0 Z">
                                             <DrawingGroup Opacity="1">
                                                 <DrawingGroup Opacity="1">
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M423,121C400.5,56.2 334,11.9 257,11.9 180,11.9 113.5,56.2 91,121 43.9,136.2 12,176.5 12,222.4 12,281.9 65.7,330.4 131.7,330.4 143,330.4 152.1,321.3 152.1,310 152.1,298.7 143,289.6 131.7,289.6 88.2,289.6 52.8,259.5 52.8,222.5 52.8,192.1 77,165.4 111.7,157.7 119.2,156 125.1,150.3 127,142.8 140.4,90.6 195,52.8 256.9,52.8 318.8,52.8 373.4,90.7 386.8,142.8 388.7,150.2 394.6,156 402.1,157.7 436.8,165.4 461,192.1 461,222.5 461,259.5 425.6,289.6 382.1,289.6 370.8,289.6 361.7,298.7 361.7,310 361.7,321.3 370.8,330.4 382.1,330.4 448.1,330.4 501.8,282 501.8,222.4 502,176.5 470.1,136.2 423,121z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M356.2,399.7C344.9,399.7,335.8,408.8,335.8,420.1L335.8,461.1 178.2,461.1 178.2,420.1C178.2,408.8 169.1,399.7 157.8,399.7 146.5,399.7 137.4,408.8 137.4,420.1L137.4,481.5C137.4,492.8,146.5,501.9,157.8,501.9L356.3,501.9C367.6,501.9,376.7,492.8,376.7,481.5L376.7,420.1C376.7,408.9,367.5,399.7,356.2,399.7z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257,213.9C245.7,213.9,236.6,223,236.6,234.3L236.6,346 215.8,326.5C207.6,318.8 194.6,319.2 186.9,327.4 179.2,335.6 179.6,348.6 187.8,356.3L243,408C252.2,417.2,262.2,416.7,270.9,408L326.1,356.3C334.3,348.6 334.8,335.7 327,327.4 319.3,319.2 306.4,318.8 298.1,326.5L277.4,346 277.4,234.4C277.4,223.1,268.3,213.9,257,213.9z" />
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F0 M32,32z M0,0z M16,25.049999L12.75,21.799999 12,22.549999 16.5,27.049999 21,22.549999 20.25,21.799999 17,25.049999 17,14 16,14 16,25.049999 16,25.049999z M19.5,3L9.00276013,3C7.89666625,3,7,3.89833832,7,5.00732994L7,27.9926701C7,29.1012878,7.89092539,30,8.99742191,30L24.0025781,30C25.1057238,30,26,29.1017876,26,28.0092049L26,10.5 26,10 20,3 19.5,3 19.5,3 19.5,3z M19,4L8.9955775,4C8.44573523,4,8,4.45526288,8,4.99545703L8,28.004543C8,28.5543187,8.45470893,29,8.9999602,29L24.0000398,29C24.5523026,29,25,28.5550537,25,28.0066023L25,11 20.9979131,11C19.8944962,11,19,10.1134452,19,8.99408095L19,4 19,4z M20,4.5L20,8.99121523C20,9.54835167,20.4506511,10,20.9967388,10L24.6999512,10 20,4.5 20,4.5z" />
                                                 </DrawingGroup>
                                             </DrawingGroup>
                                         </DrawingGroup>
@@ -141,17 +146,18 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Grid.Column="2" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload resource to CRM" BorderBrush="Transparent" x:Name="CRMUploadResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMUploadResource_Click">
+                    <Button Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsEnabled="False" ToolTip="Upload resource to CRM" BorderBrush="Transparent" x:Name="CRMUploadResource" Height="50" Width="50" BorderThickness="0" Cursor="Hand" Click="CRMUploadResource_Click">
+                        <Button.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Button.Background>
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
-                                        <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
+                                        <DrawingGroup ClipGeometry="M0,0 V32 H32 V0 H0 Z">
                                             <DrawingGroup Opacity="1">
                                                 <DrawingGroup Opacity="1">
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M423,121C400.5,56.2 334,11.9 257,11.9 180,11.9 113.5,56.2 91,121 43.9,136.2 12,176.5 12,222.4 12,281.9 65.7,330.4 131.7,330.4 143,330.4 152.1,321.3 152.1,310 152.1,298.7 143,289.6 131.7,289.6 88.2,289.6 52.8,259.5 52.8,222.5 52.8,192.1 77,165.4 111.8,157.7 119.3,156 125.2,150.3 127.1,142.8 140.5,90.6 195.1,52.8 257,52.8 318.9,52.8 373.6,90.7 386.9,142.8 388.8,150.2 394.7,156 402.2,157.7 436.9,165.4 461.1,192.1 461.1,222.5 461.1,259.5 425.7,289.6 382.2,289.6 370.9,289.6 361.8,298.7 361.8,310 361.8,321.3 370.9,330.4 382.2,330.4 448.2,330.4 501.9,282 501.9,222.4 502,176.5 470.1,136.2 423,121z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M356.2,399.7C344.9,399.7,335.8,408.8,335.8,420.1L335.8,461.1 178.2,461.1 178.2,420.1C178.2,408.8 169.1,399.7 157.8,399.7 146.5,399.7 137.4,408.8 137.4,420.1L137.4,481.5C137.4,492.8,146.5,501.9,157.8,501.9L356.3,501.9C367.6,501.9,376.7,492.8,376.7,481.5L376.7,420.1C376.7,408.9,367.5,399.7,356.2,399.7z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257,413.5C268.3,413.5,277.4,404.4,277.4,393.1L277.4,281.5 298.2,301C306.4,308.7 319.3,308.3 327.1,300.1 334.8,291.9 334.4,279 326.2,271.2L271,219.4C267.1,215.7 262.1,213.9 257,213.9 252,213.9 247,215.7 243,219.4L187.8,271.1C179.6,278.8 179.1,291.7 186.9,300 194.6,308.3 207.5,308.7 215.8,300.9L236.6,281.4 236.6,393C236.6,404.4,245.7,413.5,257,413.5z" />
+                                                    <GeometryDrawing Brush="#FF000000" Geometry="F0 M32,32z M0,0z M16,29L9,29C8.4547,29,8,28.5543,8,28.0045L8,4.9955C8,4.4553,8.4457,4,8.9956,4L19,4 19,8.9941C19,10.1134,19.8945,11,20.9979,11L25,11 25,28.0066C25,28.5551,24.5523,29,24,29L17,29 17,19 20.25,22.25 21,21.5 16.5,17 12,21.5 12.75,22.25 16,19 16,29 17,28 17,29 17,29 16,29 16,28 17,28z M19.5,3L9.0028,3C7.8967,3,7,3.8983,7,5.0073L7,27.9927C7,29.1013,7.8909,30,8.9974,30L24.0026,30C25.1057,30,26,29.1018,26,28.0092L26,10.5 26,10 20,3 19.5,3 19.5,3 19.5,3z M20,4.5L20,8.9912C20,9.5484,20.4507,10,20.9967,10L24.7,10 20,4.5 20,4.5z" />
                                                 </DrawingGroup>
                                             </DrawingGroup>
                                         </DrawingGroup>
@@ -160,16 +166,46 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Grid.Column="3" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Upload and publish resource to CRM" BorderBrush="Transparent" x:Name="CRMPublishResource" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMPublishResource_Click">
+                    <Button Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsEnabled="False" ToolTip="Upload and publish resource to CRM" BorderBrush="Transparent" x:Name="CRMPublishResource" Height="50" Width="50" BorderThickness="0" Cursor="Hand" Click="CRMPublishResource_Click">
+                        <Button.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Button.Background>
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
-                                        <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
-                                            <DrawingGroup Opacity="1">
+                                        <DrawingGroup ClipGeometry="M0,0 V398 H283 V0 H0 Z">
+                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-991,-229">
+                                                <DrawingGroup.ClipGeometry>
+                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="991,229,283,398" />
+                                                </DrawingGroup.ClipGeometry>
                                                 <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="992,229,281,397" />
+                                                    </DrawingGroup.ClipGeometry>
                                                     <DrawingGroup Opacity="1">
-                                                        <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M460.9,245.9C459.9,266.4,442.7,282.3,422.2,282.3L402.9,282.3C378.9,225.5 322.5,185.5 257,185.5 192.1,185.5 136.2,224.8 111.8,280.8 79.2,274.2 54.1,246.1 53.1,211.7 52,174.3 79.5,142.1 116.4,137.3 131.6,135.3 144.4,125.1 149.7,110.7 162.1,76.2 195.2,53 231.9,53 267.1,53 298.8,74 312.6,106.4 319,121.4 333.6,131.2 349.9,131.4 361.4,131.5 372.5,135.8 381.2,143.3 389.8,150.8 395.5,161.1 397.2,172.3 399.8,189.5 413,203.1 430,206.4 448.5,210 461.8,226.8 460.9,245.9z M327.6,323.3C326,293.6 321.1,264.2 312.5,240.2 343.6,256.9 366.4,287.3 372.7,323.3L327.6,323.3z M312.5,447.2C321.1,423.2,326.1,393.8,327.6,364.1L372.7,364.1C366.3,400.1,343.6,430.5,312.5,447.2z M227.3,323.3C230.8,261.1 249.5,228.5 256.7,226.3 256.8,226.3 256.8,226.3 256.9,226.3 264.6,228.5 283.3,261.1 286.8,323.3L227.3,323.3z M257,461.1C249.2,458.5,230.7,425.9,227.3,364.1L286.8,364.1C283.3,425.9,264.8,458.5,257,461.1z M186.4,323.3L141.3,323.3C147.6,287.3 170.4,257 201.5,240.2 192.9,264.2 188,293.6 186.4,323.3z M141.3,364.1L186.4,364.1C187.9,393.8 192.9,423.2 201.5,447.2 170.4,430.5 147.7,400.1 141.3,364.1z M437.7,166.1C431.2,123.5 394.6,90.9000000000001 350.3,90.4000000000001 330.8,44.3000000000001 285.1,12.0000000000001 231.9,12.0000000000001 176.3,12.0000000000001 129,47.2000000000001 111,96.5000000000001 55.0999999999999,103.8 11.9999999999999,151.5 11.9999999999999,209.4 11.9999999999999,263.5 49.7999999999999,308.9 100.4,320.4 99.3,328 98.6999999999999,335.8 98.6999999999999,343.7 98.6999999999999,431 169.7,502 257,502 344.3,502 415.3,431 415.3,343.7 415.3,336.8 414.9,330 414,323.3L422.7,323.3C466.5,323.3 502,287.8 502,244 502,205.4 474.3,173.2 437.7,166.1z" />
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="992,229,281,397" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Transform="1,0,0,1.00317,909.93,201.655">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M283,398z M0,0z M262.996,40.461L121.42,40.461C106.502,40.461,94.409,52.5769,94.409,67.5339L94.409,377.537C94.409,392.489,106.425,404.61,121.348,404.61L323.723,404.61C338.601,404.61,350.662,392.496,350.662,377.76L350.662,141.613 350.662,134.87 269.74,40.461 262.996,40.461 262.996,40.461 262.996,40.461z M256.253,53.948L121.323,53.948C113.908,53.948,107.896,60.0881,107.896,67.3737L107.896,377.697C107.896,385.112,114.029,391.123,121.382,391.123L323.689,391.123C331.137,391.123,337.175,385.122,337.175,377.725L337.175,148.357 283.199,148.357C268.317,148.357,256.253,136.4,256.253,121.303L256.253,53.948 256.253,53.948z M269.74,60.6915L269.74,121.265C269.74,128.779,275.818,134.87,283.183,134.87L333.128,134.87 269.74,60.6915 269.74,60.6915z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="1058,396,151,151" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="1058,396,151,151" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup.ClipGeometry>
+                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="1058,396,151,151" />
+                                                            </DrawingGroup.ClipGeometry>
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M283,398z M0,0z M1085.66,429.798C1084.28,430.122 1085.16,430.063 1084.01,430.211 1079.09,431.273 1082.74,432.216 1085.66,429.798z M1172.28,431.774C1172.64,431.538 1173.87,430.329 1170.01,429.149 1170.25,430.358 1169.22,430.24 1169.22,430.919 1172.08,433.514 1173.26,438.026 1176.91,438.97 1177.62,435.726 1173.67,434.133 1172.28,431.774z M1083.04,428.854C1083.48,431.479 1085.46,426.082 1085.49,424.165 1084.72,424.607 1083.95,425.05 1083.16,425.404 1085.01,426.347 1083.39,427.35 1081.39,428.854 1077.32,433.927 1085.19,424.902 1083.04,428.854z M1133.5,396C1091.8,396 1058,429.798 1058,471.5 1058,513.172 1091.8,547 1133.5,547 1175.2,547 1209,513.172 1209,471.5 1209,429.798 1175.2,396 1133.5,396z M1135.51,421.304L1135.86,421.422C1134.44,423.251 1143.23,428.589 1136.92,429.031 1131.02,430.712 1139.4,427.498 1134.83,428.058 1137.25,424.696 1132.91,424.637 1135.51,421.304z M1099.7,426.141C1097.58,424.371 1090.91,428.559 1093.24,427.557 1099.02,425.286 1093.63,427.793 1094.98,430.506 1093.74,433.072 1094.57,427.97 1091.5,431.007 1089.29,431.509 1083.86,436.522 1084.54,434.989 1084.37,437.378 1078.08,440.209 1077.23,444.19 1075.16,449.705 1076.73,443.984 1076.34,441.831 1073.39,438.085 1068.03,448.172 1069.62,452.153 1072.3,447.434 1072.1,451.652 1070.15,453.746 1072.13,457.373 1068.35,462.092 1072.1,464.776 1073.75,465.159 1077.05,459.231 1075.61,465.395 1076.61,460.057 1078.38,466.663 1081.24,465.189 1081.42,467.99 1083.16,466.693 1083.54,470.084 1088.32,469.73 1092.68,477.811 1086.99,479.345 1087.85,479.109 1089.53,480.613 1091.47,479.463 1094.78,482.088 1103.48,482.412 1103.71,488.9 1097.73,491.761 1102.24,499.606 1097.05,502.408 1091.09,501.523 1095.01,509.751 1092.51,508.808 1093.51,514.736 1086.49,508.041 1089.2,511.314 1094.19,514.382 1087.02,513.762 1089.26,516.004 1086.75,515.473 1090.82,520.663 1091.5,522.58 1095.1,528.42 1088.41,521.283 1086.43,519.336 1084.54,515.561 1080.09,508.336 1078.85,502.408 1078.14,493.796 1071.48,488.016 1069.94,479.61 1068.41,474.921 1074.16,467.401 1071.07,464.776 1068.38,462.682 1069.47,455.515 1067.88,451.74 1071.86,434.487 1084.51,419.948 1099.7,411.336 1098.14,412.486 1108.64,408.357 1107.43,409.36 1107.1,410.097 1113.56,406.558 1117.46,406.027 1117.04,406.086 1107.34,409.566 1110.02,409.095 1105.87,411.129 1109.61,409.979 1111.68,408.947 1107.55,411.985 1104.36,411.129 1099.67,413.813 1094.95,415.052 1095.93,419.948 1092.56,422.396 1094.54,422.749 1099.5,417.293 1102.39,415.376 1109.02,412.162 1099.02,421.216 1105.33,417.323 1103.21,419.299 1103.65,422.454 1102.36,423.339 1101.71,423.162 1104.92,424.873 1099.7,426.141z M1110.02,412.575C1109.35,413.489 1108.4,415.465 1107.84,414.256 1107.07,414.639 1106.78,416.291 1105.33,414.963 1106.19,414.344 1107.07,412.87 1105.39,413.784 1106.16,412.958 1113,410.628 1112.62,409.743 1113.83,408.977 1113.71,408.593 1112.32,409.065 1111.62,408.829 1114.01,406.824 1117.19,406.558 1117.63,406.558 1117.81,406.853 1117.01,406.765 1112.21,408.239 1114.27,407.826 1117.52,406.765 1116.28,407.472 1115.42,407.679 1115.21,408.003 1118.46,406.824 1115.04,408.859 1115.78,408.711 1114.86,409.183 1115.92,409.33 1114.15,410.009 1114.48,409.743 1111.26,411.926 1113.18,411.277 1111.32,413.046 1110.5,413.076 1110.02,412.575z M1112.86,416.792C1112.91,413.961 1116.98,412.162 1116.48,412.014 1121.5,409.655 1114.74,412.103 1118.69,409.979 1120.17,409.832 1123.3,405.113 1127.63,404.818 1132.41,403.373 1130.2,404.907 1133.74,403.55L1133.03,404.14C1132.41,404.228 1133.18,405.32 1130.93,406.971 1130.7,409.537 1126.66,408.357 1128.66,411.1 1127.37,409.242 1125.42,411.041 1127.87,411.218 1125.24,413.223 1119.14,413.577 1116.22,416.91 1114.33,419.623 1112.59,418.768 1112.86,416.792z M1133.82,426.229C1131.82,431.066 1129.87,425.522 1133.41,424.637 1134.3,425.109 1134.65,425.256 1133.82,426.229z M1126.27,416.556C1125.68,414.374 1126.16,415.524 1129.67,414.492 1132.08,416.232 1127.51,417.382 1126.27,416.556z M1181.19,503.116C1178.42,498.338 1184.55,493.914 1186.62,489.903 1186.35,494.592 1185.76,499.223 1181.19,503.116z M1191.63,448.526C1188.62,448.762 1185.91,449.469 1183.19,447.759 1176.94,440.917 1184.34,455.486 1186.41,449.528 1193.84,452.36 1186.29,464.569 1181.6,463.301 1178.98,457.639 1175.73,451.416 1170.01,448.644 1174.41,453.51 1176.59,459.497 1181.31,463.891 1181.63,470.025 1187.85,461.65 1187.47,466.398 1188.06,474.567 1178.24,479.463 1179.95,487.662 1183.61,495.123 1172.9,496.48 1174.11,503.175 1169.8,507.982 1165.2,514.47 1157.48,513.438 1157.48,509.368 1155.41,505.917 1154.94,501.729 1150.75,496.421 1159.36,490.729 1154.03,485.184 1147.86,483.798 1155.29,475.305 1148.95,476.101 1145.15,472.296 1139.58,475.983 1134.12,476.012 1127.28,476.661 1120.23,467.607 1123.27,461.207 1120.85,454.542 1130.93,452.596 1131.2,446.727 1136.04,442.686 1142.91,443.188 1149.46,442.244 1148.98,446.933 1153.94,446.962 1157.68,448.526 1159.78,443.453 1166.3,449.351 1170.75,446.137 1172.28,438.646 1166.41,443.158 1163.05,440.769 1158.98,434.812 1171.75,437.702 1170.42,434.576 1165.47,434.546 1168.27,428.471 1164.76,431.862 1167.92,432.423 1164.2,434.9 1164.29,432.069 1159.51,430.683 1164.11,437.496 1161.69,438.144 1158.01,436.611 1159.75,439.884 1160.13,440.386 1158.54,443.836 1156.59,435.313 1152.08,435.549 1147.6,431.45 1150.31,437.407 1154.2,438.38 1153.38,438.616 1154.68,442.008 1153.64,440.563 1150.43,436.139 1144.32,433.19 1140.7,438.616 1140.31,443.689 1129.99,445.134 1131.64,439.206 1129.22,433.072 1139.13,439.029 1138.22,434.133 1131.85,429.916 1139.96,431.273 1142.11,427.321 1147.01,427.468 1142.32,423.31 1144.62,422.101 1144.38,426.613 1148.36,425.758 1151.52,424.902 1150.75,422.307 1153.41,422.396 1151.79,420.243 1159.1,417.323 1146.21,421.599 1148.81,415.199 1145.65,413.017 1147.48,420.007 1148.81,420.744 1148.89,422.897 1147.07,425.551 1144.56,421.039 1140.9,423.428 1141.29,418.621 1141.05,419.122 1140.64,417.264 1143.82,417.175 1143.85,413.931 1143.59,411.867 1143.65,410.776 1145.12,410.658 1145.24,410.953 1151.17,411.041 1153.26,413.489 1147.54,412.339 1152.4,414.433 1154.97,415.612 1152.23,413.459 1156.06,415.612 1153.82,413.164 1154.7,413.341 1151.37,409.802 1154.79,412.899 1152.94,410.687 1158.42,411.336 1155.18,409.684 1159.93,411.012 1157.12,409.802 1154.32,408.593 1146.59,403.992 1167.98,414.816 1159.25,410.009 1164.82,411.218 1147.33,405.703 1155.29,408.121 1152.26,406.794 1155.21,407.531 1157.95,408.387 1153.02,406.853 1145.65,403.992 1145.95,403.874 1147.66,403.992 1149.34,404.376 1150.96,404.848 1156,406.352 1149.51,404.494 1150.9,404.523 1168.24,408.977 1183.43,420.596 1192.66,435.785 1194.81,438.056 1200.68,453.067 1197.62,446.402 1199,451.711 1199.21,457.432 1199.95,462.859 1198.41,461.148 1196.7,454.837 1195.23,451.327 1194.61,452.684 1193.9,449.41 1191.63,448.526z" />
+                                                        </DrawingGroup>
                                                     </DrawingGroup>
                                                 </DrawingGroup>
                                             </DrawingGroup>
@@ -179,17 +215,98 @@
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Button Grid.Column="4" Background="Transparent" HorizontalAlignment="Center" IsEnabled="False" ToolTip="Compare resources" x:Name="CRMCompareResources" BorderBrush="Transparent" Height="25" Width="30" BorderThickness="0" Cursor="Hand" Click="CRMCompareResources_Click">
+                    <Button Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsEnabled="False" ToolTip="Compare resources" x:Name="CRMCompareResources" BorderBrush="Transparent" Height="50" Width="50" BorderThickness="0" Cursor="Hand" Click="CRMCompareResources_Click">
+                        <Button.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Button.Background>
                         <Image>
                             <Image.Source>
                                 <DrawingImage>
                                     <DrawingImage.Drawing>
-                                        <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
-                                            <DrawingGroup Opacity="1">
+                                        <DrawingGroup ClipGeometry="M0,0 V398 H297 V0 H0 Z">
+                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-313,-140">
+                                                <DrawingGroup.ClipGeometry>
+                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,398" />
+                                                </DrawingGroup.ClipGeometry>
                                                 <DrawingGroup Opacity="1">
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M236.7,298.3L236.7,352.4C236.7,363.7 245.8,372.8 257.1,372.8 268.4,372.8 277.5,363.7 277.5,352.4L277.5,298.3C277.5,287 268.4,277.9 257.1,277.9 245.8,277.9 236.7,287 236.7,298.3z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M275.8,165.4C267.7,150.6,246.4,150.6,238.3,165.4L163.8,301.9 101.3,301.9C74,300.4 52.4,277.2 53,249.6 53.2,239.2 56.5,229.3 62.6,220.9 69.7,211 72.1,198.5 69.1,186.7 66.9,178.1 65.8,169.1 65.8,160.1 65.8,101 113.9,53 172.9,53 209.8,53 243.7,71.7 263.5,102.9 274.5,120.3 296.7,126.8 315.4,118.2 323.3,114.5 331.8,112.7 340.6,112.7 384.9,112.7 399.2,152.7 400.4,167.6 401.8,183.5 412.2,197.2 427.3,202.7 447.5,210 461,229.4 461,250.9 461,279.2 438,302.1 409.8,302.1L350.4,302.1 275.8,165.4z M123.9,461L257.1,216.9 390.3,461 123.9,461 123.9,461z M502,250.8C502,210.9 476.7,176.9 441.2,164 436.8,112.2 393.4,71.6 340.5,71.6 325.4,71.6 311,74.9 298.1,80.9 271.8,39.4 225.6,11.9 172.8,11.9 91,11.9 24.6,78.2 24.6,160.1 24.6,172.8 26.2,185.1 29.2,196.9 18.4,212 12,230.7 12,250.8 12,300.8 51.8,341.5 101.4,343L141.5,343 72,470.4C64.2,484.6,74.5,502,90.7,502L423.5,502C439.7,502,450,484.7,442.2,470.4L372.7,343 409.7,343C460.7,343.1,502,301.7,502,250.8z" />
-                                                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M257.1,397.4C245.2,397.4 235.5,407.1 235.5,419 235.5,430.9 245.2,440.6 257.1,440.6 269,440.6 278.7,430.9 278.7,419 278.7,407 269,397.4 257.1,397.4z" />
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,397" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,397" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Transform="1.00205,0,0,1,237.464,113.529">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M297,398z M0,0z M263.833,40.5897L121.807,40.5897C106.841,40.5897,94.7094,52.7442,94.7094,67.7487L94.7094,378.738C94.7094,393.738,106.764,405.897,121.734,405.897L324.753,405.897C339.678,405.897,351.778,393.745,351.778,378.962L351.778,142.064 351.778,135.299 270.598,40.5897 263.833,40.5897 263.833,40.5897 263.833,40.5897z M257.068,54.1196L121.709,54.1196C114.27,54.1196,108.239,60.2793,108.239,67.5881L108.239,378.899C108.239,386.337,114.391,392.367,121.769,392.367L324.718,392.367C332.19,392.367,338.248,386.347,338.248,378.927L338.248,148.829 284.1,148.829C269.171,148.829,257.068,136.834,257.068,121.689L257.068,54.1196 257.068,54.1196z M270.598,60.8846L270.598,121.65C270.598,129.188,276.695,135.299,284.084,135.299L334.188,135.299 270.598,60.8846 270.598,60.8846z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="375,284,159,159" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="375,284,159,159" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup.ClipGeometry>
+                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="375,284,159,159" />
+                                                            </DrawingGroup.ClipGeometry>
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M297,398z M0,0z M460.182,312.97C457.608,308.681,451.393,308.681,448.82,312.97L392.722,406.466C390.072,410.882,393.253,416.5,398.403,416.5L510.599,416.5C515.748,416.5,518.929,410.882,516.279,406.466L460.182,312.97z M437.458,306.153C445.177,293.287,463.824,293.287,471.543,306.153L527.641,399.649C535.589,412.897,526.047,429.75,510.599,429.75L398.403,429.75C382.954,429.75,373.412,412.897,381.36,399.649L437.458,306.153z M454.501,337C458.16,337,461.126,339.966,461.126,343.625L461.126,370.125C461.126,373.784 458.16,376.75 454.501,376.75 450.842,376.75 447.876,373.784 447.876,370.125L447.876,343.625C447.876,339.966,450.842,337,454.501,337z M454.501,383.375C458.16,383.375,461.126,386.341,461.126,390L461.126,396.625C461.126,400.284 458.16,403.25 454.501,403.25 450.842,403.25 447.876,400.284 447.876,396.625L447.876,390C447.876,386.341,450.842,383.375,454.501,383.375z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingGroup>
+                                        </DrawingGroup>
+                                    </DrawingImage.Drawing>
+                                </DrawingImage>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Button Grid.Column="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ToolTip="Add resources" x:Name="CRMAddResources" BorderBrush="Transparent" Height="50" Width="50" BorderThickness="0" Cursor="Hand" Click="CRMAddResources_Click">
+                        <Button.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Button.Background>
+                        <Image>
+                            <Image.Source>
+                                <DrawingImage>
+                                    <DrawingImage.Drawing>
+                                        <DrawingGroup ClipGeometry="M0,0 V398 H297 V0 H0 Z">
+                                            <DrawingGroup Opacity="1" Transform="1,0,0,1,-313,-140">
+                                                <DrawingGroup.ClipGeometry>
+                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,398" />
+                                                </DrawingGroup.ClipGeometry>
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,397" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="313,140,297,397" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Transform="1.00205,0,0,1,237.464,113.529">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M297,398z M0,0z M263.833,40.5897L121.807,40.5897C106.841,40.5897,94.7094,52.7442,94.7094,67.7487L94.7094,378.738C94.7094,393.738,106.764,405.897,121.734,405.897L324.753,405.897C339.678,405.897,351.778,393.745,351.778,378.962L351.778,142.064 351.778,135.299 270.598,40.5897 263.833,40.5897 263.833,40.5897 263.833,40.5897z M257.068,54.1196L121.709,54.1196C114.27,54.1196,108.239,60.2793,108.239,67.5881L108.239,378.899C108.239,386.337,114.391,392.367,121.769,392.367L324.718,392.367C332.19,392.367,338.248,386.347,338.248,378.927L338.248,148.829 284.1,148.829C269.171,148.829,257.068,136.834,257.068,121.689L257.068,54.1196 257.068,54.1196z M270.598,60.8846L270.598,121.65C270.598,129.188,276.695,135.299,284.084,135.299L334.188,135.299 270.598,60.8846 270.598,60.8846z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="413,312,97,96" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="413,312,97,96" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Opacity="1">
+                                                            <DrawingGroup.ClipGeometry>
+                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="413,312,97,96" />
+                                                            </DrawingGroup.ClipGeometry>
+                                                            <DrawingGroup Transform="1.01042,0,0,1,378.357,277.714">
+                                                                <GeometryDrawing Brush="#FF1D1D1D" Geometry="F0 M297,398z M0,0z M123.429,89.1429L89.1429,89.1429 89.1429,123.429C89.1429,127.2 86.0571,130.286 82.2857,130.286 78.5143,130.286 75.4286,127.2 75.4286,123.429L75.4286,89.1429 41.1429,89.1429C37.3714,89.1429 34.2857,86.0571 34.2857,82.2857 34.2857,78.5143 37.3714,75.4286 41.1429,75.4286L75.4286,75.4286 75.4286,41.1429C75.4286,37.3714 78.5143,34.2857 82.2857,34.2857 86.0571,34.2857 89.1429,37.3714 89.1429,41.1429L89.1429,75.4286 123.429,75.4286C127.2,75.4286 130.286,78.5143 130.286,82.2857 130.286,86.0571 127.2,89.1429 123.429,89.1429z" />
+                                                            </DrawingGroup>
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
                                                 </DrawingGroup>
                                             </DrawingGroup>
                                         </DrawingGroup>
@@ -201,7 +318,25 @@
                 </Grid>
             </Grid>
         </StackPanel>
-        <DataGrid x:Name="DataResources" Margin="10" Grid.Row="5" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
+        <StackPanel Margin="10, 0, 10, 0" Grid.Row="5">
+            <Grid x:Name="TextResourceActions">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Donwload resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="1" Margin="5" ></TextBlock>
+                <TextBlock Text="Upload resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="2" Margin="5" ></TextBlock>
+                <TextBlock Text="Upload and publish resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="3" Margin="5" ></TextBlock>
+                <TextBlock Text="Compare resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="4" Margin="5" ></TextBlock>
+                <TextBlock Text="Add resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="5" Margin="5" ></TextBlock>
+            </Grid>
+        </StackPanel>
+        <DataGrid x:Name="DataResources" Margin="10, 0, 10, 0" Grid.Row="6" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
@@ -225,7 +360,7 @@
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
                 <DataGridTextColumn x:Name="Resource_name" Width="*" Header="Resource" IsReadOnly="True" Binding="{Binding name}" />
-                <DataGridTextColumn x:Name="Resource_status" Header="Resource modified" IsReadOnly="True" Binding="{Binding resourceDifference}" />
+                <DataGridTextColumn x:Name="Resource_status" Header="Resource status" IsReadOnly="True" Binding="{Binding resourceDifference, Converter={StaticResource NameDifferenceResourceConverter}}" />
                 <DataGridTextColumn x:Name="Resource_type" Header="Type resource" IsReadOnly="True" Binding="{Binding webresourcetype, Converter={StaticResource  NameTypeResourceConverter}}" />
                 <DataGridTextColumn x:Name="Resource_createdon" Header="Creation date (CRM)" IsReadOnly="True" Binding="{Binding createdon}" />
                 <DataGridTextColumn x:Name="Resource_modifiedon" Header="Modification date (CRM)" IsReadOnly="True" Binding="{Binding modifiedon}" />
@@ -233,7 +368,7 @@
                 <DataGridTextColumn x:Name="Resource_localmodifiedon" Header="Modification date (Proyect)" IsReadOnly="True" Binding="{Binding localmodifiedon}" />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel HorizontalAlignment="Center" Grid.Row="6">
+        <StackPanel HorizontalAlignment="Center" Grid.Row="7">
             <Grid x:Name="GridPagination">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40" />
@@ -243,7 +378,7 @@
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="130" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnFirst" Click="btnFirst_Click">
+                <Button Grid.Column="0" Height="20" Width="20" Margin="5" Background="Transparent" Cursor="Hand" BorderBrush="Transparent" Name="btnFirst" Click="btnFirst_Click">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -266,7 +401,7 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button Grid.Column="1" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnPrev" Click="btnPrev_Click">
+                <Button Grid.Column="1" Height="20" Width="20" Margin="5" Background="Transparent" Cursor="Hand" BorderBrush="Transparent" Name="btnPrev" Click="btnPrev_Click">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -290,7 +425,7 @@
                     </Image>
                 </Button>
                 <Label Grid.Column="2" Margin="5" x:Name="lblpageInformation" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Bottom"/>
-                <Button Grid.Column="3" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnNext" Click="btnNext_Click">
+                <Button Grid.Column="3" Height="20" Width="20" Margin="5" Background="Transparent" Cursor="Hand" BorderBrush="Transparent" Name="btnNext" Click="btnNext_Click">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -313,7 +448,7 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button Grid.Column="4" Height="15" Width="15" Margin="5" Background="Transparent" BorderBrush="Transparent" Name="btnLast" Click="btnLast_Click">
+                <Button Grid.Column="4" Height="20" Width="20" Margin="5" Background="Transparent" BorderBrush="Transparent" Cursor="Hand" Name="btnLast" Click="btnLast_Click">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -336,7 +471,7 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <ComboBox Grid.Column="5" x:Name="cbNumberOfRecords" Margin="5" HorizontalAlignment="Left" Width="120" FontSize="10" Height="20" BorderBrush="Transparent" SelectedIndex="0" SelectionChanged="cbNumberOfRecords_SelectionChanged">
+                <ComboBox Grid.Column="5" x:Name="cbNumberOfRecords" Margin="5" HorizontalAlignment="Left" Width="120" Height="25" Cursor="Hand" BorderBrush="Transparent" SelectedIndex="0" SelectionChanged="cbNumberOfRecords_SelectionChanged">
                     <ComboBoxItem Tag="5" Content="5" />
                     <ComboBoxItem Tag="10" Content="10" />
                     <ComboBoxItem Tag="50" Content="20" />
@@ -344,12 +479,22 @@
                 </ComboBox>
             </Grid>
         </StackPanel>
-        <StackPanel Grid.Row="7" VerticalAlignment="Bottom">
-            <Grid  Margin="10">
+        <StackPanel Margin="10, 0, 10, 0" Grid.Row="8">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Current user and environment" HorizontalAlignment="Left" Grid.Column="0" Margin="5" ></TextBlock>
+                <TextBlock Text="Paths resources" HorizontalAlignment="Right" Grid.Column="2" Margin="5" ></TextBlock>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="9" VerticalAlignment="Bottom">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="*" />                    
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Orientation="Vertical">
                     <Grid>
@@ -361,20 +506,35 @@
                         <TextBlock x:Name="CRMUrl" Text="--" Grid.Row="1" Padding="10,0" FontWeight="Light" />
                     </Grid>
                 </StackPanel>
-                <Button Grid.Column="0" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Column="0" Click="ConfiEnvironment_Click" x:Name="ConfigEnvironment" Background="Transparent" BorderBrush="Transparent" Height="31" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
-                                    <DrawingGroup ClipGeometry="M0,0 V512 H512 V0 H0 Z">
-                                        <DrawingGroup Opacity="1">
+                                    <DrawingGroup ClipGeometry="M0,0 V346 H338 V0 H0 Z">
+                                        <DrawingGroup Opacity="1" Transform="1,0,0,1,-162,-201">
+                                            <DrawingGroup.ClipGeometry>
+                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="162,201,338,346" />
+                                            </DrawingGroup.ClipGeometry>
+                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M338,346z M0,0z M295,322C261.863,322 235,295.137 235,262 235,228.863 261.863,202 295,202 328.137,202 355,228.863 355,262 354.975,295.127 328.127,321.975 295,322z M295,226.018C275.128,226.018 259.018,242.128 259.018,262 259.018,281.872 275.128,297.982 295,297.982 314.872,297.982 330.982,281.872 330.982,262 330.982,242.128 314.872,226.018 295,226.018z" />
+                                            <GeometryDrawing Brush="#FF000000" Geometry="F0 M338,346z M0,0z M307.208,466.019L187.067,466.019C187.11,406.384 235.55,358.075 295.259,358.118 318.529,358.135 341.172,365.65 359.824,379.546 361.88,381.123 364.394,381.991 366.986,382.02L366.986,382.02C373.679,381.963 379.057,376.498 379,369.814 378.967,366.02 377.154,362.461 374.104,360.199 348.428,341.032 316.638,331.867 284.685,334.419 215.222,339.818 163.057,400.602 163.057,470.204L163.057,476.503C162.408,483.28 167.384,489.3 174.17,489.947 174.474,489.976 174.779,489.994 175.085,490L307.208,490C313.851,490,319.236,484.622,319.236,477.987L319.236,477.987C319.211,471.37,313.834,466.019,307.208,466.019z" />
                                             <DrawingGroup Opacity="1">
-                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M256.001,276.673C227.984,276.673 205.191,299.466 205.191,327.483 205.191,341.378 210.966,354.813 221.049,364.374L221.049,410.249C221.049,429.522 236.729,445.202 256.002,445.202 275.275,445.202 290.955,429.522 290.955,410.249L290.955,364.374C301.033,354.819 306.812,341.381 306.812,327.483 306.81,299.466 284.016,276.673 256.001,276.673z M273.979,346.558C269.128,351.129,266.346,357.518,266.346,364.088L266.346,410.249C266.346,415.954 261.706,420.594 256.001,420.594 250.297,420.594 245.656,415.954 245.656,410.249L245.656,364.088C245.656,357.519 242.874,351.131 238.026,346.561 232.719,341.558 229.797,334.783 229.797,327.483 229.797,313.036 241.552,301.281 255.999,301.281 270.446,301.281 282.201,313.036 282.201,327.483 282.203,334.783 279.281,341.558 273.979,346.558z" />
-                                            </DrawingGroup>
-                                        </DrawingGroup>
-                                        <DrawingGroup Opacity="1">
-                                            <DrawingGroup Opacity="1">
-                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M512,512z M0,0z M404.979,209.876L368.071,209.876 368.071,112.072C368.071,50.275 317.795,0 256.001,0 194.205,0 143.93,50.275 143.93,112.072L143.93,209.876 107.021,209.876C86.668,209.876,70.11,226.435,70.11,246.787L70.11,475.088C70.11,495.441,86.668,511.999,107.021,511.999L404.979,511.999C425.332,511.999,441.89,495.441,441.89,475.088L441.89,246.788C441.89,226.435,425.332,209.876,404.979,209.876z M168.536,112.072C168.536,63.845 207.772,24.608 256,24.608 304.227,24.608 343.463,63.845 343.463,112.072L343.463,209.876 168.536,209.876 168.536,112.072z M417.283,475.089L417.283,475.089C417.283,481.873,411.763,487.393,404.979,487.393L107.021,487.393C100.237,487.393,94.717,481.874,94.717,475.089L94.717,246.788C94.717,240.004,100.237,234.484,107.021,234.484L404.979,234.484C411.763,234.484,417.283,240.003,417.283,246.788L417.283,475.089z" />
+                                                <DrawingGroup.ClipGeometry>
+                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="322,324,177,222" />
+                                                </DrawingGroup.ClipGeometry>
+                                                <DrawingGroup Opacity="1">
+                                                    <DrawingGroup.ClipGeometry>
+                                                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="322,324,177,222" />
+                                                    </DrawingGroup.ClipGeometry>
+                                                    <DrawingGroup Opacity="1">
+                                                        <DrawingGroup.ClipGeometry>
+                                                            <RectangleGeometry RadiusX="0" RadiusY="0" Rect="322,324,177,222" />
+                                                        </DrawingGroup.ClipGeometry>
+                                                        <DrawingGroup Transform="1.00053,0,0,1,322.573,324">
+                                                            <GeometryDrawing Brush="#FF000000" Geometry="F1 M338,346z M0,0z M138.75,148.012C128.851,148.029,119.365,151.985,112.388,159.008L69.375,128.864C75.5234,117.748,75.5234,104.252,69.375,93.1359L112.388,62.9925C126.735,77.5522 150.169,77.7239 164.729,63.3765 179.288,49.029 179.46,25.5954 165.112,11.0358 150.765,-3.5238 127.331,-3.69578 112.771,10.6517 105.714,17.607 101.739,27.1022 101.738,37.0116 101.74,40.3894 102.207,43.751 103.126,47.0016L56.5059,79.7812C50.6819,76.0714 43.9168,74.1091 37.0116,74.1272 16.5706,74.1272 3.57271E-06,90.6978 3.57271E-06,111.139 3.57271E-06,131.58 16.5706,148.15 37.0116,148.15 43.9442,148.085 50.7121,146.026 56.5059,142.219L103.126,174.86C97.5128,194.515 108.896,214.999 128.551,220.612 148.207,226.225 168.691,214.842 174.303,195.187 179.916,175.531 168.533,155.048 148.878,149.434 145.584,148.494 142.176,148.015 138.75,148.012z M138.75,18.4884C148.97,18.931 156.897,27.5751 156.454,37.7955 156.039,47.396 148.35,55.0841 138.75,55.5 134.734,55.5007 130.831,54.1711 127.65,51.7191 119.489,45.6144 117.822,34.0496 123.927,25.8885 127.421,21.2177 132.917,18.4738 138.75,18.4884z M54.0084,118.111C51.3385,124.615 45.1753,129.012 38.1562,129.419 37.8219,129.456 37.4847,129.456 37.1503,129.419 26.9394,129.419 18.6619,121.142 18.6619,110.931 18.6619,100.72 26.9394,92.4422 37.1503,92.4422 37.4847,92.4051 37.8219,92.4051 38.1562,92.4422 45.2502,92.9039 51.4336,97.4361 54.0084,104.062 55.9978,108.594 55.9978,113.752 54.0084,118.284z M138.75,203.512C128.558,203.537 120.275,195.296 120.25,185.104 120.235,179.271 122.979,173.775 127.65,170.281 130.831,167.829 134.734,166.499 138.75,166.5 148.97,166.943 156.897,175.587 156.454,185.807 156.039,195.408 148.35,203.096 138.75,203.512z" />
+                                                        </DrawingGroup>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
                                             </DrawingGroup>
                                         </DrawingGroup>
                                     </DrawingGroup>
@@ -383,87 +543,34 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button Grid.Column="2" Click="ConfigPaths_Click" x:Name="ConfigPaths" Background="Transparent" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Column="2" Click="ConfigPaths_Click" x:Name="ConfigPaths" Background="Transparent" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <RotateTransform Angle="90" />
+                        </Image.RenderTransform>
                         <Image.Source>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
-                                    <DrawingGroup ClipGeometry="M0,0 V32 H32 V0 H0 Z">
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="23,7" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="3,7" EndPoint="20,7" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="29,7" EndPoint="26,7" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="12,16" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="3,16" EndPoint="9,16" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="29,16" EndPoint="15,16" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <EllipseGeometry RadiusX="3" RadiusY="3" Center="23,25" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="3,25" EndPoint="20,25" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Pen>
-                                                <Pen Brush="#FF000000" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-                                            </GeometryDrawing.Pen>
-                                            <GeometryDrawing.Geometry>
-                                                <LineGeometry StartPoint="29,25" EndPoint="26,25" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V64 H58.67 V0 H0 Z">
+                                        <DrawingGroup.Transform>
+                                            <TranslateTransform X="0.00023357276222668588" Y="0.15334278345108032" />
+                                        </DrawingGroup.Transform>
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M10.67,11.89L10.67,2.67A2.67,2.67,0,0,0,5.33,2.67L5.33,11.89A9.82,9.82,0,0,1,8,11.55A9.82,9.82,0,0,1,10.67,11.89z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M5.33,32.53L5.33,61.33A2.67,2.67,0,0,0,10.67,61.33L10.67,32.53A9.83,9.83,0,0,1,8,32.88A9.83,9.83,0,0,1,5.33,32.53z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M32,37.68L32,2.68A2.67,2.67,0,1,0,26.66,2.68L26.66,37.68A10.32,10.32,0,0,1,29.38,37.3A9.42,9.42,0,0,1,32,37.68z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M26.61,58.29L26.61,61.29A2.67,2.67,0,1,0,31.95,61.29L31.95,58.29A9.42,9.42,0,0,1,29.33,58.64A10.32,10.32,0,0,1,26.61,58.29z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M53.28,13.68L53.28,2.68A2.67,2.67,0,1,0,47.95,2.68L47.95,13.68A10.27,10.27,0,0,1,50.67,13.3A9.4,9.4,0,0,1,53.28,13.68z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M48,34.29L48,61.29A2.67,2.67,0,1,0,53.33,61.29L53.33,34.29A9.4,9.4,0,0,1,50.72,34.64A10.27,10.27,0,0,1,48,34.29z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M8,14.22A8,8,0,1,0,16,22.22A8,8,0,0,0,8,14.22z M8,24.89A2.67,2.67,0,1,1,10.67,22.22A2.68,2.68,0,0,1,8,24.89z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M29.33,40A8,8,0,1,0,37.33,48A8,8,0,0,0,29.33,40z M29.33,50.67A2.67,2.67,0,1,1,32,48A2.67,2.67,0,0,1,29.33,50.67z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M58.67,64z M0,0z M50.67,16A8,8,0,1,0,58.67,24A8,8,0,0,0,50.67,16z M50.67,26.67A2.67,2.67,0,1,1,53.33,24A2.68,2.68,0,0,1,50.67,26.67z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
                                     </DrawingGroup>
                                 </DrawingImage.Drawing>
-                            </DrawingImage>
+                            </DrawingImage>                            
                         </Image.Source>
                     </Image>
                 </Button>

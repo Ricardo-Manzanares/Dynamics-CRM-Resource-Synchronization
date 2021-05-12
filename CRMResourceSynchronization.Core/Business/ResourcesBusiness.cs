@@ -280,7 +280,11 @@ namespace CRMResourceSynchronization.Core.Business
                 resource.localcreatedon = fi.CreationTime.ToString();
                 resource.localmodifiedon = fi.LastWriteTimeUtc.ToString();
                 resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
-                resource.resourceDifference = resource.resourceCompareStatus.NewText.HasDifferences || resource.resourceCompareStatus.OldText.HasDifferences;
+                resource.resourceDifference = (resource.resourceCompareStatus.NewText.HasDifferences || resource.resourceCompareStatus.OldText.HasDifferences) ? ResourceContentStatus.DifferencesExist : ResourceContentStatus.Equal;
+            }
+            else
+            {
+                resource.resourceDifference = ResourceContentStatus.LocalResourceMissing;
             }
         }
 

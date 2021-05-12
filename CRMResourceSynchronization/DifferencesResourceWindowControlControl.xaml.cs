@@ -96,7 +96,8 @@ namespace CRMResourceSynchronization
 
             if (!string.IsNullOrEmpty(resource.contentCRM) && !string.IsNullOrEmpty(resource.contentLocal))
             {
-                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);                
+                resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
+                resource.resourceDifference = (resource.resourceCompareStatus.NewText.HasDifferences || resource.resourceCompareStatus.OldText.HasDifferences) ? ResourceContentStatus.DifferencesExist : ResourceContentStatus.DifferencesResolved;
 
                 ResourceCRM.ItemsSource = resource.resourceCompareStatus.OldText.Lines;
                 ResourceLocal.ItemsSource = resource.resourceCompareStatus.NewText.Lines;
@@ -290,17 +291,12 @@ namespace CRMResourceSynchronization
 
                 if (Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Write))
                 {
-                    File.WriteAllLines(resourceModel.path + resourceModel.name, DiffPaneResourceCombined.Lines.Where(k => k.Type == ChangeType.Merged || k.Type == ChangeType.Unchanged).Select(s => s.Text));
+                    File.WriteAllText(resourceModel.path + resourceModel.name, String.Join("\r\n", DiffPaneResourceCombined.Lines.Where(k => k.Type == ChangeType.Merged || k.Type == ChangeType.Unchanged).Select(s => s.Text)));
 
                     MessageBox.Show(string.Format("The resource has been updated successfully"));
 
-                    resourcesBusiness.GetResourceLocal(resource);
-
-                    //Reset lines mark type merge
-                    ResourceCombined.ItemsSource = null;
-
-                    DiffPaneResourceCombined = InlineDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
-                    ResourceCombined.ItemsSource = DiffPaneResourceCombined.Lines;
+                    //Reload resources and differentes
+                    loadResource();
                 }
             }
             catch (Exception ex)

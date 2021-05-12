@@ -80,8 +80,6 @@ namespace CRMResourceSynchronization
             Window w = new Window();
             w.Title = "Setting up the CRM environment";
             w.Content = new LoginWindowControl();
-            w.Width = this.ActualWidth;
-            w.Height = this.ActualHeight;
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             w.ShowDialog();
         }
@@ -269,8 +267,8 @@ namespace CRMResourceSynchronization
                     CRMSearchResource.IsEnabled = true;
                     CRMSearchResource.Opacity = 1;
                     CRMSearchResource.Visibility = Visibility.Visible;
-                    //ScrollDataSources.Visibility = Visibility.Visible;
                     GridResourceActions.Visibility = Visibility.Visible;
+                    TextResourceActions.Visibility = Visibility.Visible;
                     GridPagination.Visibility = Visibility.Visible;
                     DataResources.Visibility = Visibility.Visible;
 
@@ -297,8 +295,8 @@ namespace CRMResourceSynchronization
                     CRMNameSearchResource.IsEnabled = false;
                     CRMSearchResource.IsEnabled = false;
                     CRMSearchResource.Visibility = Visibility.Hidden;
-                    //ScrollDataSources.Visibility = Visibility.Hidden;
                     GridResourceActions.Visibility = Visibility.Hidden;
+                    TextResourceActions.Visibility = Visibility.Hidden;
                     GridPagination.Visibility = Visibility.Hidden;
                     DataResources.Visibility = Visibility.Hidden;
 
@@ -522,7 +520,7 @@ namespace CRMResourceSynchronization
                         DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, numberOfRecPerPage);
                         to = (pageIndex * numberOfRecPerPage);
                     }
-                    else
+                    else if (((pageIndex * numberOfRecPerPage) + listResources.Count - (pageIndex * numberOfRecPerPage)) <= listResources.Count)
                     {
                         DataResources.ItemsSource = listResources.GetRange(pageIndex * numberOfRecPerPage, listResources.Count - (pageIndex * numberOfRecPerPage));
                         from = pageIndex * numberOfRecPerPage;
@@ -994,6 +992,11 @@ namespace CRMResourceSynchronization
             {
                 throw ex;
             }
+        }
+
+        private void CRMAddResources_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

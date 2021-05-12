@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRMResourceSynchronization.Core.Business.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -12,13 +13,26 @@ namespace CRMResourceSynchronization.Converters
     {
         public object Convert(object value, Type targetType,  object parameter, CultureInfo culture)
         {
-            if (bool.Parse(value.ToString()))
+            switch (value.ToString())
             {
-                return "#FF9999";
-            }
-            else
-            {
-                return "#F0F0F0";
+                case "Equal":
+                    return "#F0F0F0";
+                    break;
+                case "LocalResourceMissing":
+                    return "#FF9999";
+                    break;
+                case "CRMResourceMissing":
+                    return "#FF9999";
+                    break;
+                case "DifferencesExist":
+                    return "#FFFF00";
+                    break;
+                case "DifferencesResolved":
+                    return "#00E400";
+                    break;
+                default:
+                    return "#FF9999";
+                    break;
             }
         }
 
