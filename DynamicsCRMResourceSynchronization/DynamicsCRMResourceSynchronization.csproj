@@ -62,8 +62,11 @@
     <Compile Include="Converters\NameDifferenceResourceConverter.cs" />
     <Compile Include="Converters\StatusRowDifferenceResourceConverter.cs" />
     <Compile Include="Converters\StatusRowConverter.cs" />
-    <Compile Include="DifferencesResourceWindowControlControl.xaml.cs">
-      <DependentUpon>DifferencesResourceWindowControlControl.xaml</DependentUpon>
+    <Compile Include="AddResourceWindowControl.xaml.cs">
+      <DependentUpon>AddResourceWindowControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DifferencesResourceWindowControl.xaml.cs">
+      <DependentUpon>DifferencesResourceWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CRMResourceSynchronizationDataGrid.cs" />
     <Compile Include="PathsWindowControl.xaml.cs">
@@ -124,7 +127,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="DifferencesResourceWindowControlControl.xaml">
+    <Page Include="AddResourceWindowControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DifferencesResourceWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

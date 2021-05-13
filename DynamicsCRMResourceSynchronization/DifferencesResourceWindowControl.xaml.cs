@@ -16,9 +16,9 @@ using System.Windows.Media;
 namespace DynamicsCRMResourceSynchronization
 {
     /// <summary>
-    /// Interaction logic for DifferencesResourceWindowControlControl.
+    /// Interaction logic for DifferencesResourceWindowControl.
     /// </summary>
-    public partial class DifferencesResourceWindowControlControl : UserControl
+    public partial class DifferencesResourceWindowControl : UserControl
     {
         private ResourceModel resource { get; set; }
         private List<ResourceModel> resources { get; set; }
@@ -33,9 +33,9 @@ namespace DynamicsCRMResourceSynchronization
         private SettingsModel settings = new SettingsModel();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DifferencesResourceWindowControlControl"/> class.
+        /// Initializes a new instance of the <see cref="DifferencesResourceWindowControl"/> class.
         /// </summary>
-        public DifferencesResourceWindowControlControl(SettingsModel settings, ResourcesBusiness resourceBusiness, List<ResourceModel> resourcesToView)
+        public DifferencesResourceWindowControl(SettingsModel settings, ResourcesBusiness resourceBusiness, List<ResourceModel> resourcesToView)
         {
             this.InitializeComponent();
 

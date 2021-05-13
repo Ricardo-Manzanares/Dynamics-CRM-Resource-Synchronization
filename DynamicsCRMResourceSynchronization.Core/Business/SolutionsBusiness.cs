@@ -27,7 +27,7 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
         {
             try
             {
-                List<SolutionModel> solutiones = new List<SolutionModel>();
+                List<SolutionModel> solutions = new List<SolutionModel>();
 
                 if (this._CRMClient == null)
                     throw new Exception("The connection to CRM is not configured, it is necessary before connecting to CRM");
@@ -47,10 +47,49 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
                 {
                     SolutionModel parseSolution = EntityToModel(item);
                     if(parseSolution != null)
-                    solutiones.Add(parseSolution);
+                        solutions.Add(parseSolution);
                 }
 
-                return solutiones;
+                return solutions;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Get solutions by default from CRM
+        /// </summary>
+        /// <returns></returns>
+        public SolutionModel GetSolutionDefault()
+        {
+            try
+            {
+                SolutionModel solutionDefault = new SolutionModel();
+
+                List<SolutionModel> solutiones = new List<SolutionModel>();
+
+                if (this._CRMClient == null)
+                    throw new Exception("The connection to CRM is not configured, it is necessary before connecting to CRM");
+
+                var queryExpresion = new QueryExpression
+                {
+                    EntityName = EntityNames.Solution,
+                    ColumnSet = new ColumnSet("solutionid", "friendlyname"),
+                    Distinct = true,
+                    NoLock = true
+                };
+
+                queryExpresion.Criteria.AddCondition(new ConditionExpression("ismanaged", ConditionOperator.Equal, "0"));
+                queryExpresion.Criteria.AddCondition(new ConditionExpression("uniquename", ConditionOperator.Equal, "Default"));
+
+                var response = this._CRMClient._Client.RetrieveMultiple(queryExpresion);
+
+                if(response.Entities.Count == 1)
+                    solutionDefault = EntityToModel(response.Entities[0]);
+
+                return solutionDefault;
             }
             catch (Exception ex)
             {

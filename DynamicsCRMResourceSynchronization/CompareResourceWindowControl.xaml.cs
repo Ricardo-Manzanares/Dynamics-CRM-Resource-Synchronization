@@ -36,7 +36,7 @@ namespace DynamicsCRMResourceSynchronization
         private int CRMTypeResourceSelected = 0;
         private string CRMNameSearchResourceSelected = "";
 
-        public string CRMNameSearchResourceDefaultText = "Search by resource name";
+        private string CRMNameSearchResourceDefaultText = "Search by resource name";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompareResourceWindowControl"/> class.
@@ -829,7 +829,7 @@ namespace DynamicsCRMResourceSynchronization
 
                 Window w = new Window();
                 w.Title = "Differences of resources";
-                w.Content = new DifferencesResourceWindowControlControl(reloadSettingsToModel(), resourcesBusiness, listResources.Where(k => k.selectResource == true).ToList());
+                w.Content = new DifferencesResourceWindowControl(reloadSettingsToModel(), resourcesBusiness, listResources.Where(k => k.selectResource == true).ToList());
                 w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 w.ShowDialog();
 
@@ -1013,7 +1013,29 @@ namespace DynamicsCRMResourceSynchronization
 
         private void CRMAddResources_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ActionsOfLoading(Visibility.Visible, "Add resources to the solution");
+                ActionsOfSolutions(VisibilityType.Disabled);
+                ActionsOfResources(VisibilityType.Disabled);
+                ActionsOfEnvironment(VisibilityType.Disabled);
 
+                Window w = new Window();
+                w.Title = "Add resources to the solution";
+                w.Content = new AddResourceWindowControl(CRMClient, reloadSettingsToModel(), resourcesBusiness, listResources);
+                w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                w.ShowDialog();
+
+                ActionsOfLoading(Visibility.Collapsed);
+                ActionsOfSolutions(VisibilityType.Visible);
+                ActionsOfResources(VisibilityType.Visible);
+                ActionsOfEnvironment(VisibilityType.Visible);
+                resetSelectedResourcesAfterAction();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Cannot add resources to solution : '{0}'", ex.Message));
+            }
         }
     }
 }

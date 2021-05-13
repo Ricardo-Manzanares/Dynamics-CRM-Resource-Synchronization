@@ -34,7 +34,7 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
         /// Get resources from solution parameter
         /// </summary>
         /// <returns>List<ResourceModel></returns>
-        public List<ResourceModel> GetResourcesFromSolution(Guid solution)
+        public List<ResourceModel> GetResourcesFromSolution(Guid solution, bool solutionDefault = false)
         {
             try
             {
@@ -52,7 +52,14 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
                 };
 
                 LinkEntity le_resources = new LinkEntity("webresource", "solutioncomponent", "webresourceid", "objectid", JoinOperator.Inner);
+                le_resources.EntityAlias = "resources";
                 le_resources.LinkCriteria.AddCondition("solutionid", ConditionOperator.Equal, solution);
+
+                if (solutionDefault)
+                {
+                    queryExpresion.Criteria.AddCondition("webresourcetype", ConditionOperator.In, new object[] { "1", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
+                    queryExpresion.Criteria.AddCondition(new ConditionExpression("ismanaged", ConditionOperator.Equal, "0"));
+                }
 
                 queryExpresion.LinkEntities.Add(le_resources);
 
