@@ -4,10 +4,10 @@
 
 /packages
 /.vs
-/CRMResourceSynchronization/obj
-/CRMResourceSynchronization/bin/Debug
-/CRMResourceSynchronization/Properties/Settings.settings
-/CRMResourceSynchronization.Core/obj
-/CRMResourceSynchronization.Core/bin/Debug
-/CRMResourceSynchronization.Core/Key.snk
-/CRMResourceSynchronization/Key.snk
+/DynamicsCRMResourceSynchronization/obj
+/DynamicsCRMResourceSynchronization/bin/Debug
+/DynamicsCRMResourceSynchronization/Properties/Settings.settings
+/DynamicsCRMResourceSynchronization.Core/obj
+/DynamicsCRMResourceSynchronization.Core/bin/Debug
+/DynamicsCRMResourceSynchronization.Core/Key.snk
+/DynamicsCRMResourceSynchronization/Key.snk

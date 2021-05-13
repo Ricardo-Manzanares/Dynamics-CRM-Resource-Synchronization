@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="DynamicsCRMResourceSynchronization.PathsWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             MinWidth="373"      
+             MinHeight="373"
+             mc:Ignorable="d"
+             Name="MyToolWindow">
+    <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />            
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="10">
+            <Grid Background="Purple">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="INFO" Text="" Padding="10" Grid.Column="0" Foreground="White" ></TextBlock>
+                <RadioButton x:Name="INFOPATHTrue" Visibility="Hidden" Grid.Column="1" Foreground="White" VerticalAlignment="Center" GroupName="PathOfProject" Click="INFOPATH_Click">True</RadioButton>
+                <RadioButton x:Name="INFOPATHFalse" Visibility="Hidden" Grid.Column="1" Foreground="White" VerticalAlignment="Center" Margin="50,0,0,0" GroupName="PathOfProject" Click="INFOPATH_Click">False</RadioButton>
+            </Grid>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Margin="10">
+            <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Path of Web page (HTML) .htm, .html" Grid.Row="0" Margin="0, 5, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathHtml" Grid.Row="1" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Stylesheet (CSS) .css" Grid.Row="2" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathCSS" Grid.Row="3" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Script (JScript) .js" Grid.Row="4" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathJS" Grid.Row="5" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Data (XML) .xml" Grid.Row="6" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathXML" Grid.Row="7" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Image (PNG) .png" Grid.Row="8" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathPNG" Grid.Row="9" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Image (JPG) .jpg" Grid.Row="10" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathJPG" Grid.Row="11" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Image (GIF) .gif" Grid.Row="12" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathGIF" Grid.Row="13" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Silverlight (XAP) .xap" Grid.Row="14" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathXAP" Grid.Row="15" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Stylesheet (XSL) .xsl, xslt" Grid.Row="16" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathXSL" Grid.Row="17" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Image (ICO) .ico" Grid.Row="18" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathICO" Grid.Row="19" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Vector format (SVG) .svg" Grid.Row="20" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathSVG" Grid.Row="21" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>
+                <TextBlock Text="Path of Chain (RESX) .resx" Grid.Row="22" Margin="0, 0, 10, 0" ></TextBlock>
+                <TextBox x:Name="PathRESX" Grid.Row="23" TextWrapping="Wrap" Margin="0, 5, 10, 10" BorderBrush="Transparent"/>                
+            </Grid>
+        </ScrollViewer>
+        <StackPanel Grid.Row="2" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Background="Transparent" Margin="10" ToolTip="Close window" x:Name="Cancel" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand" Click="Cancel_Click" >
+                    <Image>
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V475.2 H475.2 V0 H0 Z">
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M475.2,475.2z M0,0z M405.6,69.6C360.7,24.7 301.1,0 237.6,0 174.1,0 114.5,24.7 69.6,69.6 24.7,114.5 0,174.1 0,237.6 0,301.1 24.7,360.7 69.6,405.6 114.5,450.5 174.1,475.2 237.6,475.2 301.1,475.2 360.7,450.5 405.6,405.6 450.5,360.7 475.2,301.1 475.2,237.6 475.2,174.1 450.5,114.5 405.6,69.6z M386.5,386.5C346.7,426.3 293.8,448.2 237.6,448.2 181.4,448.2 128.5,426.3 88.7,386.5 6.59999999999999,304.4 6.59999999999999,170.8 88.7,88.7 128.5,48.9 181.4,27 237.6,27 293.8,27 346.7,48.9 386.5,88.7 468.6,170.8 468.6,304.4 386.5,386.5z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M475.2,475.2z M0,0z M342.3,132.9C337,127.6,328.5,127.6,323.2,132.9L237.6,218.5 152,132.9C146.7,127.6 138.2,127.6 132.9,132.9 127.6,138.2 127.6,146.7 132.9,152L218.5,237.6 132.9,323.2C127.6,328.5 127.6,337 132.9,342.3 135.5,344.9 139,346.3 142.4,346.3 145.8,346.3 149.3,345 151.9,342.3L237.5,256.7 323.1,342.3C325.7,344.9 329.2,346.3 332.6,346.3 336.1,346.3 339.5,345 342.1,342.3 347.4,337 347.4,328.5 342.1,323.2L256.7,237.6 342.3,152C347.6,146.7,347.6,138.2,342.3,132.9z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
+                                    </DrawingGroup>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button Grid.Column="2" Margin="10" Background="Transparent" ToolTip="Save and close window" x:Name="Save" BorderBrush="Transparent" Height="25" Width="25" BorderThickness="0" Cursor="Hand" Click="Save_Click" >
+                    <Image>
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <DrawingGroup ClipGeometry="M0,0 V486 H486 V0 H0 Z">
+                                        <DrawingGroup Opacity="1">
+                                            <DrawingGroup Opacity="1">
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M486,486z M0,0z M473.7,485.75C480.5,485.75,486,480.25,486,473.45L486,113.65C486,110.05,484.4,106.65,481.7,104.35L363,2.85C362.8,2.65 362.6,2.55 362.4,2.45 362.1,2.25 361.9,2.05 361.6,1.85 361.2,1.65 360.9,1.45 360.5,1.25 360.2,1.15 359.9,0.95 359.6,0.85 359.2,0.65 358.7,0.55 358.3,0.45 358,0.35 357.7,0.25 357.4,0.25 356.6,0.15 355.9,0.0499999999999999 355.1,0.0499999999999999L12.3,0.0499999999999999C5.5,0.05,0,5.55,0,12.35L0,473.65C0,480.45,5.5,485.95,12.3,485.95L473.7,485.95 473.7,485.75z M384.5,461.25L101.5,461.25 101.5,277.15C101.5,273.45,104.5,270.55,108.1,270.55L377.9,270.55C381.6,270.55,384.5,273.55,384.5,277.15L384.5,461.25z M161.8,24.45L342.7,24.45 342.7,152.25C342.7,153.05,342.1,153.65,341.3,153.65L163.3,153.65C162.5,153.65,161.9,152.95,161.9,152.25L161.9,24.45 161.8,24.45z M24.6,24.45L137.4,24.45 137.4,152.25C137.4,166.55,149,178.15,163.3,178.15L341.3,178.15C355.6,178.15,367.2,166.55,367.2,152.25L367.2,38.75 461.4,119.35 461.4,461.25 409,461.25 409,277.15C409,259.95,395,246.05,377.9,246.05L108.1,246.05C90.9,246.05,77,260.05,77,277.15L77,461.35 24.6,461.35 24.6,24.45z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M486,486z M0,0z M227.4,77.65L281.2,77.65 281.2,110.25C281.2,117.05 286.7,122.55 293.5,122.55 300.3,122.55 305.8,117.05 305.8,110.25L305.8,65.45C305.8,58.65,300.3,53.15,293.5,53.15L227.4,53.15C220.6,53.15 215.1,58.65 215.1,65.45 215.1,72.25 220.7,77.65 227.4,77.65z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M486,486z M0,0z M304.5,322.85L181.5,322.85C174.7,322.85 169.2,328.35 169.2,335.15 169.2,341.95 174.7,347.45 181.5,347.45L304.5,347.45C311.3,347.45 316.8,341.95 316.8,335.15 316.8,328.35 311.3,322.85 304.5,322.85z" />
+                                                <GeometryDrawing Brush="#FF000000" Geometry="F1 M486,486z M0,0z M304.5,387.75L181.5,387.75C174.7,387.75 169.2,393.25 169.2,400.05 169.2,406.85 174.7,412.35 181.5,412.35L304.5,412.35C311.3,412.35 316.8,406.85 316.8,400.05 316.8,393.25 311.3,387.75 304.5,387.75z" />
+                                            </DrawingGroup>
+                                        </DrawingGroup>
+                                    </DrawingGroup>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>    
+</UserControl>
