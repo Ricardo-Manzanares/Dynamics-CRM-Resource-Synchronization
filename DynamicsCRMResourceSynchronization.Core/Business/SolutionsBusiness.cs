@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DynamicsCRMResourceSynchronization.Core.Business.Models;
 using Microsoft.Xrm.Sdk;
 using DynamicsCRMResourceSynchronization.Core.Dynamics.Extensions;
+using Microsoft.Crm.Sdk.Messages;
 
 namespace DynamicsCRMResourceSynchronization.Core.Business
 {
@@ -35,7 +36,7 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
                 var queryExpresion = new QueryExpression
                 {
                     EntityName = EntityNames.Solution,
-                    ColumnSet = new ColumnSet("solutionid", "friendlyname"),
+                    ColumnSet = new ColumnSet("solutionid", "friendlyname", "uniquename"),
                     Distinct = true,
                     NoLock = true
                 };
@@ -76,7 +77,7 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
                 var queryExpresion = new QueryExpression
                 {
                     EntityName = EntityNames.Solution,
-                    ColumnSet = new ColumnSet("solutionid", "friendlyname"),
+                    ColumnSet = new ColumnSet("solutionid", "friendlyname", "uniquename"),
                     Distinct = true,
                     NoLock = true
                 };
@@ -98,30 +99,87 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
         }
 
         /// <summary>
+        /// Add resource to solucion CRM
+        /// </summary>
+        /// <returns></returns>
+        public bool AddResourceToSolution(SolutionModel solution, ResourceModel resource)
+        {
+            try
+            {
+                bool resourceAdd = false;
+
+                AddSolutionComponentRequest addResource = new AddSolutionComponentRequest();
+                addResource.ComponentType = 61;
+                addResource.ComponentId = resource.resourceid;
+                addResource.SolutionUniqueName = solution.uniquename;
+
+                AddSolutionComponentResponse response = (AddSolutionComponentResponse)this._CRMClient._Client.Execute(addResource);
+
+                if (response.id != Guid.Empty)
+                    resourceAdd = true;
+
+                return resourceAdd;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Remove resource to solucion CRM
+        /// </summary>
+        /// <returns></returns>
+        public bool RemoveResourceToSolution(SolutionModel solution, ResourceModel resource)
+        {
+            try
+            {
+                bool resourceAdd = false;
+
+                RemoveSolutionComponentRequest addResource = new RemoveSolutionComponentRequest();
+                addResource.ComponentType = 61;
+                addResource.ComponentId = resource.resourceid;
+                addResource.SolutionUniqueName = solution.uniquename;
+
+                RemoveSolutionComponentResponse response = (RemoveSolutionComponentResponse)this._CRMClient._Client.Execute(addResource);
+
+                if (response.id != Guid.Empty)
+                    resourceAdd = true;
+
+                return resourceAdd;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Mapper model solution to entity CRM
         /// </summary>
-        /// <param name="usuario"></param>
+        /// <param name="solution"></param>
         /// <returns></returns>
-        private Entity MapperToEntity(SolutionModel usuario)
+        private Entity MapperToEntity(SolutionModel solution)
         {
-            Entity entity = new Entity(EntityNames.Solution, Guid.Parse(usuario.solutionid));
-            entity["friendlyname"] = usuario.friendlyname;
+            Entity entity = new Entity(EntityNames.Solution, Guid.Parse(solution.solutionid));
+            entity["friendlyname"] = solution.friendlyname;
             return entity;
         }
 
         /// <summary>
         /// Mapper entity CRM to model solution
         /// </summary>
-        /// <param name="usuario"></param>
+        /// <param name="solution"></param>
         /// <returns></returns>
-        private SolutionModel EntityToModel(Entity usuario)
+        private SolutionModel EntityToModel(Entity solution)
         {
             SolutionModel model = new SolutionModel();
             Guid parseSolutionId = Guid.Empty;
-            if (usuario.Attributes["solutionid"] != null && Guid.TryParse(usuario.Attributes["solutionid"].ToString(), out parseSolutionId))
+            if (solution.Attributes["solutionid"] != null && Guid.TryParse(solution.Attributes["solutionid"].ToString(), out parseSolutionId))
             {
                 model.solutionid = parseSolutionId.ToString();
-                model.friendlyname = EntityCollectionExtension.ExistProperty(usuario, "friendlyname") ? usuario["friendlyname"].ToString() : "--";
+                model.friendlyname = EntityCollectionExtension.ExistProperty(solution, "friendlyname") ? solution["friendlyname"].ToString() : "--";
+                model.uniquename = EntityCollectionExtension.ExistProperty(solution, "uniquename") ? solution["uniquename"].ToString() : "--";
                 return model;
             }
             else

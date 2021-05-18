@@ -6,7 +6,7 @@
              xmlns:CustomControls="clr-namespace:DynamicsCRMResourceSynchronization.Controls"
              xmlns:Converters="clr-namespace:DynamicsCRMResourceSynchronization.Converters"
              mc:Ignorable="d"
-             Name="CompareResource">
+             Name="CompareResource" SizeChanged="CompareResource_SizeChanged">
     <UserControl.Resources>
         <Converters:NameTypeResourceConverter x:Key="NameTypeResourceConverter" />
         <Converters:NameDifferenceResourceConverter x:Key="NameDifferenceResourceConverter" />
@@ -30,8 +30,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image x:Name="Loading" Visibility="Hidden" Stretch="None" Width="Auto" VerticalAlignment="Top" CustomControls:ImageBehavior.AnimatedSource="/Resources/loading.gif" />
-                <TextBlock x:Name="LoadingText" Text="" Padding="0, 15, 0, 0" Background="Transparent" HorizontalAlignment="Center"></TextBlock>
+                <CustomControls:LoadingControl Visibility="Hidden" x:Name="Loading"/>           
+                <TextBlock x:Name="LoadingText" Text="" Padding="0, 10, 0, 0" Background="Transparent" HorizontalAlignment="Center"></TextBlock>
             </Grid>            
         </StackPanel>
         <StackPanel Grid.Row="1">

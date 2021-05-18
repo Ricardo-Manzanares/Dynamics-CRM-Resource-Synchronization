@@ -53,10 +53,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\ExtensionMethods.cs" />
-    <Compile Include="Controls\ImageBehavior.cs" />
+    <Compile Include="Controls\LoadingControl.xaml.cs">
+      <DependentUpon>LoadingControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\CheckedMergeRowConverter.cs" />
     <Compile Include="Converters\EnabledMergeRowConverter.cs" />
+    <Compile Include="Converters\DistanceBallsLoadingConverter.cs" />
     <Compile Include="Converters\SelectedMergeRowConverter.cs" />
     <Compile Include="Converters\NameTypeResourceConverter.cs" />
     <Compile Include="Converters\NameDifferenceResourceConverter.cs" />
@@ -131,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\LoadingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DifferencesResourceWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,10 +158,8 @@
     <VSCTCompile Include="CRMResourceSynchronizationPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <Content Include="loading.gif" />
     <Content Include="Resources\CompareResourcePackage.ico" />
-    <Resource Include="Resources\loading.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Resources\CompareResourceWindowCommand.png" />
   </ItemGroup>
   <ItemGroup>

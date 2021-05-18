@@ -130,7 +130,7 @@ namespace DynamicsCRMResourceSynchronization
                 
             });
 
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
             ActionsOfEnvironment(VisibilityType.Visible);
 
             if (finish)
@@ -205,7 +205,7 @@ namespace DynamicsCRMResourceSynchronization
                 ActionsOfResources(VisibilityType.Hidden);
             }
 
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
             ActionsOfEnvironment(VisibilityType.Visible);
             ActionsOfSolutions(VisibilityType.Visible);
 
@@ -472,6 +472,9 @@ namespace DynamicsCRMResourceSynchronization
                 case Visibility.Collapsed:
                     Loading.Visibility = Visibility.Collapsed;
                     break;
+                case Visibility.Hidden:
+                    Loading.Visibility = Visibility.Hidden;
+                    break;
                 default:
                     break;
             }
@@ -479,7 +482,7 @@ namespace DynamicsCRMResourceSynchronization
 
         private void SetEnvironment()
         {
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
             CRMNameSearchResource.Text = CRMNameSearchResourceDefaultText;
             CRMLoadSolutions.Opacity = 1;
             CRMLoadSolutions.IsEnabled = true;
@@ -833,7 +836,7 @@ namespace DynamicsCRMResourceSynchronization
                 w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 w.ShowDialog();
 
-                ActionsOfLoading(Visibility.Collapsed);
+                ActionsOfLoading(Visibility.Hidden);
                 ActionsOfSolutions(VisibilityType.Visible);
                 ActionsOfResources(VisibilityType.Visible);
                 ActionsOfEnvironment(VisibilityType.Visible);
@@ -895,7 +898,7 @@ namespace DynamicsCRMResourceSynchronization
 
             });
 
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
             ActionsOfSolutions(VisibilityType.Visible);
             ActionsOfResources(VisibilityType.Visible);
             ActionsOfEnvironment(VisibilityType.Visible);
@@ -942,7 +945,7 @@ namespace DynamicsCRMResourceSynchronization
             ActionsOfResources(VisibilityType.Visible);
             ActionsOfEnvironment(VisibilityType.Visible);
             resetSelectedResourcesAfterAction();
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
 
             return finish;
         }
@@ -985,7 +988,7 @@ namespace DynamicsCRMResourceSynchronization
             ActionsOfResources(VisibilityType.Visible);
             ActionsOfEnvironment(VisibilityType.Visible);
             resetSelectedResourcesAfterAction();
-            ActionsOfLoading(Visibility.Collapsed);
+            ActionsOfLoading(Visibility.Hidden);
 
             return finish;
         }
@@ -1015,27 +1018,39 @@ namespace DynamicsCRMResourceSynchronization
         {
             try
             {
-                ActionsOfLoading(Visibility.Visible, "Add resources to the solution");
-                ActionsOfSolutions(VisibilityType.Disabled);
-                ActionsOfResources(VisibilityType.Disabled);
-                ActionsOfEnvironment(VisibilityType.Disabled);
+                if (CRMSolutions.SelectedItem != null && CRMSolutions.SelectedIndex > 0)
+                {
+                    Guid solutionParse = Guid.Empty;
+                    if (Guid.TryParse(((SolutionModel)CRMSolutions.SelectedItem).solutionid, out solutionParse))
+                    {
+                        ActionsOfLoading(Visibility.Visible, "Add resources to the solution");
+                        ActionsOfSolutions(VisibilityType.Disabled);
+                        ActionsOfResources(VisibilityType.Disabled);
+                        ActionsOfEnvironment(VisibilityType.Disabled);
 
-                Window w = new Window();
-                w.Title = "Add resources to the solution";
-                w.Content = new AddResourceWindowControl(CRMClient, reloadSettingsToModel(), resourcesBusiness, listResources);
-                w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                w.ShowDialog();
+                        Window w = new Window();
+                        w.Title = "Add resources to the solution";
+                        w.Content = new AddResourceWindowControl(CRMClient, reloadSettingsToModel(), resourcesBusiness, listResources, (SolutionModel)CRMSolutions.SelectedItem);
+                        w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        w.ShowDialog();
 
-                ActionsOfLoading(Visibility.Collapsed);
-                ActionsOfSolutions(VisibilityType.Visible);
-                ActionsOfResources(VisibilityType.Visible);
-                ActionsOfEnvironment(VisibilityType.Visible);
-                resetSelectedResourcesAfterAction();
+                        ActionsOfLoading(Visibility.Hidden);
+                        ActionsOfSolutions(VisibilityType.Visible);
+                        ActionsOfResources(VisibilityType.Visible);
+                        ActionsOfEnvironment(VisibilityType.Visible);
+                        resetSelectedResourcesAfterAction();
+                    }
+                }               
             }
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Cannot add resources to solution : '{0}'", ex.Message));
             }
+        }
+
+        private void CompareResource_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //Loading = new Controls.LoadingControl();
         }
     }
 }

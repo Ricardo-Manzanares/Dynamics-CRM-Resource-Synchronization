@@ -10,5 +10,6 @@ namespace DynamicsCRMResourceSynchronization.Core.Business.Models
     {
         public string solutionid { get; set; }
         public string friendlyname { get; set; }
+        public string uniquename { get; set; }
     }
 }

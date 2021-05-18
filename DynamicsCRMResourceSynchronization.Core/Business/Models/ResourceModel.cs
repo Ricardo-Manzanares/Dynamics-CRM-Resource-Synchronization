@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 namespace DynamicsCRMResourceSynchronization.Core.Business.Models
 {
     public enum ResourceContentStatus {[EnumMember(Value = "Equal")][Description("Resources are the same")]Equal, [EnumMember(Value = "LocalResourceMissing")] [Description("Local resource missing")]LocalResourceMissing, [EnumMember(Value = "CRMResourceMissing")] [Description("CRM Resource missing")] CRMResourceMissing, [EnumMember(Value = "DifferencesExist")] [Description("Differences exist")] DifferencesExist, [EnumMember(Value = "DifferencesResolved")] [Description("Differences resolved")] DifferencesResolved }
+    public enum ResourceStatusInSolution {[EnumMember(Value = "NoAction")] [Description("No action")] NoAction, [EnumMember(Value = "PendingToAdd")] [Description("Pending to add")] PendingToAdd, [EnumMember(Value = "PendingToRemove")] [Description("Pending to remove")] PendingToRemove}
     public class ResourceModel
     {
         [Browsable(false)]
@@ -34,6 +35,9 @@ namespace DynamicsCRMResourceSynchronization.Core.Business.Models
         public SideBySideDiffModel resourceCompareStatus { get; set; }
 
         public ResourceContentStatus resourceDifference { get; set; }
+
+        [Browsable(false)]
+        public ResourceStatusInSolution resourceStatusInSolution { get; set; }
 
         [Description("Proyecto F. Creación")]
         public string localcreatedon { get; set; }
