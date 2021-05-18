@@ -43,7 +43,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="1" x:Name="AvaiableResourcesNameFilter" TextWrapping="Wrap" Margin="10" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
+                <TextBox Grid.Column="0" Grid.Row="1" x:Name="AvaiableResourcesNameFilter" TextWrapping="Wrap" Margin="10" Padding="2" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
                 <ComboBox Grid.Column="1" x:Name="AvaiableResourcesTypeFilter" Margin="10">
                     <ComboBoxItem Content="-- Type or resource --" Tag="0" />
                     <ComboBoxItem Content="Web page (HTML) .htm, .html" Tag="1" />
@@ -103,7 +103,7 @@
                     <ComboBoxItem Content="Vector format (SVG) .svg" Tag="11" />
                     <ComboBoxItem Content="Chain (RESX) .resx" Tag="12" />
                 </ComboBox>
-                <TextBox Grid.Column="0" x:Name="ResourcesInSolutionNameFilter" TextWrapping="Wrap" Margin="10" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
+                <TextBox Grid.Column="0" x:Name="ResourcesInSolutionNameFilter" TextWrapping="Wrap" Margin="0, 10, 10, 10" Padding="2" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
                 <Button Grid.Column="2" Click="ResourcesInSolutionFilter_Click" Background="Transparent" x:Name="ResourcesInSolutionFilter" ToolTip="Filter resources in solution" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
@@ -759,6 +759,27 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="AvailableResourcesInDefaultSolution_SelectionChanged" />
+                    <Setter Property="IsSelected" Value="{Binding selectResource}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid x:Name="Grid">
+                                    <Border x:Name="SimpleBackground" Visibility="Visible" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"></Border>
+                                    <ContentPresenter x:Name="ContentPresenter"></ContentPresenter>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#E5F3FB" />
+                                        <Setter Property="BorderBrush" Value="#70C0E7" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#E5F3FB" />
+                                        <Setter Property="BorderBrush" Value="#70C0E7" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
@@ -768,7 +789,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding name}" />
+                        <TextBlock Grid.Column="0" Text="{Binding name}" Margin="2"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -827,10 +848,31 @@
                 </Button>
             </Grid>
         </StackPanel>
-        <ListView x:Name="ResourcesInSolution" SelectionMode="Multiple" Grid.Column="3" Grid.Row="3" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0, 0, 10, 0">
+        <ListView x:Name="ResourcesInSolution" Grid.Column="3" Grid.Row="3" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0, 0, 10, 0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ResourcesInSolution_SelectionChanged" />
+                    <Setter Property="IsSelected" Value="{Binding selectResource}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid x:Name="Grid">
+                                    <Border x:Name="SimpleBackground" Visibility="Visible" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"></Border>
+                                    <ContentPresenter x:Name="ContentPresenter"></ContentPresenter>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#E5F3FB" />
+                                        <Setter Property="BorderBrush" Value="#70C0E7" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#E5F3FB" />
+                                        <Setter Property="BorderBrush" Value="#70C0E7" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
@@ -840,7 +882,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding name}" />
+                        <TextBlock Grid.Column="0" Text="{Binding name}" Margin="2"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

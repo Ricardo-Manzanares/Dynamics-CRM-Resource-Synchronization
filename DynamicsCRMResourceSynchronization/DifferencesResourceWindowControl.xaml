@@ -131,11 +131,11 @@
                     <Setter Property="Focusable" Value="False"/>
                 </Style>
             </ListView.Resources>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
+                            <ControlTemplate TargetType="ListViewItem">
                                 <Grid x:Name="Grid">
                                     <Border x:Name="SimpleBackground" Visibility="Visible" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"></Border>
                                     <Border x:Name="OnSelectedBackground" Visibility="Collapsed" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"></Border>
@@ -153,7 +153,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListBox.ItemContainerStyle>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -173,11 +173,11 @@
                     <Setter Property="Focusable" Value="False"/>
                 </Style>
             </ListView.Resources>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
+                            <ControlTemplate TargetType="ListViewItem">
                                 <Grid x:Name="Grid">
                                     <Border x:Name="SimpleBackground" Visibility="Visible" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"></Border>
                                     <Border x:Name="OnSelectedBackground" Visibility="Collapsed" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"></Border>
@@ -195,7 +195,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListBox.ItemContainerStyle>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

@@ -365,26 +365,38 @@ namespace DynamicsCRMResourceSynchronization
 
         private void ResourcesInSolutionSelectAll_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = true;
+                resources.Add(resource);
             }
+            ResourcesInSolution.ItemsSource = null;
+            ResourcesInSolution.ItemsSource = resources;
         }
 
         private void ResourcesInSolutionUnselect_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = false;
+                resources.Add(resource);
             }
+            ResourcesInSolution.ItemsSource = null;
+            ResourcesInSolution.ItemsSource = resources;
         }
 
         private void ResourcesInSolutionInvertSelect_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = !resource.selectResource;
+                resources.Add(resource);
             }
+            ResourcesInSolution.ItemsSource = null;
+            ResourcesInSolution.ItemsSource = resources;
         }
 
 
@@ -405,26 +417,38 @@ namespace DynamicsCRMResourceSynchronization
 
         private void AvaiableResourcesSelectAll_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = true;
+                resources.Add(resource);
             }
+            AvailableResourcesInDefaultSolution.ItemsSource = null;
+            AvailableResourcesInDefaultSolution.ItemsSource = resources;
         }
 
         private void AvaiableResourcesUnselectAll_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = false;
+                resources.Add(resource);
             }
+            AvailableResourcesInDefaultSolution.ItemsSource = null;
+            AvailableResourcesInDefaultSolution.ItemsSource = resources;
         }
 
         private void AvaiableResourcesInvertSelect_Click(object sender, RoutedEventArgs e)
         {
+            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = !resource.selectResource;
+                resources.Add(resource);
             }
+            AvailableResourcesInDefaultSolution.ItemsSource = null;
+            AvailableResourcesInDefaultSolution.ItemsSource = resources;
         }
 
         private void AvailableResourcesInDefaultSolution_SelectionChanged(object sender, MouseButtonEventArgs e)

@@ -53,6 +53,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AddResourceWindowControl.xaml.cs">
+      <DependentUpon>AddResourceWindowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LoadingControl.xaml.cs">
       <DependentUpon>LoadingControl.xaml</DependentUpon>
     </Compile>
@@ -64,9 +67,6 @@
     <Compile Include="Converters\NameDifferenceResourceConverter.cs" />
     <Compile Include="Converters\StatusRowDifferenceResourceConverter.cs" />
     <Compile Include="Converters\StatusRowConverter.cs" />
-    <Compile Include="AddResourceWindowControl.xaml.cs">
-      <DependentUpon>AddResourceWindowControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DifferencesResourceWindowControl.xaml.cs">
       <DependentUpon>DifferencesResourceWindowControl.xaml</DependentUpon>
     </Compile>
@@ -158,7 +158,6 @@
     <VSCTCompile Include="CRMResourceSynchronizationPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="loading.gif" />
     <Content Include="Resources\CompareResourcePackage.ico" />
     <Content Include="Resources\CompareResourceWindowCommand.png" />
   </ItemGroup>
