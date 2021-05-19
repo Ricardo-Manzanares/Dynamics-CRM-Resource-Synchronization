@@ -28,6 +28,11 @@ namespace DynamicsCRMResourceSynchronization
 
         private SolutionModel solutionDefault;
         private SolutionModel solutionSelected;
+        private int AvaiableResourcesTypeSelected = 0;
+        private string AvaiableResourcesTextSelected = "";
+        private int ResourcesInSolutionTypeSelected = 0;
+        private List<ResourceModel> lstAvaiableResources = new List<ResourceModel>();
+        private List<ResourceModel> lstResourcesInSolution = new List<ResourceModel>();
 
         private SettingsModel settings = new SettingsModel();
 
@@ -49,11 +54,13 @@ namespace DynamicsCRMResourceSynchronization
             this.resourcesBusiness = resourceBusiness;
             this.settings = settings;
             this.solutionSelected = solutionSelected;
+            resourcesToView.ForEach(k => k.selectResource = false);
 
             ResourcesInSolution.ItemsSource = resourcesToView;
+            lstResourcesInSolution = resourcesToView;
 
             AvaiableResourcesNameFilter.Text = CRMNameFilterResourceDefaultText;
-            ResourcesInSolutionNameFilter.Text = CRMNameFilterResourceDefaultText;
+            ResourcesInSolutionTextFilter.Text = CRMNameFilterResourceDefaultText;
             AvaiableResourcesTypeFilter.SelectedIndex = 0;
             ResourcesInSolutionTypeFilter.SelectedIndex = 0;
 
@@ -71,7 +78,6 @@ namespace DynamicsCRMResourceSynchronization
             ActionsOfLoading(Visibility.Visible, "Downloading default solution resources");
             ActionsOfButtons(VisibilityType.Disabled);
 
-            List<ResourceModel> resourcesInDefaultSolution = new List<ResourceModel>();
             await Task.Run(() =>
             {
                 SolutionsBusiness solution = new SolutionsBusiness(CRMClient, settings);
@@ -81,13 +87,13 @@ namespace DynamicsCRMResourceSynchronization
                     Guid solutionParse = Guid.Empty;
                     if (Guid.TryParse(solutionDefault.solutionid, out solutionParse))
                     {
-                        resourcesInDefaultSolution = resourcesBusiness.GetResourcesFromSolution(solutionParse, true);
+                        lstAvaiableResources = resourcesBusiness.GetResourcesFromSolution(solutionParse, true);
 
                         //Order resources by name and remove resources in solution
-                        resourcesInDefaultSolution = resourcesInDefaultSolution.OrderBy(k => k.name).ToList();
-                        if (resourcesInDefaultSolution.Count > 0)
+                        lstAvaiableResources = lstAvaiableResources.OrderBy(k => k.name).ToList();
+                        if (lstAvaiableResources.Count > 0)
                         {
-                            resourcesInDefaultSolution.RemoveAll(k => ResourcesInSolution.ItemsSource.Cast<ResourceModel>().ToList().Select(s => s.name).Contains(k.name));
+                            lstAvaiableResources.RemoveAll(k => lstResourcesInSolution.Select(s => s.name).Contains(k.name));
                             finish = true;
                         }
                     }
@@ -99,9 +105,9 @@ namespace DynamicsCRMResourceSynchronization
             ActionsOfLoading(Visibility.Hidden);
             ActionsOfButtons(VisibilityType.Visible);
 
-            if (finish && resourcesInDefaultSolution.Count() > 0)
+            if (finish && lstAvaiableResources.Count() > 0)
             {
-                AvailableResourcesInDefaultSolution.ItemsSource = resourcesInDefaultSolution;
+                AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources;
             }          
 
             return finish;
@@ -123,7 +129,7 @@ namespace DynamicsCRMResourceSynchronization
                     AvailableResourcesInDefaultSolution.IsEnabled = true;
                     AvaiableResourcesNameFilter.IsEnabled = true;
                     AvaiableResourcesTypeFilter.IsEnabled = true;
-                    ResourcesInSolutionNameFilter.IsEnabled = true;
+                    ResourcesInSolutionTextFilter.IsEnabled = true;
                     ResourcesInSolutionFilter.IsEnabled = true;
                     ResourcesInSolutionTypeFilter.IsEnabled = true;
                     AvaiableResourcesFilter.IsEnabled = true;
@@ -152,7 +158,7 @@ namespace DynamicsCRMResourceSynchronization
                     AvailableResourcesInDefaultSolution.IsEnabled = false;
                     AvaiableResourcesNameFilter.IsEnabled = false;
                     AvaiableResourcesTypeFilter.IsEnabled = false;
-                    ResourcesInSolutionNameFilter.IsEnabled = false;
+                    ResourcesInSolutionTextFilter.IsEnabled = false;
                     ResourcesInSolutionFilter.IsEnabled = false;
                     ResourcesInSolutionFilter.Opacity = 0.4;
                     ResourcesInSolutionTypeFilter.IsEnabled = false;
@@ -196,43 +202,20 @@ namespace DynamicsCRMResourceSynchronization
         private void SearchResourceTextInTextBox(object sender)
         {
             TextBox tb = ((TextBox)sender);
-            if(tb.Name == AvaiableResourcesNameFilter.Name)
+            if (tb.IsFocused)
             {
-                if (tb.IsFocused)
+                if (tb.Text == CRMNameFilterResourceDefaultText)
                 {
-                    if (tb.Text == CRMNameFilterResourceDefaultText)
-                    {
-                        tb.Text = "";
-                    }
-                }
-                else
-                {
-                    if (tb.Text == "")
-                    {
-                        tb.Text = CRMNameFilterResourceDefaultText;
-                        AvaiableResourcesNameFilter.Text = "";
-                    }
+                    tb.Text = "";
                 }
             }
             else
             {
-                if (tb.IsFocused)
+                if (tb.Text == "")
                 {
-                    if (tb.Text == CRMNameFilterResourceDefaultText)
-                    {
-                        tb.Text = "";
-                    }
-                }
-                else
-                {
-                    if (tb.Text == "")
-                    {
-                        tb.Text = CRMNameFilterResourceDefaultText;
-                        ResourcesInSolutionNameFilter.Text = "";
-                    }
+                    tb.Text = CRMNameFilterResourceDefaultText;
                 }
             }
-
         }
         #endregion
 
@@ -306,99 +289,159 @@ namespace DynamicsCRMResourceSynchronization
 
         private void AvaiableResourcesFilter_Click(object sender, RoutedEventArgs e)
         {
+            if (AvaiableResourcesTypeFilter.SelectedItem != null && AvaiableResourcesTypeFilter.SelectedIndex > 0)
+            {
+                AvaiableResourcesTypeSelected = Convert.ToInt32(((ComboBoxItem)AvaiableResourcesTypeFilter.SelectedItem).Tag);
+            }
+            else
+            {
+                AvaiableResourcesTypeSelected = 0;
+            }
 
+            if (AvaiableResourcesNameFilter.Text != CRMNameFilterResourceDefaultText)
+            {
+                AvaiableResourcesTextSelected = AvaiableResourcesNameFilter.Text;
+            }
+            else
+            {
+                AvaiableResourcesTextSelected = "";
+            }
+
+            List<ResourceModel> lstTemp = lstAvaiableResources;
+
+            if (AvaiableResourcesTypeSelected > 0)
+            {
+                lstTemp = lstTemp.Where(k => k.webresourcetype == AvaiableResourcesTypeSelected).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(AvaiableResourcesTextSelected))
+            {
+                lstTemp = lstTemp.Where(k => k.name.Contains(AvaiableResourcesTextSelected)).ToList();
+            }
+
+            AvailableResourcesInDefaultSolution.ItemsSource = null;
+            AvailableResourcesInDefaultSolution.ItemsSource = lstTemp.OrderBy(k => k.name);
         }
 
         private void ResourcesInSolutionFilter_Click(object sender, RoutedEventArgs e)
         {
+            string ResourcesInSolutionTextSelected = "";
 
+            if (ResourcesInSolutionTypeFilter.SelectedItem != null && ResourcesInSolutionTypeFilter.SelectedIndex > 0)
+            {
+                ResourcesInSolutionTypeSelected = Convert.ToInt32(((ComboBoxItem)ResourcesInSolutionTypeFilter.SelectedItem).Tag);
+            }
+            else
+            {
+                ResourcesInSolutionTypeSelected = 0;
+            }
+
+            if (ResourcesInSolutionTextFilter.Text != CRMNameFilterResourceDefaultText)
+            {
+                ResourcesInSolutionTextSelected = ResourcesInSolutionTextFilter.Text;
+            }
+            else
+            {
+                ResourcesInSolutionTextSelected = "";
+            }
+
+            List<ResourceModel> lstTemp = lstResourcesInSolution;
+            if (ResourcesInSolutionTypeSelected > 0)
+            {
+                lstTemp = lstTemp.Where(k => k.webresourcetype == ResourcesInSolutionTypeSelected).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(ResourcesInSolutionTextSelected))
+            {
+                lstTemp = lstTemp.Where(k => k.name.Contains(ResourcesInSolutionTextSelected)).ToList();
+            }
+
+            ResourcesInSolution.ItemsSource = null;
+            ResourcesInSolution.ItemsSource = lstTemp;
         }
 
+        #region Select All, Unselect, Invert and moving resource from solutions
         private void AddResourceToSolution_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resourceToSolutionPendingAdd = ResourcesInSolution.ItemsSource.Cast<ResourceModel>().ToList();
+            List<Guid> resourcesRemove = new List<Guid>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 if (resource.selectResource)
                 {
                     resource.resourceStatusInSolution = ResourceStatusInSolution.PendingToAdd;
                     resource.selectResource = false;
-                    resourceToSolutionPendingAdd.Add(resource);
+                    resourcesRemove.Add(resource.resourceid);                 
+
+                    lstResourcesInSolution.Add(resource);
                 }
             }
 
+            lstAvaiableResources.RemoveAll(k => resourcesRemove.Contains(k.resourceid));
+
             ResourcesInSolution.ItemsSource = null;
-            ResourcesInSolution.ItemsSource = resourceToSolutionPendingAdd.OrderBy(k => k.name);
-            ResourcesInSolutionNameFilter.Text = "";
+            ResourcesInSolution.ItemsSource = lstResourcesInSolution.OrderBy(k => k.name);
+            ResourcesInSolutionTextFilter.Text = "";
             ResourcesInSolutionTypeFilter.SelectedIndex = 0;
            
-            var resourcesMoved = AvailableResourcesInDefaultSolution.Items.Cast<ResourceModel>().ToList();
-            resourcesMoved.RemoveAll(k => k.resourceStatusInSolution == ResourceStatusInSolution.PendingToAdd);
             AvailableResourcesInDefaultSolution.ItemsSource = null;
-            AvailableResourcesInDefaultSolution.ItemsSource = resourcesMoved.OrderBy(k => k.name);
+            AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources.OrderBy(k => k.name);
         }
 
         private void RemoveResourceFromSolution_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resourceToSolutionPendingAdd = AvailableResourcesInDefaultSolution.ItemsSource.Cast<ResourceModel>().ToList();
+            List<Guid> resourcesRemove = new List<Guid>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 if (resource.selectResource)
                 {
                     resource.resourceStatusInSolution = ResourceStatusInSolution.PendingToRemove;
                     resource.selectResource = false;
-                    resourceToSolutionPendingAdd.Add(resource);
+                    resourcesRemove.Add(resource.resourceid);
+
+                    lstAvaiableResources.Add(resource);
                 }
             }
 
-            var resourcesDeleted = ResourcesInSolution.Items.Cast<ResourceModel>().ToList();
-            resourcesDeleted.RemoveAll(k => k.resourceStatusInSolution == ResourceStatusInSolution.PendingToRemove);
+            lstResourcesInSolution.RemoveAll(k => resourcesRemove.Contains(k.resourceid));
 
             ResourcesInSolution.ItemsSource = null;
-            ResourcesInSolution.ItemsSource = resourcesDeleted.OrderBy(k => k.name);
+            ResourcesInSolution.ItemsSource = lstResourcesInSolution.OrderBy(k => k.name);
 
             AvailableResourcesInDefaultSolution.ItemsSource = null;
-            AvailableResourcesInDefaultSolution.ItemsSource = resourceToSolutionPendingAdd.OrderBy(k => k.name);
+            AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources.OrderBy(k => k.name);
             AvaiableResourcesNameFilter.Text = "";
             AvaiableResourcesTypeFilter.SelectedIndex = 0;
         }
 
         private void ResourcesInSolutionSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = true;
-                resources.Add(resource);
             }
             ResourcesInSolution.ItemsSource = null;
-            ResourcesInSolution.ItemsSource = resources;
+            ResourcesInSolution.ItemsSource = lstResourcesInSolution;
         }
 
         private void ResourcesInSolutionUnselect_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = false;
-                resources.Add(resource);
             }
             ResourcesInSolution.ItemsSource = null;
-            ResourcesInSolution.ItemsSource = resources;
+            ResourcesInSolution.ItemsSource = lstResourcesInSolution;
         }
 
         private void ResourcesInSolutionInvertSelect_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in ResourcesInSolution.Items)
             {
                 resource.selectResource = !resource.selectResource;
-                resources.Add(resource);
             }
             ResourcesInSolution.ItemsSource = null;
-            ResourcesInSolution.ItemsSource = resources;
+            ResourcesInSolution.ItemsSource = lstResourcesInSolution;
         }
-
 
         private void ResourcesInSolution_SelectionChanged(object sender, MouseButtonEventArgs e)
         {         
@@ -417,38 +460,32 @@ namespace DynamicsCRMResourceSynchronization
 
         private void AvaiableResourcesSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = true;
-                resources.Add(resource);
             }
             AvailableResourcesInDefaultSolution.ItemsSource = null;
-            AvailableResourcesInDefaultSolution.ItemsSource = resources;
+            AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources;
         }
 
         private void AvaiableResourcesUnselectAll_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = false;
-                resources.Add(resource);
             }
             AvailableResourcesInDefaultSolution.ItemsSource = null;
-            AvailableResourcesInDefaultSolution.ItemsSource = resources;
+            AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources;
         }
 
         private void AvaiableResourcesInvertSelect_Click(object sender, RoutedEventArgs e)
         {
-            List<ResourceModel> resources = new List<ResourceModel>();
             foreach (ResourceModel resource in AvailableResourcesInDefaultSolution.Items)
             {
                 resource.selectResource = !resource.selectResource;
-                resources.Add(resource);
             }
             AvailableResourcesInDefaultSolution.ItemsSource = null;
-            AvailableResourcesInDefaultSolution.ItemsSource = resources;
+            AvailableResourcesInDefaultSolution.ItemsSource = lstAvaiableResources;
         }
 
         private void AvailableResourcesInDefaultSolution_SelectionChanged(object sender, MouseButtonEventArgs e)
@@ -465,5 +502,6 @@ namespace DynamicsCRMResourceSynchronization
                 }
             }
         }
+        #endregion
     }
 }

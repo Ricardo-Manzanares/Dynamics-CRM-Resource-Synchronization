@@ -11,11 +11,11 @@
     </UserControl.Resources>
     <Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Grid.Row="0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="35"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="35"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -103,7 +103,7 @@
                     <ComboBoxItem Content="Vector format (SVG) .svg" Tag="11" />
                     <ComboBoxItem Content="Chain (RESX) .resx" Tag="12" />
                 </ComboBox>
-                <TextBox Grid.Column="0" x:Name="ResourcesInSolutionNameFilter" TextWrapping="Wrap" Margin="0, 10, 10, 10" Padding="2" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
+                <TextBox Grid.Column="0" x:Name="ResourcesInSolutionTextFilter" TextWrapping="Wrap" Margin="0, 10, 10, 10" Padding="2" GotFocus="TextBox_GotFocus" BorderBrush="Transparent" LostFocus="TextBox_LostFocus" />
                 <Button Grid.Column="2" Click="ResourcesInSolutionFilter_Click" Background="Transparent" x:Name="ResourcesInSolutionFilter" ToolTip="Filter resources in solution" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
