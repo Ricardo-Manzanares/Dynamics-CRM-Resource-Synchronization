@@ -166,7 +166,7 @@ namespace DynamicsCRMResourceSynchronization
             {
                 case AutenticationType.AD:
                     CRMAuthenticationParametersAD.Visibility = Visibility.Visible;
-                    AuthenticationTypeAD.IsChecked = true;
+                    //AuthenticationTypeAD.IsChecked = true;
                     CRMAuthenticationParametersCertificate.Visibility = Visibility.Hidden;
                     CRMAuthenticationParametersClientSecret.Visibility = Visibility.Hidden;
                     CRMAuthenticationParametersOAuth.Visibility = Visibility.Hidden;
@@ -186,6 +186,7 @@ namespace DynamicsCRMResourceSynchronization
                     CRMAuthenticationParametersClientSecret.Visibility = Visibility.Hidden;
                     CRMAuthenticationParametersOAuth.Visibility = Visibility.Hidden;
                     CRMAuthenticationParametersOffice365.Visibility = Visibility.Hidden;
+                    //AuthenticationTypeCertificate.IsChecked = true;
                     break;
                 case AutenticationType.ClientSecret:
                     CRMAuthenticationParametersAD.Visibility = Visibility.Hidden;

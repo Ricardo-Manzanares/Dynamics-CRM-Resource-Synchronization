@@ -291,9 +291,16 @@ namespace DynamicsCRMResourceSynchronization
 
                 if (Utils.DirectoryHasPermission(resourceModel.path, FileSystemRights.Write))
                 {
-                    File.WriteAllText(resourceModel.path + resourceModel.name, String.Join("\r\n", DiffPaneResourceCombined.Lines.Where(k => k.Type == ChangeType.Merged || k.Type == ChangeType.Unchanged).Select(s => s.Text)));
+                    string contentMerged = String.Join("\r\n", DiffPaneResourceCombined.Lines.Where(k => k.Type == ChangeType.Merged || k.Type == ChangeType.Unchanged).Select(s => s.Text));
+
+                    File.WriteAllText(resourceModel.path + resourceModel.name, contentMerged);
 
                     MessageBox.Show(string.Format("The resource has been updated successfully"));
+
+                    //Update content resource in CRM and in local
+                    ResourceModel resourceUpdate = resources.Where(k => k.resourceid == resource.resourceid).FirstOrDefault();
+                    resourceUpdate.contentCRM = contentMerged;
+                    resourceUpdate.contentLocal = contentMerged;
 
                     //Reload resources and differentes
                     loadResource();

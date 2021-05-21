@@ -100,7 +100,7 @@
                     <ComboBoxItem Content="Vector format (SVG) .svg" Tag="11" />
                     <ComboBoxItem Content="Chain (RESX) .resx" Tag="12" />
                 </ComboBox>
-                <Button Grid.Column="2" Click="CRMSearchResource_Click" Background="Transparent" IsEnabled="False" x:Name="CRMSearchResource" ToolTip="Filter solution resources" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Column="2" Click="CRMFilterResources_Click" Background="Transparent" IsEnabled="False" x:Name="CRMFilterResources" ToolTip="Filter solution resources" BorderBrush="Transparent" Height="30" Width="30" BorderThickness="0" Cursor="Hand">
                     <Image>
                         <Image.Source>
                             <DrawingImage>
@@ -335,11 +335,11 @@
                     <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Donwload resources from CRM" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="1" Margin="5" ></TextBlock>
-                <TextBlock Text="Upload resources to CRM" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="2" Margin="5" ></TextBlock>
+                <TextBlock Text="Download CRM Solution Resources" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="1" Margin="5" ></TextBlock>
+                <TextBlock Text="Add resources to the CRM solution" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="2" Margin="5" ></TextBlock>
                 <TextBlock Text="Upload and publish resources to CRM" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="3" Margin="5" ></TextBlock>
-                <TextBlock Text="Compare resources between environtments" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="4" Margin="5" ></TextBlock>
-                <TextBlock Text="Add resources to solution CRM" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="5" Margin="5" ></TextBlock>
+                <TextBlock Text="Compare resources between CRM and local path" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="4" Margin="5" ></TextBlock>
+                <TextBlock Text="Add resources from the default CRM solution" TextWrapping="Wrap" TextAlignment="Center" Grid.Column="5" Margin="5" ></TextBlock>
             </Grid>
         </StackPanel>
         <DataGrid x:Name="DataResources" Margin="10, 0, 10, 0" Grid.Row="6" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True" ColumnWidth="Auto">
@@ -492,7 +492,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Current user and environment" HorizontalAlignment="Left" Grid.Column="0" Margin="5" ></TextBlock>
-                <TextBlock Text="Paths resources" HorizontalAlignment="Right" Grid.Column="2" Margin="5" ></TextBlock>
+                <TextBlock Text="Resources paths" HorizontalAlignment="Right" Grid.Column="2" Margin="5" ></TextBlock>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="9" VerticalAlignment="Bottom" Margin="10, 0, 10, 10">

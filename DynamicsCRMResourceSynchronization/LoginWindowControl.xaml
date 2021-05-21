@@ -24,18 +24,18 @@
             <TextBlock Text="Authentication type of CRM"></TextBlock>
             <Grid Margin="10, 5, 10, 0" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <!--<ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>-->
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton x:Name="AuthenticationTypeAD" Grid.Column="0" GroupName="AuthenticationType" Click="AutenticationType_Click">AD</RadioButton>
-                <RadioButton x:Name="AuthenticationTypeOAuth" Grid.Column="2" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">OAuth</RadioButton>
-                <RadioButton x:Name="AuthenticationTypeCertificate" Grid.Column="3" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">Certificate</RadioButton>
-                <RadioButton x:Name="AuthenticationTypeClientSecret" Grid.Column="4" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">ClientSecret</RadioButton>
-                <RadioButton x:Name="AuthenticationTypeOffice365" Grid.Column="5" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">Office365</RadioButton>
+                <!--<RadioButton x:Name="AuthenticationTypeAD" Grid.Column="0" GroupName="AuthenticationType" Click="AutenticationType_Click">AD</RadioButton>-->
+                <RadioButton x:Name="AuthenticationTypeOAuth" Grid.Column="0" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">OAuth</RadioButton>
+                <!--<RadioButton x:Name="AuthenticationTypeCertificate" Grid.Column="3" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">Certificate</RadioButton>-->
+                <RadioButton x:Name="AuthenticationTypeClientSecret" Grid.Column="1" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">ClientSecret</RadioButton>
+                <RadioButton x:Name="AuthenticationTypeOffice365" Grid.Column="2" GroupName="AuthenticationType" Click="AutenticationType_Click" Margin="5,0,0,0">Office365</RadioButton>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="CRMAuthenticationParametersAD" Visibility="Hidden" Grid.Row="3" Margin="10">
