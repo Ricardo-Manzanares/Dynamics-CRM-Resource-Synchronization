@@ -52,28 +52,49 @@ namespace DynamicsCRMResourceSynchronization
             SetEnvironment();
         }
 
-        private bool connectCRM()
+        private bool checkConnectCRMAndPathsRoutes()
         {
-            AuthenticationParameters authenticationParameters = new AuthenticationParameters();
+            try
+            {
+                AuthenticationParameters authenticationParameters = new AuthenticationParameters();
 
-            authenticationParameters._CRMUrl = Settings.Default.CRMUrl;
-            authenticationParameters._CRMUserName = Settings.Default.CRMUserName;
-            authenticationParameters._CRMPassword = Settings.Default.CRMPassword;
-            authenticationParameters._ClientId = Settings.Default.ClientId;
-            authenticationParameters._RedirectUri = Settings.Default.RedirectUri;
-            authenticationParameters._TokenCacheStorePath = Settings.Default.TokenCacheStorePath;
-            authenticationParameters._TokenCacheStorePath = Settings.Default.TokenCacheStorePath;
-            authenticationParameters._IntegratedSecurityPrompt = Settings.Default.IntegratedSecurityPrompt;
-            authenticationParameters._AuthLoginPrompt = Settings.Default.AuthLoginPrompt;
-            authenticationParameters._CertificateThumprint = Settings.Default.CertificateThumprint;
-            authenticationParameters._ClientSecret = Settings.Default.ClientSecret;
-            authenticationParameters._AuthenticationType = Utils.GetObjectEnumFromDescription<AutenticationType>(Settings.Default.CRMTypeAuth);
+                authenticationParameters._CRMUrl = Settings.Default.CRMUrl;
+                authenticationParameters._CRMUserName = Settings.Default.CRMUserName;
+                authenticationParameters._CRMPassword = Settings.Default.CRMPassword;
+                authenticationParameters._ClientId = Settings.Default.ClientId;
+                authenticationParameters._RedirectUri = Settings.Default.RedirectUri;
+                authenticationParameters._TokenCacheStorePath = Settings.Default.TokenCacheStorePath;
+                authenticationParameters._TokenCacheStorePath = Settings.Default.TokenCacheStorePath;
+                authenticationParameters._IntegratedSecurityPrompt = Settings.Default.IntegratedSecurityPrompt;
+                authenticationParameters._AuthLoginPrompt = Settings.Default.AuthLoginPrompt;
+                authenticationParameters._CertificateThumprint = Settings.Default.CertificateThumprint;
+                authenticationParameters._ClientSecret = Settings.Default.ClientSecret;
+                authenticationParameters._AuthenticationType = Utils.GetObjectEnumFromDescription<AutenticationType>(Settings.Default.CRMTypeAuth);
 
-            CRMClient = new CRMClient(authenticationParameters);
-            if(CRMClient.GetOrganizationService())
-                return true;
-            else
+                CRMClient = new CRMClient(authenticationParameters);
+                if (CRMClient.GetOrganizationService())
+                {
+                    if (string.IsNullOrEmpty(Settings.Default.PathCSS) || string.IsNullOrEmpty(Settings.Default.PathGIF) || string.IsNullOrEmpty(Settings.Default.PathHTML) || string.IsNullOrEmpty(Settings.Default.PathICO) || string.IsNullOrEmpty(Settings.Default.PathJPG)
+                       || string.IsNullOrEmpty(Settings.Default.PathJS) || string.IsNullOrEmpty(Settings.Default.PathPNG) || string.IsNullOrEmpty(Settings.Default.PathRESX) || string.IsNullOrEmpty(Settings.Default.PathSVG) || string.IsNullOrEmpty(Settings.Default.PathXAP)
+                       || string.IsNullOrEmpty(Settings.Default.PathXML) || string.IsNullOrEmpty(Settings.Default.PathXSL)) {
+                        MessageBox.Show("You are not configuring the routes of the resource types, check the configuration");
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }                    
+                }
+                else
+                {
+                    MessageBox.Show("Error connecting to the environment, check the connection parameters to the CRM environment");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Error connecting to the environment, check the connection parameters to the CRM environment and resource paths : '{0}'", ex.Message));
                 return false;
+            }
         }
 
         private void ConfiEnvironment_Click(object sender, RoutedEventArgs e)
@@ -98,7 +119,7 @@ namespace DynamicsCRMResourceSynchronization
         {
             try
             {
-                if (connectCRM())
+                if (checkConnectCRMAndPathsRoutes())
                 {
                     CRMSolutions.ItemsSource = null;
                     CRMLoadSolutionsAsync();                    
@@ -182,7 +203,7 @@ namespace DynamicsCRMResourceSynchronization
                 {
                     await Task.Run(() =>
                     {
-                        if (connectCRM())
+                        if (checkConnectCRMAndPathsRoutes())
                         {
                             resourcesBusiness = new ResourcesBusiness(CRMClient, reloadSettingsToModel());
                             listResources = resourcesBusiness.GetResourcesFromSolution(solutionParse);
