@@ -11,3 +11,5 @@
 /DynamicsCRMResourceSynchronization.Core/bin/Debug
 /DynamicsCRMResourceSynchronization.Core/Key.snk
 /DynamicsCRMResourceSynchronization/Key.snk
+/DynamicsCRMResourceSynchronization/bin/Release
+/DynamicsCRMResourceSynchronization.Core/bin/Release
