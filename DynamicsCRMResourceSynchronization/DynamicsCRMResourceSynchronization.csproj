@@ -158,7 +158,10 @@
     <VSCTCompile Include="CRMResourceSynchronizationPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="Resources\CompareResourcePackage.ico" />
+    <Content Include="Resources\CompareResourcePackage.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\CompareResourceWindowCommand.png" />
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DynamicsCRMResourceSynchronization")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Ricardo Manzanares Camargo")]
 [assembly: AssemblyProduct("DynamicsCRMResourceSynchronization")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
