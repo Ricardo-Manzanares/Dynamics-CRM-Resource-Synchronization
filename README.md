@@ -20,7 +20,7 @@ The connection to Dynamics CRM is available for multiple logins: ~~AD~~, OAuth, 
 ## First steps
 
 1. Donwload and install extension in visual studio (>2017) from visual studio marketplace
-    - Donwload : Pending url
+    - Donwload : https://marketplace.visualstudio.com/items?itemName=Dynamics-CRM-Resource-Synchronization.Dynamics-CRM-Resource-Synchronization
 2. Parameters for connection to the Dynamics CRM environment
 
 3. Local resource path configuration 
