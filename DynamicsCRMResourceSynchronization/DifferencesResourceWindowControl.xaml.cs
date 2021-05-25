@@ -24,10 +24,13 @@ namespace DynamicsCRMResourceSynchronization
         private List<ResourceModel> resources { get; set; }
         private ResourcesBusiness resourcesBusiness { get; set; }
 
+        private List<DiffPiece> linesConflict { get; set; }
+
         private int posResource = 0;
         private int conflictsInResource = 0;
+        private DiffPiece conflicNavigation = null;
 
-        private ScrollViewer resourceCRMScroll, resourceLocalScroll, resourceCombinedScroll = new ScrollViewer();
+        private ScrollViewer resourceCRMScroll, resourceLocalScroll = new ScrollViewer();
         private string InfoResourceDefaultText = "Differences in resource ";
         private DiffPaneModel DiffPaneResourceCombined = new DiffPaneModel();
         private SettingsModel settings = new SettingsModel();
@@ -127,35 +130,35 @@ namespace DynamicsCRMResourceSynchronization
         {
             resourceCRMScroll = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild((ListView)ResourceCRM, 0), 0);
             resourceLocalScroll = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild((ListView)ResourceLocal, 0), 0);
-            resourceCombinedScroll = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild((ListView)ResourceCombined, 0), 0);
+            //resourceCombinedScroll = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild((ListView)ResourceCombined, 0), 0);
 
             resourceCRMScroll.ScrollChanged += new ScrollChangedEventHandler(ResourceCRM_ScrollChanged);
             resourceLocalScroll.ScrollChanged += new ScrollChangedEventHandler(ResourceLocal_ScrollChanged);
-            resourceCombinedScroll.ScrollChanged += new ScrollChangedEventHandler(ResourceCombined_ScrollChanged);
+            //resourceCombinedScroll.ScrollChanged += new ScrollChangedEventHandler(ResourceCombined_ScrollChanged);
         }
 
         private void ResourceCRM_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             resourceLocalScroll.ScrollToVerticalOffset(resourceCRMScroll.VerticalOffset);
             resourceLocalScroll.ScrollToHorizontalOffset(resourceCRMScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToHorizontalOffset(resourceCRMScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToVerticalOffset(resourceCRMScroll.VerticalOffset);
+            //resourceCombinedScroll.ScrollToHorizontalOffset(resourceCRMScroll.HorizontalOffset);
+            //resourceCombinedScroll.ScrollToVerticalOffset(resourceCRMScroll.VerticalOffset);
         }
 
         private void ResourceLocal_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             resourceCRMScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
             resourceCRMScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
-            resourceCombinedScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
+            //resourceCombinedScroll.ScrollToHorizontalOffset(resourceLocalScroll.HorizontalOffset);
+            //resourceCombinedScroll.ScrollToVerticalOffset(resourceLocalScroll.VerticalOffset);
         }
-        private void ResourceCombined_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            resourceCRMScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
-            resourceCRMScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
-            resourceLocalScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
-            resourceLocalScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
-        }
+        //private void ResourceCombined_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        //{
+        //    resourceCRMScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
+        //    resourceCRMScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
+        //    resourceLocalScroll.ScrollToVerticalOffset(resourceCombinedScroll.VerticalOffset);
+        //    resourceLocalScroll.ScrollToHorizontalOffset(resourceCombinedScroll.HorizontalOffset);
+        //}
         #endregion
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
@@ -242,7 +245,7 @@ namespace DynamicsCRMResourceSynchronization
             SolvedConflict.Text = "Solved conflict ";
 
             //Detect conflict automatic merge
-            List<DiffPiece> linesConflict = DiffPaneResourceCombined.Lines.Where(k => k.Type != ChangeType.Unchanged).ToList();
+            linesConflict = DiffPaneResourceCombined.Lines.Where(k => k.Type != ChangeType.Unchanged).ToList();
             if (initCalculated)
             {
                 foreach (DiffPiece line in linesConflict)
@@ -310,6 +313,28 @@ namespace DynamicsCRMResourceSynchronization
             {
                 MessageBox.Show(string.Format("Cannot save resource : '{0}'", ex.Message));
             }
+        }
+
+        private void SolvedConflict_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (conflicNavigation == null) {                
+                conflicNavigation = linesConflict.FirstOrDefault();
+            }
+            else
+            {
+                DiffPiece nextConflict = linesConflict.Where(k => k.Position.Value > conflicNavigation.Position.Value).FirstOrDefault();
+                if(nextConflict != null) {
+                    conflicNavigation = nextConflict;
+                }
+                else
+                {
+                    conflicNavigation = linesConflict.FirstOrDefault();
+                }
+            }
+
+            var container = ResourceCombined.ItemContainerGenerator.ContainerFromItem(conflicNavigation) as FrameworkElement;
+            if (container != null)
+                container.BringIntoView();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

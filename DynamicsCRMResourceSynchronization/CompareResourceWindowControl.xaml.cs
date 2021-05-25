@@ -104,6 +104,9 @@ namespace DynamicsCRMResourceSynchronization
             w.Content = new LoginWindowControl();
             w.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             w.ShowDialog();
+
+            reloadSettingsToModel();
+            SetEnvironment();
         }
 
         private void ConfigPaths_Click(object sender, RoutedEventArgs e)

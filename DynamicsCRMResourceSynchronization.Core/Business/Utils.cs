@@ -191,7 +191,7 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
 
         private static string removeCharactersInvalidInResourceLocal(string resourceName)
         {
-            return resourceName.Replace("\\", "_").Replace("/", "_").Replace(":", "_").Replace("*", "_").Replace("?", "_").Replace('"', '_').Replace("<", "_").Replace(">", "_").Replace("|", "_");
+            return resourceName.Split('/').Last().Replace("\\", "_").Replace("/", "_").Replace(":", "_").Replace("*", "_").Replace("?", "_").Replace('"', '_').Replace("<", "_").Replace(">", "_").Replace("|", "_");
         }
     }
 }

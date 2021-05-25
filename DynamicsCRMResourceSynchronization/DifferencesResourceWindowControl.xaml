@@ -215,8 +215,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="PendingConflict" Text="Pending conflict" Padding="5" FontSize="11" Grid.Column="0" Background="#FFFF00" />
-                <TextBlock x:Name="SolvedConflict" Text="Solved conflict" Padding="5" FontSize="11" Grid.Column="1" Background="#00E400" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="PendingConflict" Text="Pending conflict" Padding="5" FontSize="11" Grid.Column="0" Background="#FFFF00" MouseUp="SolvedConflict_MouseUp" Cursor="Hand" />
+                <TextBlock x:Name="SolvedConflict" Text="Solved conflict" Padding="5" FontSize="11" Grid.Column="1" Background="#00E400" MouseUp="SolvedConflict_MouseUp" Cursor="Hand" />
+                <TextBlock x:Name="InfoConflict" Text="Select conflict number to navigate between current conflicts" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="11" Margin="10" />
             </Grid>
         </StackPanel>
         <ListView x:Name="ResourceCombined" Grid.Row="5" Grid.ColumnSpan="3" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10, 0, 10, 10">
