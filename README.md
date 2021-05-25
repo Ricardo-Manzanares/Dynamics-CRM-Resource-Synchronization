@@ -20,7 +20,7 @@ The connection to Dynamics CRM is available for multiple logins: ~~AD~~, OAuth, 
 ## First steps
 
 1. Donwload and install extension in visual studio (>2017) from visual studio marketplace
-    - Donwload : Pending url
+    - Donwload : https://marketplace.visualstudio.com/items?itemName=Dynamics-CRM-Resource-Synchronization.Dynamics-CRM-Resource-Synchronization
 2. Parameters for connection to the Dynamics CRM environment
 
 3. Local resource path configuration 
@@ -32,3 +32,24 @@ The connection to Dynamics CRM is available for multiple logins: ~~AD~~, OAuth, 
 6. Download solution resources
 
 7. Compare, solution conflicts, merge and add resources to solution selected from solution default
+
+## Change history
+
+# 0.2
+Applied improvements :
+1. Synchronized navigation in the resource conflicts window is disabled between CRM resource content or Local resource content and conflicts. It caused slow navigation.
+2. Update environment and user data on the main screen after updating connection data. 
+3. Find local resources with the name of the resource and not the full path of the resource in Dynamics CRM.
+4. Navigate between conflicts for a resource by selecting the conflict text and avoid manual scrolling to find the conflict
+
+# 0.1
+Publish initial :
+1. Initial publication containing:
+2. View Managed Dynamics CRM Solutions.
+3. View the resources of a Dynamics CRM managed solution.
+4. Add new resources from the Dynamics CRM default solution to the selected managed solution.
+5. Download, upload and publish resources in Dynamics CRM.
+6. Filter resources by resource name and type.
+7. Compare Differences Between Dynacis CRM Resource and Local.
+8. Connection to Dynamics CRM environments is allowed with: OAuth, ClientSecret and Office365.
+9. Establish comparison paths for each type of resource.
