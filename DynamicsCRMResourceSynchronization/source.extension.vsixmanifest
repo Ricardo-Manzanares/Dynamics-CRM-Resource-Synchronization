@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Dynamics-CRM-Resource-Synchronization" Version="0.2" Language="es-ES" Publisher="Dynamics CRM Resource Synchronization" />
+        <Identity Id="Dynamics-CRM-Resource-Synchronization" Version="0.3" Language="es-ES" Publisher="Dynamics CRM Resource Synchronization" />
         <DisplayName>Dynamics CRM Resource Synchronization</DisplayName>
         <Description xml:space="preserve">Dynamics CRM Resource Synchronization</Description>
         <MoreInfo>https://github.com/Ricardo-Manzanares/Dynamics-CRM-Resource-Synchronization</MoreInfo>
