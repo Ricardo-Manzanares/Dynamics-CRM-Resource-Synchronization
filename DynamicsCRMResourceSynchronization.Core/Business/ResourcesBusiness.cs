@@ -119,6 +119,9 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
 
                 foreach (var resource in resources)
                 {
+                    //Get last content resource local
+                    GetResourceLocal(resource);
+
                     Entity resourceUpdate = MapperToEntity(resource);
                     UpdateRequest updateRequest = new UpdateRequest { Target = resourceUpdate };
                     executemultiplerequest.Requests.Add(updateRequest);
