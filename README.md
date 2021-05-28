@@ -35,6 +35,12 @@ The connection to Dynamics CRM is available for multiple logins: ~~AD~~, OAuth, 
 
 ## Change history
 
+# 0.4
+Applied improvements : 
+1. Dates in list resource format to local time.
+2. Notification in windows after upload and publish resource
+3. Solution with empty resource not allow add news resource from solution default
+
 # 0.3
 Applied improvements : 
 1. Get the content of the local resource before publishing the resource locally.
