@@ -265,8 +265,8 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
             ResourceModel model = new ResourceModel();
             model.name = recurso.Attributes["name"] != null ? recurso.Attributes["name"].ToString() : "--";
             model.resourceid = Guid.Parse(recurso.Attributes["webresourceid"].ToString());
-            model.createdon = EntityCollectionExtension.ExistProperty(recurso, "createdon") ? recurso.Attributes["createdon"].ToString() : "--";
-            model.modifiedon = EntityCollectionExtension.ExistProperty(recurso, "modifiedon") ? recurso.Attributes["modifiedon"].ToString() : "--";
+            model.createdon = EntityCollectionExtension.ExistProperty(recurso, "createdon") ? DateTime.Parse(recurso.Attributes["createdon"].ToString()).ToLocalTime().ToString() : "--";
+            model.modifiedon = EntityCollectionExtension.ExistProperty(recurso, "modifiedon") ? DateTime.Parse(recurso.Attributes["modifiedon"].ToString()).ToLocalTime().ToString() : "--";
             model.webresourcetype = EntityCollectionExtension.ExistProperty(recurso, "webresourcetype") ? ((OptionSetValue)recurso.Attributes["webresourcetype"]).Value : 0;
             model.contentCRM = EntityCollectionExtension.ExistProperty(recurso, "content") ? recurso.Attributes["content"].ToString() : "";
 
@@ -287,8 +287,8 @@ namespace DynamicsCRMResourceSynchronization.Core.Business
                 resource.pathlocal = pathResourceLocal;
                 resource.contentLocal = File.ReadAllText(pathResourceLocal, Encoding.UTF8);
                 FileInfo fi = new FileInfo(pathResourceLocal);
-                resource.localcreatedon = fi.CreationTime.ToString();
-                resource.localmodifiedon = fi.LastWriteTimeUtc.ToString();
+                resource.localcreatedon = fi.CreationTime.ToLocalTime().ToString();
+                resource.localmodifiedon = fi.LastWriteTimeUtc.ToLocalTime().ToString();
                 resource.resourceCompareStatus = SideBySideDiffBuilder.Diff(resource.contentCRM, resource.contentLocal);
                 resource.resourceDifference = (resource.resourceCompareStatus.NewText.HasDifferences || resource.resourceCompareStatus.OldText.HasDifferences) ? ResourceContentStatus.DifferencesExist : ResourceContentStatus.Equal;
             }

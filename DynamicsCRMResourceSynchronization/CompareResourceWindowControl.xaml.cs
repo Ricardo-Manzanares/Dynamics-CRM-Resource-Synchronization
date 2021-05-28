@@ -1,6 +1,7 @@
 ﻿using DynamicsCRMResourceSynchronization.Core.Business;
 using DynamicsCRMResourceSynchronization.Core.Business.Models;
 using DynamicsCRMResourceSynchronization.Core.Dynamics;
+using DynamicsCRMResourceSynchronization.Extensions;
 using DynamicsCRMResourceSynchronization.Properties;
 using System;
 using System.Collections.Generic;
@@ -191,7 +192,7 @@ namespace DynamicsCRMResourceSynchronization
 
         private async Task<bool> CRMLoadResourcesAsync()
         {
-            bool finish = false;
+            bool existResourcesInSolution = false;
             ActionsOfLoading(Visibility.Visible, "Loading solution resources");
             ActionsOfSolutions(VisibilityType.Disabled);
             ActionsOfResources(VisibilityType.Hidden);
@@ -214,7 +215,7 @@ namespace DynamicsCRMResourceSynchronization
                             listResources = listResources.OrderBy(k => k.name).ToList();
                             if (listResources.Count > 0)
                             {
-                                finish = true;
+                                existResourcesInSolution = true;
                             }
                         }
                     }).ContinueWith(resp => {
@@ -234,20 +235,11 @@ namespace DynamicsCRMResourceSynchronization
             ActionsOfLoading(Visibility.Hidden);
             ActionsOfEnvironment(VisibilityType.Visible);
             ActionsOfSolutions(VisibilityType.Visible);
+            ActionsOfResources(VisibilityType.Visible);
+            Navigate((int)PagingMode.PageCountChange);
+            CRMTypeResource.SelectedIndex = 0;
 
-            if (finish)
-            {
-                Navigate((int)PagingMode.PageCountChange);
-                ActionsOfResources(VisibilityType.Visible);
-                CRMTypeResource.SelectedIndex = 0;
-            }
-            else
-            {
-                ActionsOfResources(VisibilityType.Hidden);
-                CRMSolutions.SelectedIndex = 0;
-            }
-
-            return finish;
+            return existResourcesInSolution;
         }
 
         private SettingsModel reloadSettingsToModel()
@@ -297,7 +289,7 @@ namespace DynamicsCRMResourceSynchronization
                     TextResourceActions.Visibility = Visibility.Visible;
                     GridPagination.Visibility = Visibility.Visible;
                     DataResources.Visibility = Visibility.Visible;
-
+                    DataResources.IsEnabled = true;
                     CRMUploadResource.IsEnabled = true;
                     CRMUploadResource.Opacity = 1;
                     CRMUploadResource.Visibility = Visibility.Visible;
@@ -310,9 +302,13 @@ namespace DynamicsCRMResourceSynchronization
                     CRMDownloadResource.IsEnabled = true;
                     CRMDownloadResource.Opacity = 1;
                     CRMDownloadResource.Visibility = Visibility.Visible;
+                    CRMAddResources.Opacity = 1;
+                    CRMAddResources.Visibility = Visibility.Visible;
+                    CRMAddResources.IsEnabled = true;
                     cbNumberOfRecords.Opacity = 1;
                     cbNumberOfRecords.IsEnabled = true;
                     cbNumberOfRecords.Visibility = Visibility.Visible;
+                    ActionsOfActionsOfResources();
                     break;
                 case VisibilityType.Hidden:
                     DataResources.ItemsSource = null;
@@ -334,10 +330,14 @@ namespace DynamicsCRMResourceSynchronization
                     CRMCompareResources.Visibility = Visibility.Hidden;
                     CRMDownloadResource.IsEnabled = false;
                     CRMDownloadResource.Visibility = Visibility.Hidden;
+                    CRMAddResources.IsEnabled = false;
+                    CRMAddResources.Visibility = Visibility.Hidden;
                     cbNumberOfRecords.IsEnabled = false;
                     cbNumberOfRecords.Visibility = Visibility.Hidden;
                     break;
                 case VisibilityType.Disabled:
+                    DataResources.IsEnabled = false;
+
                     CRMNameSearchResource.IsEnabled = false;
                     CRMTypeResource.IsEnabled = false;
                     CRMTypeResource.Opacity = 0.4;
@@ -359,15 +359,17 @@ namespace DynamicsCRMResourceSynchronization
                     CRMDownloadResource.IsEnabled = false;
                     CRMDownloadResource.Opacity = 0.4;
                     CRMDownloadResource.Visibility = Visibility.Visible;
+                    CRMAddResources.IsEnabled = false;
+                    CRMAddResources.Opacity = 0.4;
+                    CRMAddResources.Visibility = Visibility.Visible;
+                   
                     cbNumberOfRecords.Opacity = 0.4;
                     cbNumberOfRecords.IsEnabled = false;
                     cbNumberOfRecords.Visibility = Visibility.Visible;
                     break;
                 default:
                     break;
-            }
-
-            ActionsOfActionsOfResources();
+            }            
         }
 
         private void ActionsOfActionsOfResources()
@@ -466,6 +468,11 @@ namespace DynamicsCRMResourceSynchronization
                     ConfigPaths.Visibility = Visibility.Visible;
                     ConfigPaths.IsEnabled = true;
                     ConfigPaths.Opacity = 1;
+                    NotificationsDisabled.IsEnabled = true;
+                    NotificationSilent.IsEnabled = true;
+                    NotificationSilent.Opacity = 1;
+                    NotificationAudio.IsEnabled = true;
+                    NotificationAudio.Opacity = 1;
                     break;
                 case VisibilityType.Hidden:
                     ConfigEnvironment.Visibility = Visibility.Hidden;
@@ -480,6 +487,11 @@ namespace DynamicsCRMResourceSynchronization
                     ConfigEnvironment.Opacity = 0.4;
                     ConfigPaths.IsEnabled = false;
                     ConfigPaths.Opacity = 0.4;
+                    NotificationsDisabled.IsEnabled = false;
+                    NotificationSilent.IsEnabled = false;
+                    NotificationSilent.Opacity = 0.4;
+                    NotificationAudio.IsEnabled = false;
+                    NotificationAudio.Opacity = 0.4;
                     break;
                 default:
                     break;
@@ -514,6 +526,30 @@ namespace DynamicsCRMResourceSynchronization
             CRMLoadSolutions.IsEnabled = true;
             CRMUser.Text = Settings.Default.CRMUserName;
             CRMUrl.Text = Settings.Default.CRMUrl;
+
+            ActionsOfNotifications();
+        }
+
+        private void ActionsOfNotifications()
+        {
+            if (Settings.Default.Notifications == "On")
+            {
+                NotificationsDisabled.Visibility = Visibility.Hidden;
+                NotificationSilent.Visibility = Visibility.Hidden;
+                NotificationAudio.Visibility = Visibility.Visible;
+            }
+            else if (Settings.Default.Notifications == "Silent")
+            {
+                NotificationsDisabled.Visibility = Visibility.Hidden;
+                NotificationSilent.Visibility = Visibility.Visible;
+                NotificationAudio.Visibility = Visibility.Hidden;
+            }
+            else if (Settings.Default.Notifications == "Off")
+            {
+                NotificationsDisabled.Visibility = Visibility.Visible;
+                NotificationSilent.Visibility = Visibility.Hidden;
+                NotificationAudio.Visibility = Visibility.Hidden;
+            }
         }
 
         #region Pagination 
@@ -1013,10 +1049,9 @@ namespace DynamicsCRMResourceSynchronization
             List<ExecuteMultipleResponseModel> responses = new List<ExecuteMultipleResponseModel>();
             await Task.Run(() =>
             {
-                responses = resourcesBusiness.UploadAndPublishResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());
-               
+                responses = resourcesBusiness.UploadAndPublishResources(listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).ToList());               
             }).ContinueWith(resp => {
-
+                Notification.SendNotification("Resource publication finished", listResources.Where(k => k.selectResource && !string.IsNullOrEmpty(k.pathlocal)).Count() + " resources have been uploaded and published successfully");
             });
 
             GetLastContentResourceAfterUpdate(responses);
@@ -1098,6 +1133,26 @@ namespace DynamicsCRMResourceSynchronization
         private void CompareResource_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Loading = new Controls.LoadingControl();
+        }
+
+        private void NotificationsEnableDisabled_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            if(btn.Name == "NotificationAudio")
+            {
+                Settings.Default.Notifications = "Silent";
+            }
+            else if (btn.Name == "NotificationSilent")
+            {
+                Settings.Default.Notifications = "Off";
+            }
+            else if (btn.Name == "NotificationsDisabled")
+            {
+                Settings.Default.Notifications = "On";
+            }
+            Settings.Default.Save();
+            Settings.Default.Reload();
+            ActionsOfNotifications();
         }
     }
 }

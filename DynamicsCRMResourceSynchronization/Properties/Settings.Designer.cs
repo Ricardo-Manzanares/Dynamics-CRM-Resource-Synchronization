@@ -298,5 +298,17 @@ namespace DynamicsCRMResourceSynchronization.Properties {
                 this["PathRESX"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("On")]
+        public string Notifications {
+            get {
+                return ((string)(this["Notifications"]));
+            }
+            set {
+                this["Notifications"] = value;
+            }
+        }
     }
 }
